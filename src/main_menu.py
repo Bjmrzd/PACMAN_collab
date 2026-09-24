@@ -1,4 +1,6 @@
 import pygame as pg
+import pygame_menu as pm
+import pygvideo as pv
 import sys
 from src.game import Game
 from src.parsing import parsing
@@ -11,3 +13,6 @@ class MainMenu():
         self.screen = screen
         self.screen_height = screen_height
         self.screen_width = screen_width
+
+    def init_menu(self):
+        pass

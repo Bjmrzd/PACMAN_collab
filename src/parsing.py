@@ -49,7 +49,9 @@ class Config(BaseModel):
 
 def parsing() -> Config:
     file = "config.json"
-    logging.
+    logging.basicConfig(filename="error.logs", filemode="a",
+                        format="%(asctime)s - %(message)s",
+                        datefmt='%m/%d/%Y %I:%M:%S %p')
     necessary_keys: list[Any] = ["highscore_filename", "lives", "pacgum_pts", "seed", "super_pacgum_pts", "ghost_pts", "lvl_max_time"]
     try:
         with open(file, "r") as config:
@@ -68,5 +70,6 @@ def parsing() -> Config:
         valid_config = Config.model_validate(data)
     except ValidationError as error:
         print(error.errors()[0]["msg"])
+        logging.error(error.errors()[0]["msg"])
         exit()
     return valid_config
