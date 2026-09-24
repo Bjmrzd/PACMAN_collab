@@ -1,0 +1,5 @@
+pygame-ce
+numpy
+pydantic
+pygvideo
+pygame-menu

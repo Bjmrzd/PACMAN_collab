@@ -1,0 +1,19 @@
+{
+    "highscore_filename":"highscore.json",
+    "lives":5,
+    "pacgum_pts":25,
+    "super_pacgum_pts":100,
+    "seed":42,
+    "lvl_max_time":90,
+    "ghost_pts": 200,
+    "level_1": {"width": 10, "height": 10},
+    "level_2": {"width": 12, "height": 12},
+    "level_3": {"width": 15, "height": 15},
+    "level_4": {"width": 17, "height": 17},
+    "level_5": {"width": 14, "height": 14},
+    "level_6": {"width": 13, "height": 13},
+    "level_7": {"width": 11, "height": 11},
+    "level_8": {"width": 9, "height": 9},
+    "level_9": {"width": 16, "height": 16},
+    "level_10": {"width": 18, "height": 18}
+}
