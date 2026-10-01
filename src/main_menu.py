@@ -4,6 +4,7 @@ import pygvideo as pv
 import sys
 from src.game import Game
 from src.parsing import parsing
+from src.helper import Color
 import json
 from typing import Any
 
@@ -13,6 +14,49 @@ class MainMenu():
         self.screen = screen
         self.screen_height = screen_height
         self.screen_width = screen_width
+        self.font = pm.font.FONT_8BIT
+        self.theme = pm.Theme(widget_font=self.font, background_color=Color.BLACK.value)
+        self.menu = pm.menu.Menu("Main Menu", self.screen_width, self.screen_height, theme=self.theme)
 
     def init_menu(self):
+        """Init and display the main menu"""
+        running: bool = True
+
+
+        start_button = self.menu.add.button("Start game", self.init_game)
+        instructions_button = self.menu.add.button("Instructions", self.init_tuto)
+        highscore_button = self.menu.add.button("Highscore", self.init_highscore)
+        while running:
+            mouse = pg.mouse.get_pos()
+            self.screen.fill(Color.BLACK.value)
+            events = pg.event.get()
+            for event in events:
+                if event.type == pg.QUIT:
+                    pg.quit()
+                    sys.exit()
+                keys = pg.key.get_pressed()
+                if keys[pg.K_ESCAPE]:
+                    pg.quit()
+                    sys.exit()
+
+            self.menu.update(events)
+            self.menu.draw(self.screen)
+            self.menu.center_content()
+
+            start_button.draw(self.screen)
+            instructions_button.draw(self.screen)
+            highscore_button.draw(self.screen)
+
+            pg.display.flip()
+
+    def init_game(self):
+        """Display and init the game loop but do not handle the loop logic"""
+        pass
+
+    def init_tuto(self):
+        """Init the tuto menu with the buttons instructions and how to play"""
+        pass
+
+    def init_highscore(self):
+        """Init the menu that display the highscore"""
         pass

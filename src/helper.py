@@ -6,4 +6,5 @@ class Font(Enum):
 
 
 class Color(Enum):
-    pass
+    BLACK = (0, 0, 0)
+    WHITE = (250, 250, 250)
