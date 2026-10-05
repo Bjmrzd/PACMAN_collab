@@ -22,7 +22,6 @@ class MainMenu():
         """Init and display the main menu"""
         running: bool = True
 
-
         start_button = self.menu.add.button("Start game", self.init_game)
         instructions_button = self.menu.add.button("Instructions", self.init_tuto)
         highscore_button = self.menu.add.button("Highscore", self.init_highscore)
@@ -55,7 +54,22 @@ class MainMenu():
 
     def init_tuto(self):
         """Init the tuto menu with the buttons instructions and how to play"""
-        pass
+        running = True
+
+        while running:
+
+            self.screen.fill(Color.BLACK.value)
+            mouse = pg.mouse.get_pos()
+
+            for event in pg.event.get():
+                if event.type == pg.QUIT:
+                    pg.quit()
+                    sys.exit()
+                keys = pg.key.get_pressed()
+                if keys[pg.K_ESCAPE]:
+                    self.init_menu()\
+                    
+            pg.display.flip()
 
     def init_highscore(self):
         """Init the menu that display the highscore"""
