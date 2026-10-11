@@ -56,6 +56,7 @@ class MainMenu():
     def init_tuto(self):
         """Init the tuto menu with the buttons instructions and how to play"""
         running = True
+        arrows = pg.image.load("assets/arrows.png")
 
         while running:
 

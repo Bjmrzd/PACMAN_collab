@@ -4,6 +4,7 @@ from src.game import Game
 
 
 def main():
+    """Main function to init everything and start the menu"""
     pg.init()
 
     size = pg.display.get_desktop_sizes()
