@@ -50,7 +50,8 @@ class MainMenu():
 
     def init_game(self):
         """Display and init the game loop but do not handle the loop logic"""
-        pass
+        game = Game(self.screen, self.screen_width, self.screen_height)
+        game.main_loop()
 
     def init_tuto(self):
         """Init the tuto menu with the buttons instructions and how to play"""
@@ -67,8 +68,7 @@ class MainMenu():
                     sys.exit()
                 keys = pg.key.get_pressed()
                 if keys[pg.K_ESCAPE]:
-                    self.init_menu()\
-                    
+                    running = False            
             pg.display.flip()
 
     def init_highscore(self):

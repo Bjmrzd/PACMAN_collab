@@ -9,7 +9,7 @@ def main():
     size = pg.display.get_desktop_sizes()
     screen_height = int(size[0][1])
     screen_width = int(size[0][0])
-    screen = pg.display.set_mode(screen_width, screen_height)
+    screen = pg.display.set_mode((screen_width, screen_height))
     # pg.display.set_caption("Pacman")
     # icon = pg.image.load("assets/pacman.png")
     # title = pg.image.load("assets/title.jpg")
