@@ -18,13 +18,15 @@ class MainMenu():
         self.theme = pm.Theme(widget_font=self.font, background_color=Color.BLACK.value)
         self.menu = pm.menu.Menu("Main Menu", self.screen_width, self.screen_height, theme=self.theme)
 
-    def init_menu(self):
+    def init_menu(self, no_resume: bool):
         """Init and display the main menu"""
         running: bool = True
 
         start_button = self.menu.add.button("Start game", self.init_game)
         instructions_button = self.menu.add.button("Instructions", self.init_tuto)
         highscore_button = self.menu.add.button("Highscore", self.init_highscore)
+        if not no_resume:
+            resume_button = self.menu.add.button("Resume game", self.resume_game)
         while running:
             mouse = pg.mouse.get_pos()
             self.screen.fill(Color.BLACK.value)
@@ -42,6 +44,13 @@ class MainMenu():
             self.menu.draw(self.screen)
             self.menu.center_content()
 
+            if not no_resume:
+                resume_button.draw(self.screen)
+                if resume_button.is_selected():
+                    for event in pg.event.get():
+                        keys = pg.key.get_pressed()
+                        if keys[pg.K_RETURN]:
+                            running = False
             start_button.draw(self.screen)
             instructions_button.draw(self.screen)
             highscore_button.draw(self.screen)
@@ -69,9 +78,12 @@ class MainMenu():
                     sys.exit()
                 keys = pg.key.get_pressed()
                 if keys[pg.K_ESCAPE]:
-                    running = False            
+                    running = False
             pg.display.flip()
 
     def init_highscore(self):
         """Init the menu that display the highscore"""
         pass
+
+    def resume_game(self):
+        return False
