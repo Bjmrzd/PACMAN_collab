@@ -4,7 +4,7 @@ import pygvideo as pv
 import sys
 from src.game import Game
 from src.parsing import parsing
-from src.helper import Color
+from src.helper import Color, Text, Size
 import json
 from typing import Any
 
@@ -91,7 +91,13 @@ class MainMenu():
                 keys = pg.key.get_pressed()
                 if keys[pg.K_ESCAPE]:
                     running = False
+            self.screen.blit(arrows, (200, 200))
+
+            command_text = Text("Movements: WASD or keypad arrows", Color.RED.value, 500, 150, Size.TEXT.value)
+            command_text.show_text(self.screen)
+            
             pg.display.flip()
+            # can do a little maze here to test the command
 
     def init_highscore(self):
         """Init the menu that display the highscore"""
