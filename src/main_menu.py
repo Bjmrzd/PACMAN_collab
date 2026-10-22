@@ -24,7 +24,7 @@ class MainMenu():
 
         start_button = self.menu.add.button("Start game", self.init_game)
         instructions_button = self.menu.add.button("Instructions", self.init_tuto)
-        highscore_button = self.menu.add.button("Highscore", self.init_highscore)
+        highscore_button = self.menu.add.button("Highscores", self.init_highscore)
         if not no_resume:
             resume_button = self.menu.add.button("Resume game", self.resume_game)
         while running:
@@ -45,14 +45,26 @@ class MainMenu():
             self.menu.center_content()
 
             if not no_resume:
+                resume_button.set_margin(0, 100)
+                resume_button.set_padding(20)
                 resume_button.draw(self.screen)
                 if resume_button.is_selected():
+                    # need to change this part it make the game lag and sometimes crash
+                    # need to find better way to do this
                     for event in pg.event.get():
                         keys = pg.key.get_pressed()
                         if keys[pg.K_RETURN]:
                             running = False
+            start_button.set_margin(0, 100)
+            start_button.set_padding(20)
             start_button.draw(self.screen)
+
+            instructions_button.set_margin(0, 100)
+            instructions_button.set_padding(20)
             instructions_button.draw(self.screen)
+
+            highscore_button.set_margin(0, 100)
+            highscore_button.set_padding(20)
             highscore_button.draw(self.screen)
 
             pg.display.flip()
@@ -86,4 +98,6 @@ class MainMenu():
         pass
 
     def resume_game(self):
+        # maybe useful to change the crashing loop in the main menu loop
+        # else can be erased
         return False

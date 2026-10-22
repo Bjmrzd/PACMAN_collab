@@ -4,6 +4,7 @@ import pygame as pg
 
 class Size(Enum):
     TEXT = 50
+    TITLE = 150
 
 
 class Font(Enum):
@@ -38,12 +39,18 @@ class Box_Button():
 
 
 class Text():
-    def __init__(self, text, color, x, y):
+    def __init__(self, text, color, x, y, size_text):
         super().__init__()
         self.text = text
         self.color = color
         self.x = x
         self.y = y
+        self.rect = pg.Rect(x, y, 100, 100)
+        self.font = pg.font.Font(Font.FONT1.value, size_text)
 
     def show_text(self, screen):
-        pg.draw.rect(screen)
+        self.rect.center = (self.x, self.y)
+        pg.draw.rect(screen, Color.BLACK.value, self.rect)
+        text_render = self.font.render(self.text, False, self.color)
+        rect = text_render.get_rect(center=(self.rect.centerx, self.rect.centery))
+        screen.blit(text_render, rect)
