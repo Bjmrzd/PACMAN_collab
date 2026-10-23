@@ -68,6 +68,7 @@ class MainMenu():
             highscore_button.draw(self.screen)
 
             pg.display.flip()
+            # problem with the resume button the menu buttons duplicate after the second time using it
 
     def init_game(self):
         """Display and init the game loop but do not handle the loop logic"""
@@ -101,7 +102,40 @@ class MainMenu():
 
     def init_highscore(self):
         """Init the menu that display the highscore"""
-        pass
+        running: bool = True
+        config: Any = parsing()
+        count: int = 0
+        display_score: str = ""
+        list_highscore: str = []
+        try:
+            with open(config.highscore_filename, "r") as file:
+                data = json.load(file)
+                for keys, values in data.items():
+                    count += 1
+                    display_score += str(count) + ". " + values[1] + ": "
+                    display_score += str(values[0]) + " points"
+                    list_highscore.append(display_score)
+
+        except (FileNotFoundError, json.JSONDecodeError):
+            print("Invalid Highscore data. It Could not be retrieved")
+        while running:
+            mouse = pg.mouse.get_pos()
+            self.screen.fill(Color.BLACK.value)
+
+            command_text = Text("Highscores: ", Color.RED.value, 500, 150, Size.TITLE.value)
+            command_text.show_text(self.screen)
+
+            for event in pg.event.get():
+                if event.type == pg.QUIT:
+                    pg.quit()
+                    sys.exit()
+                keys = pg.key.get_pressed()
+                if keys[pg.K_ESCAPE]:
+                    running = False
+
+            pg.display.flip()
+
+
 
     def resume_game(self):
         # maybe useful to change the crashing loop in the main menu loop

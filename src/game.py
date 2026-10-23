@@ -34,7 +34,9 @@ class Game:
 
     def win(self):
         """Win screen"""
-        pass
+        running: bool = True
+
+        while running:
 
     def pause_menu(self):
         """Pause Menu"""
