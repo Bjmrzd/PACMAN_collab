@@ -18,6 +18,7 @@ class Color(Enum):
     BLACK = (0, 0, 0)
     WHITE = (250, 250, 250)
     RED = pg.Color("deeppink3")
+    GREY = (100, 100, 100)
 
 
 class Box_Button():
@@ -37,6 +38,15 @@ class Box_Button():
         """Create and display the button"""
         self.rect.center = (self.x, self.y)
         pg.draw.rect(screen, Color.WHITE.value if self.rect.collidepoint(mouse) else Color.RED.value, self.rect)
+        display_text = self.font.render(self.text, False, Color.BLACK.value)
+        text_rect = display_text.get_rect(center=(self.rect.centerx, self.rect.centery))
+        screen.blit(display_text, text_rect)
+        return self.rect
+
+    def create_input(self, screen, mouse):
+        """Create and display a input box"""
+        self.rect.center = (self.x, self.y)
+        pg.draw.rect(screen, Color.GREY.value, self.rect)
         display_text = self.font.render(self.text, False, Color.BLACK.value)
         text_rect = display_text.get_rect(center=(self.rect.centerx, self.rect.centery))
         screen.blit(display_text, text_rect)

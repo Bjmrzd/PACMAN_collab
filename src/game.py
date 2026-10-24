@@ -25,6 +25,8 @@ class Game:
                     self.pause_menu()
                 if keys[pg.K_c]:
                     self.cheat_screen()
+                if keys[pg.K_1]:
+                    self.win()
             pg.display.flip()
             # need to create a user list for the buttons
 
@@ -35,8 +37,36 @@ class Game:
     def win(self):
         """Win screen"""
         running: bool = True
+        count: int = 0
+        letter: str = ""
+        index: int = 0
 
         while running:
+            mouse = pg.mouse.get_pos()
+            self.screen.fill(Color.BLACK.value)
+
+            for event in pg.event.get():
+                keys = pg.key.get_pressed()
+                if keys[pg.K_ESCAPE]:
+                    pg.quit()
+                    sys.exit()
+                if event.type == pg.KEYDOWN:
+                    if count < 10:
+                        letter += event.unicode
+                        count += 1
+                    if keys[pg.K_BACKSPACE]:
+                        letter = letter[:-1]
+                        count -= 1
+                print(count)
+            # the input work but i need to make the deletion of the word work too
+            # it only delete 1 word for now
+
+            
+            input_name = Box_Button(self.screen_width / 2, self.screen_height / 2, 100, 100, letter, Size.TEXT.value)
+            input_name.create_button(self.screen, mouse)
+            pg.display.flip()
+                        
+
 
     def pause_menu(self):
         """Pause Menu"""
