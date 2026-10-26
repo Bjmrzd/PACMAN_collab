@@ -1,6 +1,7 @@
 import pygame as pg
 from src.parsing import parsing
 from src.helper import Color, Box_Button, Font, Size, Text
+from src.score import Score, ranking_score
 import json
 from typing import Any
 import sys
@@ -12,6 +13,8 @@ class Game:
         self.screen = screen
         self.screen_width = screen_width
         self.screen_height = screen_height
+        self.score: int = 0
+        self.config = parsing()
 
     def main_loop(self):
         """Main game loop"""
@@ -27,6 +30,8 @@ class Game:
                     self.cheat_screen()
                 if keys[pg.K_1]:
                     self.win()
+                if keys[pg.K_2]:
+                    self.game_over()
             pg.display.flip()
             # need to create a user list for the buttons
 
@@ -64,6 +69,27 @@ class Game:
             
             input_name = Box_Button(self.screen_width / 2, self.screen_height / 2, 100, 100, letter, Size.TEXT.value)
             input_name.create_button(self.screen, mouse)
+
+            title_win = Text("You Win !", Color.WHITE.value, self.screen_width / 2, self.screen_height / 2 - 400, Size.TITLE.value)
+            title_win.show_text(self.screen)
+
+            name_rules = Text("Enter your name: ", Color.RED.value, self.screen_width / 2, self.screen_height / 2 - 100, Size.TEXT.value)
+            name_rules.show_text(self.screen)
+
+            try:
+                with open(self.config.highscore_filename, "r") as file:
+                    data = json.load(file)
+                    ranked = ranking_score(self.score, data)
+
+                with open(self.config.highscore_filename, "w") as file:
+                    json.dump(ranked, file, indent=4)
+
+            except (FileExistsError, FileNotFoundError, json.JSONDecodeError):
+                with open(self.config.highscore_filename, "w") as file:
+                    score_dict.update({"0": json_list})
+                    json.dump(score_dict, file, indent=4)
+
+
             pg.display.flip()
                         
 

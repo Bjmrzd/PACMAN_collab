@@ -134,6 +134,9 @@ class MainMenu():
                     running = False
 
             pg.display.flip()
+        # see after working on the win and game over screen if the try except still work
+        # maybe need to change the format of the json after making the highscore works
+        # also see if the score is a different format when the game loop is working
 
 
 
