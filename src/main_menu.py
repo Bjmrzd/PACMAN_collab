@@ -96,7 +96,13 @@ class MainMenu():
 
             command_text = Text("Movements: WASD or keypad arrows", Color.RED.value, 500, 150, Size.TEXT.value)
             command_text.show_text(self.screen)
-            
+
+            cheat_screen = Text("Press C for the cheat screen", Color.RED.value, 500, 250, Size.TEXT.value)
+            cheat_screen.show_text(self.screen)
+
+            win_lose = Text("Press 1 to win or 2 to lose", Color.RED.value, 500, 350, Size.TEXT.value)
+            win_lose.show_text(self.screen)
+  
             pg.display.flip()
             # can do a little maze here to test the command
 
@@ -124,6 +130,9 @@ class MainMenu():
 
             command_text = Text("Highscores: ", Color.RED.value, 500, 150, Size.TITLE.value)
             command_text.show_text(self.screen)
+
+            show_score = Text(display_score, Color.RED.value, 500, 250, Size.TEXT.value)
+            show_score.show_text(self.screen)
 
             for event in pg.event.get():
                 if event.type == pg.QUIT:
