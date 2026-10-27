@@ -1,5 +1,6 @@
 from maze import Maze, MazeError
 
+
 def convert_hexa(rows: list[str]) -> list[list[int]]:
     try:
         result: list[list[int]] = []

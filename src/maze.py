@@ -35,7 +35,7 @@ WALL_BITS: dict[Direction, int] = {
     }
 
 
-class Maze: # rajouter 1) des Maze Errors (faire une classe a part), 2) faire des méthodes intermédiaires pour assurer qu'il n'y ait pas de conflits et d'erreurs
+class Maze:  # rajouter 1) des Maze Errors (faire une classe a part), 2) faire des méthodes intermédiaires pour assurer qu'il n'y ait pas de conflits et d'erreurs
     def __init__(self, walls: list[list[int]]) -> None:
         self.walls = walls
         self.height = len(walls)
@@ -59,7 +59,6 @@ class Maze: # rajouter 1) des Maze Errors (faire une classe a part), 2) faire de
         dir_row, dir_col = direction.value
         return cell[0] + dir_row, cell[1] + dir_col
 
-
     def can_move(self, cell: Cell, direction: Direction) -> bool:
         row, col = cell
         if self.walls[row][col] & direction.wall_bit:  #check si il y a un mur dans cette direction
@@ -77,7 +76,6 @@ class Maze: # rajouter 1) des Maze Errors (faire une classe a part), 2) faire de
                 list_dir.append(d)
         return list_dir
         # return [d for d in Direction if self.can\move(cell, d)]
-    
 
     def distance_map(self, goal: Cell) -> dict[Cell, int]: #BFS
         cache = self.distances.get(goal)
