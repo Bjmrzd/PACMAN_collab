@@ -1,7 +1,7 @@
 import pygame as pg
 from src.parsing import parsing
 from src.helper import Color, Box_Button, Font, Size, Text
-from src.score import Score, ranking_score
+from src.score import Score, ranking_score, valid_highscore
 import json
 from typing import Any
 import sys
@@ -45,6 +45,7 @@ class Game:
         count: int = 0
         letter: str = ""
         index: int = 0
+        score_dict: dict[str, int] = {}
 
         while running:
             mouse = pg.mouse.get_pos()
@@ -60,13 +61,15 @@ class Game:
                         letter += event.unicode
                         count += 1
                     if keys[pg.K_BACKSPACE]:
+                        print(letter)
                         letter = letter[:-1]
+                        print(letter)
                         count -= 1
                 print(count)
             # the input work but i need to make the deletion of the word work too
-            # it only delete 1 word for now
+            # it only delete 1 letter for now
+            # may
 
-            
             input_name = Box_Button(self.screen_width / 2, self.screen_height / 2, 100, 100, letter, Size.TEXT.value)
             input_name.create_button(self.screen, mouse)
 
@@ -76,6 +79,10 @@ class Game:
             name_rules = Text("Enter your name: ", Color.RED.value, self.screen_width / 2, self.screen_height / 2 - 100, Size.TEXT.value)
             name_rules.show_text(self.screen)
 
+            name = letter
+            # need to check if the name change after the letter deletion, else we can use letter directly
+            highscore = valid_highscore(name, self.score)
+            json_list = [highscore.player_score, highscore.player_name]
             try:
                 with open(self.config.highscore_filename, "r") as file:
                     data = json.load(file)
@@ -89,10 +96,8 @@ class Game:
                     score_dict.update({"0": json_list})
                     json.dump(score_dict, file, indent=4)
 
-
             pg.display.flip()
-                        
-
+            # add a count or a bool to make the highscore 1 time because it can crash
 
     def pause_menu(self):
         """Pause Menu"""
