@@ -4,7 +4,7 @@ VENV = Pac_venv
 
 run:
 	@printf "Launching PacMan game ! \n\n"
-	@$(PYTHON) pac-man.py
+	@$(PYTHON) pac-man.py --quiet
 	@ rm -rf src/__pycache__
 
 clean:
@@ -14,9 +14,9 @@ clean:
 	@rm -rf .mypy_cache
 
 install:
-	@printf "Installing required packages ! \n\n"
-	@pip install --upgrade pip
-	@pip install -r requirements.txt
+	@printf "\nInstalling required packages ! \n\n"
+	@pip install --upgrade pip --quiet
+	@pip install -r requirements.txt --quiet
 
 install_venv:
 	@pip install --upgrade --require-virtualenv pip

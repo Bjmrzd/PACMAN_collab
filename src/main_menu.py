@@ -4,7 +4,7 @@ import pygvideo as pv
 import sys
 from src.game import Game
 from src.parsing import parsing
-from src.helper import Color
+from src.helper import Color, Text, Size
 import json
 from typing import Any
 
@@ -18,13 +18,15 @@ class MainMenu():
         self.theme = pm.Theme(widget_font=self.font, background_color=Color.BLACK.value)
         self.menu = pm.menu.Menu("Main Menu", self.screen_width, self.screen_height, theme=self.theme)
 
-    def init_menu(self):
+    def init_menu(self, no_resume: bool):
         """Init and display the main menu"""
         running: bool = True
 
         start_button = self.menu.add.button("Start game", self.init_game)
         instructions_button = self.menu.add.button("Instructions", self.init_tuto)
-        highscore_button = self.menu.add.button("Highscore", self.init_highscore)
+        highscore_button = self.menu.add.button("Highscores", self.init_highscore)
+        if not no_resume:
+            resume_button = self.menu.add.button("Resume game", self.resume_game)
         while running:
             mouse = pg.mouse.get_pos()
             self.screen.fill(Color.BLACK.value)
@@ -42,11 +44,31 @@ class MainMenu():
             self.menu.draw(self.screen)
             self.menu.center_content()
 
+            if not no_resume:
+                resume_button.set_margin(0, 100)
+                resume_button.set_padding(20)
+                resume_button.draw(self.screen)
+                if resume_button.is_selected():
+                    # need to change this part it make the game lag and sometimes crash
+                    # need to find better way to do this
+                    for event in pg.event.get():
+                        keys = pg.key.get_pressed()
+                        if keys[pg.K_RETURN]:
+                            running = False
+            start_button.set_margin(0, 100)
+            start_button.set_padding(20)
             start_button.draw(self.screen)
+
+            instructions_button.set_margin(0, 100)
+            instructions_button.set_padding(20)
             instructions_button.draw(self.screen)
+
+            highscore_button.set_margin(0, 100)
+            highscore_button.set_padding(20)
             highscore_button.draw(self.screen)
 
             pg.display.flip()
+            # problem with the resume button the menu buttons duplicate after the second time using it
 
     def init_game(self):
         """Display and init the game loop but do not handle the loop logic"""
@@ -69,9 +91,56 @@ class MainMenu():
                     sys.exit()
                 keys = pg.key.get_pressed()
                 if keys[pg.K_ESCAPE]:
-                    running = False            
+                    running = False
+            self.screen.blit(arrows, (200, 200))
+
+            command_text = Text("Movements: WASD or keypad arrows", Color.RED.value, 500, 150, Size.TEXT.value)
+            command_text.show_text(self.screen)
+            
             pg.display.flip()
+            # can do a little maze here to test the command
 
     def init_highscore(self):
         """Init the menu that display the highscore"""
-        pass
+        running: bool = True
+        config: Any = parsing()
+        count: int = 0
+        display_score: str = ""
+        list_highscore: str = []
+        try:
+            with open(config.highscore_filename, "r") as file:
+                data = json.load(file)
+                for keys, values in data.items():
+                    count += 1
+                    display_score += str(count) + ". " + values[1] + ": "
+                    display_score += str(values[0]) + " points"
+                    list_highscore.append(display_score)
+
+        except (FileNotFoundError, json.JSONDecodeError):
+            print("Invalid Highscore data. It Could not be retrieved")
+        while running:
+            mouse = pg.mouse.get_pos()
+            self.screen.fill(Color.BLACK.value)
+
+            command_text = Text("Highscores: ", Color.RED.value, 500, 150, Size.TITLE.value)
+            command_text.show_text(self.screen)
+
+            for event in pg.event.get():
+                if event.type == pg.QUIT:
+                    pg.quit()
+                    sys.exit()
+                keys = pg.key.get_pressed()
+                if keys[pg.K_ESCAPE]:
+                    running = False
+
+            pg.display.flip()
+        # see after working on the win and game over screen if the try except still work
+        # maybe need to change the format of the json after making the highscore works
+        # also see if the score is a different format when the game loop is working
+
+
+
+    def resume_game(self):
+        # maybe useful to change the crashing loop in the main menu loop
+        # else can be erased
+        return False

@@ -11,6 +11,7 @@ def main():
     screen_height = int(size[0][1])
     screen_width = int(size[0][0])
     screen = pg.display.set_mode((screen_width, screen_height))
+    no_resume: bool = True
     # pg.display.set_caption("Pacman")
     # icon = pg.image.load("assets/pacman.png")
     # title = pg.image.load("assets/title.jpg")
@@ -19,7 +20,7 @@ def main():
     # pg.display.set_icon(icon)
     font = pg.font.Font("assets/ByteBounce.ttf", 40)
     menu = MainMenu(screen, screen_height, screen_width)
-    menu.init_menu()
+    menu.init_menu(no_resume)
 
 
 if __name__ == "__main__":
