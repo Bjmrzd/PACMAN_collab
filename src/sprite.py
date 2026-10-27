@@ -37,6 +37,9 @@ class Lives(pg.sprite.Sprite):
 
     def update_sprite(self):
         no_lives = self.sprite.subsurface((470, 5, 25, 25))
+        
+#class for the lives to display them with sprites if we want
+# else can just do something basic
 
 # started to create the abstract class for the sprite.
 # need to see if the abstract class are necessary, the init and the super should stay like this

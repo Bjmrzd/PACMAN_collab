@@ -1,4 +1,5 @@
 import pygame as pg
+import pygvideo as pv
 from src.parsing import parsing
 from src.helper import Color, Box_Button, Font, Size, Text
 from src.score import Score, ranking_score, valid_highscore
@@ -57,15 +58,12 @@ class Game:
                     pg.quit()
                     sys.exit()
                 if event.type == pg.KEYDOWN:
-                    if count < 10:
+                    if count < 10 and not keys[pg.K_BACKSPACE]:
                         letter += event.unicode
                         count += 1
                     if keys[pg.K_BACKSPACE]:
-                        print(letter)
                         letter = letter[:-1]
-                        print(letter)
                         count -= 1
-                print(count)
             # the input work but i need to make the deletion of the word work too
             # it only delete 1 letter for now
             # may
@@ -86,7 +84,7 @@ class Game:
             try:
                 with open(self.config.highscore_filename, "r") as file:
                     data = json.load(file)
-                    ranked = ranking_score(self.score, data)
+                    ranked = ranking_score(self.score, data, json_list)
 
                 with open(self.config.highscore_filename, "w") as file:
                     json.dump(ranked, file, indent=4)
