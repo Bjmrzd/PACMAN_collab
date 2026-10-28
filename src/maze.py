@@ -35,7 +35,7 @@ WALL_BITS: dict[Direction, int] = {
     }
 
 
-class Maze:  # rajouter 1) des Maze Errors (faire une classe a part), 2) faire des méthodes intermédiaires pour assurer qu'il n'y ait pas de conflits et d'erreurs
+class Maze: #faire des méthodes intermédiaires pour assurer qu'il n'y ait pas de conflits et d'erreurs
     def __init__(self, walls: list[list[int]]) -> None:
         self.walls = walls
         self.height = len(walls)
@@ -99,7 +99,7 @@ class Maze:  # rajouter 1) des Maze Errors (faire une classe a part), 2) faire d
                 break
             cell = self.step(cell, direction)
         return cell
-        
+
     def pacgum_positions(self) -> set[Cell]:
         # toutes les cells sauf corners et spawn
         valid_cells = set(self.distance_map(self.spawn))
