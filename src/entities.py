@@ -87,3 +87,23 @@ class Ghost(Mover):
 		super().__init__()
 		self.state: State = "normal"
 		self.personnality: Personnality = name
+		if name == "blinky":
+			self.spawn = 0, 0
+		if name == "pinky":
+			self.spawn = 0, self.maze.width
+		if name == "inky":
+			self.spawn = self.maze.height, 0
+		if name == "clyde":
+			self.spawn = self.maze.height, self.maze.width	
+
+	def algo_de_deplacement():
+		return
+
+	def on_cell_reached(self):
+		return super().on_cell_reached()
+
+	def choose_direction(self):
+		return super().choose_direction()
+
+	def behaviour(self):
+		return
