@@ -34,7 +34,6 @@ class Game:
                 if keys[pg.K_2]:
                     self.game_over()
             pg.display.flip()
-            # need to create a user list for the buttons
 
     def game_over(self):
         """Game over screen"""
@@ -64,9 +63,6 @@ class Game:
                     if keys[pg.K_BACKSPACE]:
                         letter = letter[:-1]
                         count -= 1
-            # the input work but i need to make the deletion of the word work too
-            # it only delete 1 letter for now
-            # may
 
             input_name = Box_Button(self.screen_width / 2, self.screen_height / 2, 100, 100, letter, Size.TEXT.value)
             input_name.create_button(self.screen, mouse)
