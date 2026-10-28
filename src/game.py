@@ -14,7 +14,7 @@ class Game:
         self.screen = screen
         self.screen_width = screen_width
         self.screen_height = screen_height
-        self.score: int = 0
+        self.score: int = 500
         self.config = parsing()
 
     def main_loop(self):
@@ -58,8 +58,9 @@ class Game:
                     sys.exit()
                 if event.type == pg.KEYDOWN:
                     if count < 10 and not keys[pg.K_BACKSPACE]:
-                        letter += event.unicode
-                        count += 1
+                        if event.unicode.isalpha():
+                            letter += event.unicode
+                            count += 1
                     if keys[pg.K_BACKSPACE]:
                         letter = letter[:-1]
                         count -= 1
@@ -121,7 +122,7 @@ class Game:
             instructions_button = Box_Button(self.screen_width / 2, self.screen_height / 2 + 250, width_button, height_button, "Instructions", size_text)
             instructions_button.create_button(self.screen, mouse)
 
-            title_menu = Text("Pause Menu", Color.RED.value, self.screen_width / 2, self.screen_height / 2 - 500, Size.TITLE.value)
+            title_menu = Text("Pause Menu", Color.WHITE.value, self.screen_width / 2, self.screen_height / 2 - 500, Size.TITLE.value)
             title_menu.show_text(self.screen)
 
             for event in pg.event.get():
@@ -162,6 +163,9 @@ class Game:
 
             no_collision_button = Box_Button(self.screen_width / 2, self.screen_height / 2 - 300, width_button, height_button, "Ghost is Ghost !", size_text)
             no_collision_button.create_button(self.screen, mouse)
+
+            title_menu = Text("Cheat Menu", Color.WHITE.value, self.screen_width / 2, self.screen_height / 2 - 600, Size.TITLE.value)
+            title_menu.show_text(self.screen)
 
             for event in pg.event.get():
                 keys = pg.key.get_pressed()

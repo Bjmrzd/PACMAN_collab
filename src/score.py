@@ -54,4 +54,3 @@ def valid_highscore(name, score):
         print(error.errors()[0]["msg"])
         exit()
     return valid
-
