@@ -14,7 +14,7 @@ class Game:
         self.screen = screen
         self.screen_width = screen_width
         self.screen_height = screen_height
-        self.score: int = 500
+        self.score: int = 0
         self.config = parsing()
 
     def main_loop(self):
@@ -37,7 +37,73 @@ class Game:
 
     def game_over(self):
         """Game over screen"""
-        pass
+        from src.main_menu import MainMenu
+        running: bool = True
+        letter: str = ""
+        no_loop: bool = False
+        count: int = 0
+        score_dict: dict[str, int] = {}
+
+        while running:
+            mouse = pg.mouse.get_pos()
+            self.screen.fill(Color.BLACK.value)
+
+            for event in pg.event.get():
+                keys = pg.key.get_pressed()
+                if keys[pg.K_ESCAPE]:
+                    pg.quit()
+                    sys.exit()
+                if event.type == pg.KEYDOWN:
+                    if len(letter) < 10 and not keys[pg.K_BACKSPACE]:
+                        if event.unicode.isalpha():
+                            letter += event.unicode
+                    if keys[pg.K_BACKSPACE]:
+                        letter = letter[:-1]
+                    if keys[pg.K_SPACE] and count == 0:
+                        count += 1
+                        no_loop = True
+                if event.type == pg.MOUSEBUTTONDOWN:
+                    if menu_button.rect.collidepoint(mouse):
+                        menu = MainMenu(self.screen, self.screen_height, self.screen_width)
+                        menu.init_menu(True)
+
+
+            input_name = Box_Button(self.screen_width / 2, self.screen_height / 2, 100, 100, letter, Size.TEXT.value)
+            input_name.create_button(self.screen, mouse)
+
+            title_win = Text("LOSER !!!", Color.WHITE.value, self.screen_width / 2, self.screen_height / 2 - 400, Size.TITLE.value)
+            title_win.show_text(self.screen)
+
+            name_rules = Text("Enter your name: ", Color.RED.value, self.screen_width / 2, self.screen_height / 2 - 100, Size.TEXT.value)
+            name_rules.show_text(self.screen)
+
+            menu_button = Box_Button(self.screen_width / 2, self.screen_height / 2 + 200, 100, 100, "Go to Menu", Size.TEXT.value)
+            menu_button.create_button(self.screen, mouse)
+
+            confirm_text = Text("Press Space to confirm", Color.WHITE.value, self.screen_width / 2, self.screen_height / 2 + 300, Size.TEXT.value)
+            confirm_text.show_text(self.screen)
+
+            if no_loop:
+                name = letter
+
+                highscore = valid_highscore(name, self.score)
+                json_list = [highscore.player_score, highscore.player_name]
+                try:
+                    with open(self.config.highscore_filename, "r") as file:
+                        data = json.load(file)
+                        ranked = ranking_score(self.score, data, json_list)
+
+                    with open(self.config.highscore_filename, "w") as file:
+                        json.dump(ranked, file, indent=4)
+
+                except (FileExistsError, FileNotFoundError, json.JSONDecodeError):
+                    with open(self.config.highscore_filename, "w") as file:
+                        score_dict.update({"0": json_list})
+                        json.dump(score_dict, file, indent=4)
+                finally:
+                    no_loop = False
+
+            pg.display.flip()
 
     def win(self):
         """Win screen"""
@@ -89,7 +155,7 @@ class Game:
 
             if no_loop:
                 name = letter
-                # need to check if the name change after the letter deletion, else we can use letter directly
+
                 highscore = valid_highscore(name, self.score)
                 json_list = [highscore.player_score, highscore.player_name]
                 try:
@@ -108,7 +174,6 @@ class Game:
                     no_loop = False
 
             pg.display.flip()
-            # add a count or a bool to make the highscore 1 time because it can crash
 
     def pause_menu(self):
         """Pause Menu"""
