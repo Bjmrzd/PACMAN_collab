@@ -37,14 +37,11 @@ class Game:
 
     def game_over(self):
         """Game over screen"""
-        pass
-
-    def win(self):
-        """Win screen"""
+        from src.main_menu import MainMenu
         running: bool = True
-        count: int = 0
         letter: str = ""
-        index: int = 0
+        no_loop: bool = False
+        count: int = 0
         score_dict: dict[str, int] = {}
 
         while running:
@@ -57,12 +54,89 @@ class Game:
                     pg.quit()
                     sys.exit()
                 if event.type == pg.KEYDOWN:
-                    if count < 10 and not keys[pg.K_BACKSPACE]:
-                        letter += event.unicode
-                        count += 1
+                    if len(letter) < 10 and not keys[pg.K_BACKSPACE]:
+                        if event.unicode.isalpha():
+                            letter += event.unicode
                     if keys[pg.K_BACKSPACE]:
                         letter = letter[:-1]
-                        count -= 1
+                    if keys[pg.K_SPACE] and count == 0:
+                        count += 1
+                        no_loop = True
+                if event.type == pg.MOUSEBUTTONDOWN:
+                    if menu_button.rect.collidepoint(mouse):
+                        menu = MainMenu(self.screen, self.screen_height, self.screen_width)
+                        menu.init_menu(True)
+
+
+            input_name = Box_Button(self.screen_width / 2, self.screen_height / 2, 100, 100, letter, Size.TEXT.value)
+            input_name.create_button(self.screen, mouse)
+
+            title_win = Text("LOSER !!!", Color.WHITE.value, self.screen_width / 2, self.screen_height / 2 - 400, Size.TITLE.value)
+            title_win.show_text(self.screen)
+
+            name_rules = Text("Enter your name: ", Color.RED.value, self.screen_width / 2, self.screen_height / 2 - 100, Size.TEXT.value)
+            name_rules.show_text(self.screen)
+
+            menu_button = Box_Button(self.screen_width / 2, self.screen_height / 2 + 200, 100, 100, "Go to Menu", Size.TEXT.value)
+            menu_button.create_button(self.screen, mouse)
+
+            confirm_text = Text("Press Space to confirm", Color.WHITE.value, self.screen_width / 2, self.screen_height / 2 + 300, Size.TEXT.value)
+            confirm_text.show_text(self.screen)
+
+            if no_loop:
+                name = letter
+
+                highscore = valid_highscore(name, self.score)
+                json_list = [highscore.player_score, highscore.player_name]
+                try:
+                    with open(self.config.highscore_filename, "r") as file:
+                        data = json.load(file)
+                        ranked = ranking_score(self.score, data, json_list)
+
+                    with open(self.config.highscore_filename, "w") as file:
+                        json.dump(ranked, file, indent=4)
+
+                except (FileExistsError, FileNotFoundError, json.JSONDecodeError):
+                    with open(self.config.highscore_filename, "w") as file:
+                        score_dict.update({"0": json_list})
+                        json.dump(score_dict, file, indent=4)
+                finally:
+                    no_loop = False
+
+            pg.display.flip()
+
+    def win(self):
+        """Win screen"""
+        from src.main_menu import MainMenu
+        running: bool = True
+        letter: str = ""
+        no_loop: bool = False
+        count: int = 0
+        score_dict: dict[str, int] = {}
+
+        while running:
+            mouse = pg.mouse.get_pos()
+            self.screen.fill(Color.BLACK.value)
+
+            for event in pg.event.get():
+                keys = pg.key.get_pressed()
+                if keys[pg.K_ESCAPE]:
+                    pg.quit()
+                    sys.exit()
+                if event.type == pg.KEYDOWN:
+                    if len(letter) < 10 and not keys[pg.K_BACKSPACE]:
+                        if event.unicode.isalpha():
+                            letter += event.unicode
+                    if keys[pg.K_BACKSPACE]:
+                        letter = letter[:-1]
+                    if keys[pg.K_SPACE] and count == 0:
+                        count += 1
+                        no_loop = True
+                if event.type == pg.MOUSEBUTTONDOWN:
+                    if menu_button.rect.collidepoint(mouse):
+                        menu = MainMenu(self.screen, self.screen_height, self.screen_width)
+                        menu.init_menu(True)
+
 
             input_name = Box_Button(self.screen_width / 2, self.screen_height / 2, 100, 100, letter, Size.TEXT.value)
             input_name.create_button(self.screen, mouse)
@@ -73,25 +147,33 @@ class Game:
             name_rules = Text("Enter your name: ", Color.RED.value, self.screen_width / 2, self.screen_height / 2 - 100, Size.TEXT.value)
             name_rules.show_text(self.screen)
 
-            name = letter
-            # need to check if the name change after the letter deletion, else we can use letter directly
-            highscore = valid_highscore(name, self.score)
-            json_list = [highscore.player_score, highscore.player_name]
-            try:
-                with open(self.config.highscore_filename, "r") as file:
-                    data = json.load(file)
-                    ranked = ranking_score(self.score, data, json_list)
+            menu_button = Box_Button(self.screen_width / 2, self.screen_height / 2 + 200, 100, 100, "Go to Menu", Size.TEXT.value)
+            menu_button.create_button(self.screen, mouse)
 
-                with open(self.config.highscore_filename, "w") as file:
-                    json.dump(ranked, file, indent=4)
+            confirm_text = Text("Press Space to confirm", Color.WHITE.value, self.screen_width / 2, self.screen_height / 2 + 300, Size.TEXT.value)
+            confirm_text.show_text(self.screen)
 
-            except (FileExistsError, FileNotFoundError, json.JSONDecodeError):
-                with open(self.config.highscore_filename, "w") as file:
-                    score_dict.update({"0": json_list})
-                    json.dump(score_dict, file, indent=4)
+            if no_loop:
+                name = letter
+
+                highscore = valid_highscore(name, self.score)
+                json_list = [highscore.player_score, highscore.player_name]
+                try:
+                    with open(self.config.highscore_filename, "r") as file:
+                        data = json.load(file)
+                        ranked = ranking_score(self.score, data, json_list)
+
+                    with open(self.config.highscore_filename, "w") as file:
+                        json.dump(ranked, file, indent=4)
+
+                except (FileExistsError, FileNotFoundError, json.JSONDecodeError):
+                    with open(self.config.highscore_filename, "w") as file:
+                        score_dict.update({"0": json_list})
+                        json.dump(score_dict, file, indent=4)
+                finally:
+                    no_loop = False
 
             pg.display.flip()
-            # add a count or a bool to make the highscore 1 time because it can crash
 
     def pause_menu(self):
         """Pause Menu"""
@@ -121,7 +203,7 @@ class Game:
             instructions_button = Box_Button(self.screen_width / 2, self.screen_height / 2 + 250, width_button, height_button, "Instructions", size_text)
             instructions_button.create_button(self.screen, mouse)
 
-            title_menu = Text("Pause Menu", Color.RED.value, self.screen_width / 2, self.screen_height / 2 - 500, Size.TITLE.value)
+            title_menu = Text("Pause Menu", Color.WHITE.value, self.screen_width / 2, self.screen_height / 2 - 500, Size.TITLE.value)
             title_menu.show_text(self.screen)
 
             for event in pg.event.get():
@@ -162,6 +244,9 @@ class Game:
 
             no_collision_button = Box_Button(self.screen_width / 2, self.screen_height / 2 - 300, width_button, height_button, "Ghost is Ghost !", size_text)
             no_collision_button.create_button(self.screen, mouse)
+
+            title_menu = Text("Cheat Menu", Color.WHITE.value, self.screen_width / 2, self.screen_height / 2 - 600, Size.TITLE.value)
+            title_menu.show_text(self.screen)
 
             for event in pg.event.get():
                 keys = pg.key.get_pressed()
