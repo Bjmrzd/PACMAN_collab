@@ -31,7 +31,6 @@ def ranking_score(score: int, data, new_score_dict):
         lower_score.append(values)
     lower_score.append(new_score_dict)
     lower_score.sort(reverse=True)
-    print(lower_score)
     for args in lower_score:
         if count < 10:
             classed_score.update({str(count): [args[0], args[1]]})

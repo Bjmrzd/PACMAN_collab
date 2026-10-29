@@ -34,16 +34,18 @@ class Game:
                 if keys[pg.K_ESCAPE]:
                     self.pause_menu()
                 if keys[pg.K_c]:
-                    self.cheat_screen()
+                    list_cheat = self.cheat_screen()
+                    print(list_cheat)
                 if keys[pg.K_1]:
                     self.win()
                 if keys[pg.K_2]:
                     self.game_over()
 
-            display_lives = Text(str(self.lives), Color.RED.value, 500, 500, Size.TEXT.value)
+            display_lives = Text("Lives: " + str(self.lives), Color.RED.value, 500, 500, Size.TEXT.value)
             display_lives.show_text(self.screen)
 
             pg.display.flip()
+
         # need to do timer, levels, lives
         # display if cheat on or not
         # render maze, pacgum, pacman and ghost
@@ -60,6 +62,9 @@ class Game:
         while running:
             mouse = pg.mouse.get_pos()
             self.screen.fill(Color.BLACK.value)
+
+            menu_button = Box_Button(self.screen_width / 2, self.screen_height / 2 + 200, 100, 100, "Go to Menu", Size.TEXT.value)
+            menu_button.create_button(self.screen, mouse)
 
             for event in pg.event.get():
                 keys = pg.key.get_pressed()
@@ -88,9 +93,6 @@ class Game:
 
             name_rules = Text("Enter your name: ", Color.RED.value, self.screen_width / 2, self.screen_height / 2 - 100, Size.TEXT.value)
             name_rules.show_text(self.screen)
-
-            menu_button = Box_Button(self.screen_width / 2, self.screen_height / 2 + 200, 100, 100, "Go to Menu", Size.TEXT.value)
-            menu_button.create_button(self.screen, mouse)
 
             confirm_text = Text("Press Space to confirm", Color.WHITE.value, self.screen_width / 2, self.screen_height / 2 + 300, Size.TEXT.value)
             confirm_text.show_text(self.screen)
@@ -243,6 +245,10 @@ class Game:
         width_button: int = 100
         height_button: int = 100
         size_text: int = Size.TEXT.value
+        list_cheat: list[bool] = []
+        speed: bool = False
+        invincible: bool = False
+        no_collision: bool = False
 
         while running:
             self.screen.fill(Color.BLACK.value)
@@ -264,8 +270,20 @@ class Game:
                 keys = pg.key.get_pressed()
                 if keys[pg.K_ESCAPE]:
                     running = False
+                if event.type == pg.MOUSEBUTTONDOWN:
+                    if speed_button.rect.collidepoint(mouse):
+                        speed = True
+                        list_cheat.append(speed)
+                    if invincible_button.rect.collidepoint(mouse):
+                        invincible = True
+                        list_cheat.append(invincible)
+                    if no_collision_button.rect.collidepoint(mouse):
+                        no_collision = True
+                        list_cheat.append(no_collision)
 
             pg.display.flip()
+
+        return list_cheat
 
 # Need to see if the win and game over function can't be done outside of the class, same for pause menu
 # see if there is a need to create cursor for the button of the menu or not (with pygame.cursor probably)

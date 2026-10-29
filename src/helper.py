@@ -2,6 +2,7 @@ from enum import Enum
 import pygame as pg
 from typing import Any
 
+
 class Size(Enum):
     """Class to set a standard for diffenrent size of text"""
     TEXT = 50
@@ -23,14 +24,14 @@ class Color(Enum):
 
 class Box_Button():
     """Class to create button that resize based on the text inside"""
-    def __init__(self, x, y, width, height, text, size_text):
+    def __init__(self, x: int, y: int, width: int, height: int, text: str, size_text: int):
         super().__init__()
-        self.x = x
-        self.y = y
-        self.width = width
-        self.height = height
-        self.text = text
-        self.size_text = size_text
+        self.x: int = x
+        self.y: int = y
+        self.width: int = width
+        self.height: int = height
+        self.text: str = text
+        self.size_text: int = size_text
         self.font = pg.font.Font(Font.FONT1.value, size_text)
         self.rect = pg.Rect(x, y, width + (size_text / 2 * len(self.text)), height)
 
@@ -55,12 +56,12 @@ class Box_Button():
 
 class Text():
     """A text class to modify the text, it's size and the background color"""
-    def __init__(self, text, color, x, y, size_text):
+    def __init__(self, text: str, color, x: int, y: int, size_text: int):
         super().__init__()
-        self.text = text
+        self.text: str = text
         self.color = color
-        self.x = x
-        self.y = y
+        self.x: int = x
+        self.y: int = y
         self.rect = pg.Rect(x, y, 100, 100)
         self.font = pg.font.Font(Font.FONT1.value, size_text)
 
@@ -71,4 +72,3 @@ class Text():
         text_render = self.font.render(self.text, False, self.color)
         rect = text_render.get_rect(center=(self.rect.centerx, self.rect.centery))
         screen.blit(text_render, rect)
-

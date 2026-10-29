@@ -17,18 +17,20 @@ class MainMenu():
         self.font = pm.font.FONT_8BIT
         self.theme = pm.Theme(widget_font=self.font, background_color=Color.BLACK.value)
         self.menu = pm.menu.Menu("Main Menu", self.screen_width, self.screen_height, theme=self.theme)
-
+        self.running: bool = True
     def init_menu(self, no_resume: bool):
         """Init and display the main menu"""
         running: bool = True
-        title_image = pg.image.load("assets/title.jpg")
 
+        title_image = self.menu.add.image("assets/title.jpg")
         start_button = self.menu.add.button("Start game", self.init_game)
         instructions_button = self.menu.add.button("Instructions", self.init_tuto)
         highscore_button = self.menu.add.button("Highscores", self.init_highscore)
+
         if not no_resume:
             resume_button = self.menu.add.button("Resume game", self.resume_game)
-        while running:
+
+        while self.running:
             mouse = pg.mouse.get_pos()
             self.screen.fill(Color.BLACK.value)
             events = pg.event.get()
@@ -46,31 +48,38 @@ class MainMenu():
             self.menu.center_content()
 
             if not no_resume:
-                resume_button.set_margin(0, 100)
-                resume_button.set_padding(20)
-                resume_button.draw(self.screen)
-                if resume_button.is_selected():
-                    # need to change this part it make the game lag and sometimes crash
-                    # need to find better way to do this
-                    for event in pg.event.get():
-                        keys = pg.key.get_pressed()
-                        if keys[pg.K_RETURN]:
-                            running = False
-            start_button.set_margin(0, 100)
-            start_button.set_padding(20)
-            start_button.draw(self.screen)
+                resume_button.set_margin(0, 50)
+                resume_button.set_padding(15)
+                resume_button.translate(0, 150)
+                    # resume_button.draw(self.screen)
+                # if resume_button.is_selected():
+                #     # need to change this part it make the game lag and sometimes crash
+                #     # need to find better way to do this
+                #     for event in pg.event.get():
+                #         keys = pg.key.get_pressed()
+                #         if keys[pg.K_RETURN]:
+                #             running = False
 
-            instructions_button.set_margin(0, 100)
-            instructions_button.set_padding(20)
-            instructions_button.draw(self.screen)
+            start_button.set_margin(0, 50)
+            start_button.set_padding(15)
+            # start_button.draw(self.screen)
+            start_button.translate(0, 0)
 
-            highscore_button.set_margin(0, 100)
-            highscore_button.set_padding(20)
-            highscore_button.draw(self.screen)
-            
-            title_image.draw(self.screen)
+            instructions_button.set_margin(0, 50)
+            instructions_button.set_padding(15)
+            # instructions_button.draw(self.screen)
+            instructions_button.translate(0, 50)
+
+            highscore_button.set_margin(0, 50)
+            highscore_button.set_padding(15)
+            # highscore_button.draw(self.screen)
+            highscore_button.translate(0, 100)
+
+            title_image.translate(0, -300)
+            # title_image.draw(self.screen)
 
             pg.display.flip()
+        self.running = True
             # problem with the resume button the menu buttons duplicate after the second time using it
 
     def init_game(self):
@@ -164,6 +173,4 @@ class MainMenu():
         # also see if the score is a different format when the game loop is working
 
     def resume_game(self):
-        # maybe useful to change the crashing loop in the main menu loop
-        # else can be erased
-        return False
+        self.running = False
