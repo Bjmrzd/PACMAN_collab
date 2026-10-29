@@ -57,12 +57,14 @@ def parsing() -> Config:
         with open(file, "r") as config:
             data = json.load(config)
     except (FileNotFoundError, json.JSONDecodeError):
+        logging.error(f"The file {file} was not found or failed to decode data from JSON file")
         print(f"The file {file} was not found or failed to decode data from JSON file")
         exit()
     try:
         if not all(keys in data for keys in necessary_keys):
             raise KeyError
     except KeyError:
+        logging.error("Missing or invalid config values")
         print("Missing or invalid config values")
         exit()
 

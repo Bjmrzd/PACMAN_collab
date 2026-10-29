@@ -21,6 +21,7 @@ class MainMenu():
     def init_menu(self, no_resume: bool):
         """Init and display the main menu"""
         running: bool = True
+        title_image = pg.image.load("assets/title.jpg")
 
         start_button = self.menu.add.button("Start game", self.init_game)
         instructions_button = self.menu.add.button("Instructions", self.init_tuto)
@@ -66,6 +67,8 @@ class MainMenu():
             highscore_button.set_margin(0, 100)
             highscore_button.set_padding(20)
             highscore_button.draw(self.screen)
+            
+            title_image.draw(self.screen)
 
             pg.display.flip()
             # problem with the resume button the menu buttons duplicate after the second time using it

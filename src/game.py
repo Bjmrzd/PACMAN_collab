@@ -6,6 +6,7 @@ from src.score import Score, ranking_score, valid_highscore
 import json
 from typing import Any
 import sys
+import logging
 
 
 class Game:
@@ -16,6 +17,11 @@ class Game:
         self.screen_height = screen_height
         self.score: int = 0
         self.config = parsing()
+        self.lives: int = self.config.lives
+        self.max_time: int = self.config.lvl_max_time
+        logging.basicConfig(filename="error.logs", filemode="a",
+                            format="%(asctime)s - %(message)s",
+                            datefmt='%m/%d/%Y %I:%M:%S %p')
 
     def main_loop(self):
         """Main game loop"""
@@ -33,7 +39,14 @@ class Game:
                     self.win()
                 if keys[pg.K_2]:
                     self.game_over()
+
+            display_lives = Text(str(self.lives), Color.RED.value, 500, 500, Size.TEXT.value)
+            display_lives.show_text(self.screen)
+
             pg.display.flip()
+        # need to do timer, levels, lives
+        # display if cheat on or not
+        # render maze, pacgum, pacman and ghost
 
     def game_over(self):
         """Game over screen"""
@@ -66,7 +79,6 @@ class Game:
                     if menu_button.rect.collidepoint(mouse):
                         menu = MainMenu(self.screen, self.screen_height, self.screen_width)
                         menu.init_menu(True)
-
 
             input_name = Box_Button(self.screen_width / 2, self.screen_height / 2, 100, 100, letter, Size.TEXT.value)
             input_name.create_button(self.screen, mouse)
