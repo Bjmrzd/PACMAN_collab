@@ -28,13 +28,14 @@ def ranking_score(score: int, data, new_score_dict):
         print("Invalid highscore data. It could not be retrieved")
         return data
     for keys, values in data.items():
-        lower_score.append(new_score_dict)
-        lower_score.sort(reverse=True)
-        for args in lower_score:
-            if count < 10:
-                classed_score.update({str(count): (args[0], args[1])})
-            count += 1
-        return classed_score
+        lower_score.append(values)
+    lower_score.append(new_score_dict)
+    lower_score.sort(reverse=True)
+    for args in lower_score:
+        if count < 10:
+            classed_score.update({str(count): [args[0], args[1]]})
+        count += 1
+    return classed_score
 
 
 class Highscore(BaseModel):

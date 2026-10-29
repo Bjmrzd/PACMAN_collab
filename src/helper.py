@@ -1,6 +1,6 @@
 from enum import Enum
 import pygame as pg
-
+from typing import Any
 
 class Size(Enum):
     """Class to set a standard for diffenrent size of text"""
@@ -71,3 +71,4 @@ class Text():
         text_render = self.font.render(self.text, False, self.color)
         rect = text_render.get_rect(center=(self.rect.centerx, self.rect.centery))
         screen.blit(text_render, rect)
+

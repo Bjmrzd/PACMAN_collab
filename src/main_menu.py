@@ -112,8 +112,11 @@ class MainMenu():
         running: bool = True
         config: Any = parsing()
         count: int = 0
+        start_y: int = 250
         display_score: str = ""
         list_highscore: str = []
+        list_text_highscore: str = []
+        isdone: bool = False
         try:
             with open(config.highscore_filename, "r") as file:
                 data = json.load(file)
@@ -121,7 +124,9 @@ class MainMenu():
                     count += 1
                     display_score += str(count) + ". " + values[1] + ": "
                     display_score += str(values[0]) + " points"
+                    print(display_score)
                     list_highscore.append(display_score)
+                    display_score = ""
 
         except (FileNotFoundError, json.JSONDecodeError):
             print("Invalid Highscore data. It Could not be retrieved")
@@ -131,9 +136,16 @@ class MainMenu():
 
             command_text = Text("Highscores: ", Color.RED.value, 500, 150, Size.TITLE.value)
             command_text.show_text(self.screen)
+            if not isdone:
+                for index in range(len(list_highscore)):
+                    show_score = Text(list_highscore[index], Color.RED.value, 500, start_y, Size.TEXT.value)
+                    start_y += 100
+                    list_text_highscore.append(show_score)
+                    # print(list_highscore[index])
+                isdone = True
 
-            show_score = Text(display_score, Color.RED.value, 500, 250, Size.TEXT.value)
-            show_score.show_text(self.screen)
+            for args in list_text_highscore:
+                args.show_text(self.screen)
 
             for event in pg.event.get():
                 if event.type == pg.QUIT:
