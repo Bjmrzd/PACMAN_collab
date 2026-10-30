@@ -18,6 +18,7 @@ class MainMenu():
         self.theme = pm.Theme(widget_font=self.font, background_color=Color.BLACK.value)
         self.menu = pm.menu.Menu("Main Menu", self.screen_width, self.screen_height, theme=self.theme)
         self.running: bool = True
+
     def init_menu(self, no_resume: bool):
         """Init and display the main menu"""
         running: bool = True

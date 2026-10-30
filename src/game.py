@@ -58,6 +58,8 @@ class Game:
         no_loop: bool = False
         count: int = 0
         score_dict: dict[str, int] = {}
+        lock = pg.image.load("assets/lock_test.jpg")
+        islocked: bool = False
 
         while running:
             mouse = pg.mouse.get_pos()
@@ -80,6 +82,7 @@ class Game:
                     if keys[pg.K_SPACE] and count == 0:
                         count += 1
                         no_loop = True
+                        islocked = True
                 if event.type == pg.MOUSEBUTTONDOWN:
                     if menu_button.rect.collidepoint(mouse):
                         menu = MainMenu(self.screen, self.screen_height, self.screen_width)
@@ -117,6 +120,10 @@ class Game:
                 finally:
                     no_loop = False
 
+            if islocked:
+                self.screen.blit(lock, (self.screen_width / 2 - 50, self.screen_height / 2 + 320))
+
+
             pg.display.flip()
 
     def win(self):
@@ -127,6 +134,8 @@ class Game:
         no_loop: bool = False
         count: int = 0
         score_dict: dict[str, int] = {}
+        lock = pg.image.load("assets/lock_test.jpg")
+        islocked: bool = False
 
         while running:
             mouse = pg.mouse.get_pos()
@@ -146,6 +155,7 @@ class Game:
                     if keys[pg.K_SPACE] and count == 0:
                         count += 1
                         no_loop = True
+                        islocked = True
                 if event.type == pg.MOUSEBUTTONDOWN:
                     if menu_button.rect.collidepoint(mouse):
                         menu = MainMenu(self.screen, self.screen_height, self.screen_width)
@@ -186,6 +196,8 @@ class Game:
                         json.dump(score_dict, file, indent=4)
                 finally:
                     no_loop = False
+            if islocked:
+                self.screen.blit(lock, (self.screen_width / 2 - 50, self.screen_height / 2 + 320))
 
             pg.display.flip()
 
