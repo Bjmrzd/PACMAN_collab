@@ -182,4 +182,5 @@ class MainMenu():
         # also see if the score is a different format when the game loop is working
 
     def resume_game(self):
+        pv.quit_all()
         self.running = False
