@@ -130,6 +130,10 @@ class MainMenu():
         list_highscore: str = []
         list_text_highscore: str = []
         isdone: bool = False
+
+        video = pv.Video("assets/applaud.mp4")
+        video.set_size((400, 400))
+        video.preplay(-1)
         try:
             with open(config.highscore_filename, "r") as file:
                 data = json.load(file)
@@ -157,15 +161,19 @@ class MainMenu():
                     # print(list_highscore[index])
                 isdone = True
 
+            video.draw_and_update(self.screen, (self.screen_width / 2 + 400, self.screen_height / 2))
+
             for args in list_text_highscore:
                 args.show_text(self.screen)
 
             for event in pg.event.get():
+                video.handle_event(event)
                 if event.type == pg.QUIT:
                     pg.quit()
                     sys.exit()
                 keys = pg.key.get_pressed()
                 if keys[pg.K_ESCAPE]:
+                    pv.quit_all()
                     running = False
 
             pg.display.flip()

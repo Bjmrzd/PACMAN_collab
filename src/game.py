@@ -60,6 +60,7 @@ class Game:
         score_dict: dict[str, int] = {}
         lock = pg.image.load("assets/lock_test.jpg")
         islocked: bool = False
+
         video = pv.Video("assets/cat_laugh.mp4")
         video.set_size((400, 400))
         video.preplay(-1)
@@ -90,8 +91,9 @@ class Game:
                 if event.type == pg.MOUSEBUTTONDOWN:
                     if menu_button.rect.collidepoint(mouse):
                         menu = MainMenu(self.screen, self.screen_height, self.screen_width)
+                        pv.quit_all()
                         menu.init_menu(True)
-                        
+
             video.draw_and_update(self.screen, (self.screen_width / 2 + 400, self.screen_height / 2))
 
 
@@ -129,7 +131,6 @@ class Game:
 
             if islocked:
                 self.screen.blit(lock, (self.screen_width / 2 - 50, self.screen_height / 2 + 320))
-
 
             pg.display.flip()
 
@@ -170,6 +171,7 @@ class Game:
                 if event.type == pg.MOUSEBUTTONDOWN:
                     if menu_button.rect.collidepoint(mouse):
                         menu = MainMenu(self.screen, self.screen_height, self.screen_width)
+                        pv.quit_all()
                         menu.init_menu(True)
             video.draw_and_update(self.screen, (self.screen_width / 2 + 400, self.screen_height / 2))
 
@@ -222,6 +224,10 @@ class Game:
         size_text: int = Size.TEXT.value
         menu = MainMenu(self.screen, self.screen_height, self.screen_width)
 
+        video = pv.Video("assets/wizard.mp4")
+        video.set_size((400, 400))
+        video.preplay(-1)
+
         while running:
             self.screen.fill(Color.BLACK.value)
             mouse = pg.mouse.get_pos()
@@ -243,7 +249,10 @@ class Game:
             title_menu = Text("Pause Menu", Color.WHITE.value, self.screen_width / 2, self.screen_height / 2 - 500, Size.TITLE.value)
             title_menu.show_text(self.screen)
 
+            video.draw_and_update(self.screen, (self.screen_width / 2 + 400, self.screen_height / 2))
+
             for event in pg.event.get():
+                video.handle_event(event)
                 keys = pg.key.get_pressed()
                 if keys[pg.K_ESCAPE]:
                     pg.quit()
@@ -253,11 +262,14 @@ class Game:
                         pg.quit()
                         sys.exit()
                     if resume_button.rect.collidepoint(mouse):
+                        pv.quit_all()
                         running = False
                     if menu_button.rect.collidepoint(mouse):
                         no_resume = False
+                        pv.quit_all()
                         menu.init_menu(no_resume)
                     if instructions_button.rect.collidepoint(mouse):
+                        pv.quit_all()
                         menu.init_tuto()
 
             pg.display.flip()
@@ -272,6 +284,10 @@ class Game:
         speed: bool = False
         invincible: bool = False
         no_collision: bool = False
+
+        video = pv.Video("assets/no_brain.mp4")
+        video.set_size((400, 400))
+        video.preplay(-1)
 
         while running:
             self.screen.fill(Color.BLACK.value)
@@ -289,9 +305,13 @@ class Game:
             title_menu = Text("Cheat Menu", Color.WHITE.value, self.screen_width / 2, self.screen_height / 2 - 600, Size.TITLE.value)
             title_menu.show_text(self.screen)
 
+            video.draw_and_update(self.screen, (self.screen_width / 2 + 400, self.screen_height / 2))
+
             for event in pg.event.get():
+                video.handle_event(event)
                 keys = pg.key.get_pressed()
                 if keys[pg.K_ESCAPE]:
+                    pv.quit_all()
                     running = False
                 if event.type == pg.MOUSEBUTTONDOWN:
                     if speed_button.rect.collidepoint(mouse):
