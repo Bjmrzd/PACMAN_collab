@@ -60,6 +60,9 @@ class Game:
         score_dict: dict[str, int] = {}
         lock = pg.image.load("assets/lock_test.jpg")
         islocked: bool = False
+        video = pv.Video("assets/cat_laugh.mp4")
+        video.set_size((400, 400))
+        video.preplay(-1)
 
         while running:
             mouse = pg.mouse.get_pos()
@@ -74,6 +77,7 @@ class Game:
                     pg.quit()
                     sys.exit()
                 if event.type == pg.KEYDOWN:
+                    video.handle_event(event)
                     if len(letter) < 10 and not keys[pg.K_BACKSPACE]:
                         if event.unicode.isalpha():
                             letter += event.unicode
@@ -87,6 +91,9 @@ class Game:
                     if menu_button.rect.collidepoint(mouse):
                         menu = MainMenu(self.screen, self.screen_height, self.screen_width)
                         menu.init_menu(True)
+                        
+            video.draw_and_update(self.screen, (self.screen_width / 2 + 400, self.screen_height / 2))
+
 
             input_name = Box_Button(self.screen_width / 2, self.screen_height / 2, 100, 100, letter, Size.TEXT.value)
             input_name.create_button(self.screen, mouse)
