@@ -13,13 +13,14 @@ class GhostCaracteristiques(Enum):
 	EDIBLE_SPEED = 2.5,
 	CLYDE_DISTANCE = 8,
 	PINKY_LOOKAHEAD = 4,
+	INKY_SIGHT = 4,
 	RESPAWN_DELAY = 5.0
 
 class Personnality(Enum):
 	BLINKY = "blinky",  #Aims the player's cell
 	PINKY = "pinky",	#Aims a few cells ahead of the player
-	INKY = "inky",	  #Chases the player if close, wanders randomly otherwise (need to verify)
-	CLYDE = "clyde"	 #Chases when far, goes home when close
+	INKY = "inky",	  	#Chaotic movements
+	CLYDE = "clyde"	 	#Chases when far, goes home when close
 
 
 class Mover:
@@ -60,8 +61,6 @@ class Mover:
 		return
 
 	def on_cell_reached(self) -> None:
-		#PAC-MAN: si cell = pacgum ou super pacgum alors point en plus / mode chasse
-		#Ghosts: si cell = pacman alors vie en moins
 		return
 
 	def start_move(self) -> bool:
@@ -119,6 +118,7 @@ class Ghost(Mover):
 			self.advance(dt)
 
 	def goal(self) -> Cell | None:
+		distance = self.maze.distance_map(self.player_cell).get(self.cell)
 		if self.personnality is Personnality.BLINKY:
 			return self.player_cell
 		if self.personnality is Personnality.PINKY:
@@ -126,22 +126,56 @@ class Ghost(Mover):
 				return self.player_cell
 			return self.maze.steps_forward(self.player_cell, self.player_dir, GhostCaracteristiques.PINKY_LOOKAHEAD)
 		if self.personnality is Personnality.INKY:
-			if self.rng.random() < 0.5:
-				return None
-			else:
+			if distance <= GhostCaracteristiques.INKY_SIGHT:
 				return self.player_cell
+			return None
 		if self.personnality is Personnality.CLYDE:
-			distance = self.maze.distance_map(self.player_cell).get(self.cell)
 			if distance > GhostCaracteristiques.CLYDE_DISTANCE:
 				return self.player_cell
 			else:
 				return self.home
-	
-	def choose_direction(self) -> Direction | None:
-		return
 
-	def path_algorithm() -> Direction:
-		return
+	def choose_direction(self) -> Direction | None:
+		choices = self.maze.valid_directions
+		if not choices:
+			return None
+		if self.direction is not None and len(choices) > 1:
+			back = self.direction.opposite
+			temp = []
+			for i in choices:
+				if i is not back:
+					temp.append(i)
+			choices = temp
+		if self.state is State.EDIBLE:
+			return self.best_choice(choices, self.player_cell, retreat=True)
+		target = self.goal()
+		return self.best_choice(choices, target, retreat=False)
+
+	def best_choice(self, choices: list[Direction], goal: Cell, retreat: bool) -> Direction:
+		distance = self.maze.distance_map(goal)
+
+		best_score: int | None = None
+		best_directions: list[Direction] = []
+
+		for direction in choices:
+			neighbour = self.maze.step(self.cell, direction)
+			if neighbour in distance:
+				score = distance[neighbour]
+
+			if best_score is None:
+				is_better = True
+			elif retreat:
+				is_better = score > best_score
+			else:
+				is_better = score < best_score
+
+			if is_better:
+				best_score = score
+				best_directions = [direction]
+			elif score == best_score:
+				best_directions.append(direction)
+
+		return self.rng.choice(best_directions)
 
 	def is_edible(self, duration: float) -> None:
 		if self.state is State.EATEN:
@@ -150,7 +184,6 @@ class Ghost(Mover):
 		self.timer = duration
 		self.speed = GhostCaracteristiques.EDIBLE_SPEED
 		self.reverse()
-
 
 	def eaten(self) -> None:
 		super().reset()
