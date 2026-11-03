@@ -8,7 +8,7 @@ class State(Enum):
 	EDIBLE = "edible",
 	EATEN = "eaten"
 
-class GhostCaracteristiques(Enum):
+class GhostFeatures(Enum):
 	NORMAL_SPEED = 5.0,
 	EDIBLE_SPEED = 2.5,
 	CLYDE_DISTANCE = 8,
@@ -57,7 +57,6 @@ class Mover:
 
 	def choose_direction(self) -> None:
 		#pac-man: en fonction des touches
-		#Ghost: en fonction de la personnalite du ghost et de l'algo de deplacement
 		return
 
 	def on_cell_reached(self) -> None:
@@ -97,9 +96,9 @@ class Ghost(Mover):
 		self.state: State = "normal"
 		self.personnality = personnality
 		self.spawn = corner
-		self.speed = GhostCaracteristiques.NORMAL_SPEED
+		self.speed = GhostFeatures.NORMAL_SPEED
 		self.rng = rng
-		self.respawn_delay = GhostCaracteristiques.RESPAWN_DELAY
+		self.respawn_delay = GhostFeatures.RESPAWN_DELAY
 		self.state = State.NORMAL
 		self.timer = 0.0
 		self.player_cell: Cell = corner
@@ -113,7 +112,7 @@ class Ghost(Mover):
 			self.timer -= dt
 			if self.timer <= 0:
 				self.state = State.NORMAL
-				self.speed = GhostCaracteristiques.NORMAL_SPEED
+				self.speed = GhostFeatures.NORMAL_SPEED
 		if self.state is not State.EATEN:
 			self.advance(dt)
 
@@ -124,13 +123,13 @@ class Ghost(Mover):
 		if self.personnality is Personnality.PINKY:
 			if self.player_dir is None:
 				return self.player_cell
-			return self.maze.steps_forward(self.player_cell, self.player_dir, GhostCaracteristiques.PINKY_LOOKAHEAD)
+			return self.maze.steps_forward(self.player_cell, self.player_dir, GhostFeatures.PINKY_LOOKAHEAD)
 		if self.personnality is Personnality.INKY:
-			if distance <= GhostCaracteristiques.INKY_SIGHT:
+			if distance <= GhostFeatures.INKY_SIGHT:
 				return self.player_cell
 			return None
 		if self.personnality is Personnality.CLYDE:
-			if distance > GhostCaracteristiques.CLYDE_DISTANCE:
+			if distance > GhostFeatures.CLYDE_DISTANCE:
 				return self.player_cell
 			else:
 				return self.home
@@ -182,17 +181,17 @@ class Ghost(Mover):
 			return
 		self.state = State.EDIBLE
 		self.timer = duration
-		self.speed = GhostCaracteristiques.EDIBLE_SPEED
+		self.speed = GhostFeatures.EDIBLE_SPEED
 		self.reverse()
 
 	def eaten(self) -> None:
 		super().reset()
 		self.state = State.NORMAL
-		self.speed = GhostCaracteristiques.NORMAL_SPEED
+		self.speed = GhostFeatures.NORMAL_SPEED
 		self.timer = 0.0
 
 	def reset(self) -> None:
 		super().reset()
 		self.state = State.NORMAL
-		self.speed = GhostCaracteristiques.NORMAL_SPEED
+		self.speed = GhostFeatures.NORMAL_SPEED
 		self.timer = 0.0
