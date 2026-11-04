@@ -3,13 +3,15 @@ from src.maze import Maze, MazeError
 
 def convert_from_hexa(rows: list[str]) -> list[list[int]]:
     try:
-        result: list[list[int]] = []
+        walls: list[list[int]] = []
         for row in rows:
+            line: list[int] = []
             for char in row.strip():
-                result[row][int(char, 16)]
+                line.append(int(char, 16))
+            walls.append(line)
+        return walls
     except ValueError as err:
         raise MazeError(f"Invalid conversion: {err}") from err
-    return result
 
 
 def generate_hex_maze(height: int, width: int, seed: int | None) -> list[str]:
@@ -25,9 +27,7 @@ def generate_hex_maze(height: int, width: int, seed: int | None) -> list[str]:
     return rows
 
 
-
 def level_maze(height: int, width: int, seed: int | None) -> Maze:
-    print(type(height))
     try:
         walls = convert_from_hexa(generate_hex_maze(height, width, seed))
         if len(walls) != height or any(len(row) != width for row in walls):
