@@ -2,16 +2,6 @@ from pydantic import BaseModel, model_validator, Field, ValidationError
 import pygame as pg
 
 
-class Score:
-    def __init__(self, base_score: int):
-        self.base_score: int = base_score
-
-    def add_points(self, current_score: int, point: int) -> int:
-        """Add point to the score"""
-        return current_score + point
-    # current_score += point depending on how its done in the main loop
-    # can have problem of adding multiple time the same point be careful
-
 
 def ranking_score(score: int, data, new_score_dict):
     """Function to insert the new score with the player name in the highscore ranking"""

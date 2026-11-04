@@ -1,4 +1,4 @@
-from maze import Maze, Direction, Cell
+from src.maze import Maze, Direction, Cell
 from enum import Enum
 import random
 

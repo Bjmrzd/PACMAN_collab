@@ -1,7 +1,7 @@
-from maze import Maze, MazeError
+from src.maze import Maze, MazeError
 
 
-def convert_hexa(rows: list[str]) -> list[list[int]]:
+def convert_from_hexa(rows: list[str]) -> list[list[int]]:
     try:
         result: list[list[int]] = []
         for row in rows:
@@ -9,6 +9,7 @@ def convert_hexa(rows: list[str]) -> list[list[int]]:
                 result[row][int(char, 16)]
     except ValueError as err:
         raise MazeError(f"Invalid conversion: {err}") from err
+    return result
 
 
 def generate_hex_maze(height: int, width: int, seed: int | None) -> list[str]:
@@ -23,9 +24,12 @@ def generate_hex_maze(height: int, width: int, seed: int | None) -> list[str]:
     rows: list[str] = maze.maze_hexa()
     return rows
 
-def level_maze(height: int, width: int, seed:int | None) -> Maze:
+
+
+def level_maze(height: int, width: int, seed: int | None) -> Maze:
+    print(type(height))
     try:
-        walls = convert_hexa(generate_hex_maze(height, width, seed))
+        walls = convert_from_hexa(generate_hex_maze(height, width, seed))
         if len(walls) != height or any(len(row) != width for row in walls):
             raise MazeError("The maze given by the generator hasn't the right size")
         return Maze(walls)

@@ -1,9 +1,9 @@
 from enum import Enum
 import random
 
-from entities import Player, Ghost, State, Personnality
-from maze import Maze, Cell
-from scoring import GameState
+from src.entities import Ghost, State, Personnality
+from src.maze import Maze, Cell
+from src.scoring import GameState
 
 
 class LevelState(Enum):
@@ -63,4 +63,4 @@ class Level():
 			if ghost.eaten():
 				continue
 			g_row, g_col = ghost.position
-			if 
+			

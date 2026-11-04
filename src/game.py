@@ -2,7 +2,11 @@ import pygame as pg
 import pygvideo as pv
 from src.parsing import parsing
 from src.helper import Color, Box_Button, Font, Size, Text
-from src.score import Score, ranking_score, valid_highscore
+from src.highscore import ranking_score, valid_highscore
+from src.renderer import render_maze
+from src.maze import Maze
+from src.level import Level
+from src.maze_convert import level_maze
 import json
 from typing import Any
 import sys
@@ -22,6 +26,18 @@ class Game:
         logging.basicConfig(filename="error.logs", filemode="a",
                             format="%(asctime)s - %(message)s",
                             datefmt='%m/%d/%Y %I:%M:%S %p')
+        self.level_list: list[Any] = [
+            self.config.level_1,
+            self.config.level_2,
+            self.config.level_3,
+            self.config.level_4,
+            self.config.level_5,
+            self.config.level_6,
+            self.config.level_7,
+            self.config.level_8,
+            self.config.level_9,
+            self.config.level_10,
+        ]
 
     def main_loop(self):
         """Main game loop"""
@@ -43,6 +59,11 @@ class Game:
 
             display_lives = Text("Lives: " + str(self.lives), Color.RED.value, 500, 500, Size.TEXT.value)
             display_lives.show_text(self.screen)
+            for index in range(0, 10):
+                print(index)
+                maze = level_maze(int(self.level_list[index].get("height")), int(self.level_list[index].get("width")), int(self.config.seed))
+                render_maze(maze.walls)
+                Level(maze)
 
             pg.display.flip()
 
