@@ -1,5 +1,5 @@
 from src.maze import Maze, MazeError
-
+import numpy as np
 
 def convert_from_hexa(rows: list[str]) -> list[list[int]]:
     try:
@@ -17,14 +17,17 @@ def convert_from_hexa(rows: list[str]) -> list[list[int]]:
 def generate_hex_maze(height: int, width: int, seed: int | None) -> list[str]:
 
     try:
-        from mazegenerator.maze import MazeGenerator
+        from mazegenerator.mazegenerator import MazeGenerator
     except ImportError as err:
         raise MazeError("The A-Maze-ing package is not installed "
                         " use: pip install mazegen-*.whl") from err
-    maze = MazeGenerator(height=height, width=width, entry=(0,0), exit=(width -1, height -1), isperfect=False, seed=seed)
+    # maze = MazeGenerator(height=height, width=width, entry=(0,0), exit=(width -1, height -1), isperfect=False, seed=seed)
+    maze = MazeGenerator((height, width), perfect=False, entry_cell=(0,0), exit_cell=(width -1, height -1), seed=seed)
     maze.generate()
-    rows: list[str] = maze.maze_hexa()
-    return rows
+    # rows: list[str] = maze.maze_hexa()
+    print(maze._maze)
+    # return rows
+    return maze._maze
 
 
 def level_maze(height: int, width: int, seed: int | None) -> Maze:

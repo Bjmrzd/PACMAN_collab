@@ -6,7 +6,7 @@ from src.highscore import ranking_score, valid_highscore
 from src.renderer import render_maze
 from src.maze import Maze
 from src.level import Level
-from src.maze_convert import level_maze
+from src.maze_convert import level_maze, generate_hex_maze
 import json
 from typing import Any
 import sys
@@ -43,6 +43,10 @@ class Game:
         """Main game loop"""
         running: bool = True
 
+        index = 0
+        maze = generate_hex_maze(self.level_list[index].get("height"), self.level_list[index].get("width"), self.config.seed)
+        # maze = level_maze(self.level_list[index].get("height"), self.level_list[index].get("width"), self.config.seed)
+        maze_class = Maze(maze)
         while running:
             self.screen.fill(Color.BLACK.value)
             for event in pg.event.get():
@@ -59,9 +63,9 @@ class Game:
 
             display_lives = Text("Lives: " + str(self.lives), Color.RED.value, 500, 500, Size.TEXT.value)
             display_lives.show_text(self.screen)
-            for index in range(0, 10):
-                maze = level_maze(self.level_list[index].get("height"), self.level_list[index].get("width"), self.config.seed)
-                render_maze(maze.walls, maze, self.screen)
+            render_maze(maze, maze_class, self.screen)
+
+            # for index in range(0, 10):
                 # Level(maze)
 
             pg.display.flip()

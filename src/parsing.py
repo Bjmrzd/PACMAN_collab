@@ -42,8 +42,8 @@ class Config(BaseModel):
                 raise ValueError("Error: Levels must have both a height and width")
             elif args.get("width") != args.get("height"):
                 raise ValueError("Error: The Pacman Maze must be a square")
-            elif (args.get("width") or args.get("height")) >= 19 or (args.get("width") or args.get("height")) < 9:
-                raise ValueError("Error: The maze width and height can't be higher than 18 or lower than 10")
+            # elif (args.get("width") or args.get("height")) >= 19 or (args.get("width") or args.get("height")) < 9:
+            #     raise ValueError("Error: The maze width and height can't be higher than 18 or lower than 10")
         return self
 
 
