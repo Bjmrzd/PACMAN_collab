@@ -1,5 +1,6 @@
 from enum import Enum
 import random
+import math
 
 from src.entities import Ghost, State, Personnality
 from src.maze import Maze, Cell
@@ -60,7 +61,25 @@ class Level():
 	def collisions(self) -> None:
 		p_row, p_col = self.player.position
 		for ghost in self.ghosts:
-			if ghost.eaten():
+			if ghost.state is State.EATEN:
 				continue
 			g_row, g_col = ghost.position
-			
+
+			if math.sqrt(abs(g_row - p_row)**2 + abs(g_col - p_col)**2 ) < LevelFeatures:
+				if ghost.state is State.EDIBLE:
+					ghost.eaten
+					self.state.add_points(self.state.rules.ghost)
+				else:
+					self.lose_life()
+					return
+			else:
+				continue
+
+	def lose_life(self):
+		self.state.lose_life()
+		if self.state.game_over():
+			self.status = LevelState.GAME_OVER
+			return
+		self.player.reset()
+		for ghost in self.ghosts:
+			ghost.reset()
