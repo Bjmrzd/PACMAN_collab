@@ -5,7 +5,7 @@ from src.helper import Color, Box_Button, Font, Size, Text
 from src.highscore import ranking_score, valid_highscore
 from src.renderer import render_maze
 from src.maze import Maze
-from src.level import Level
+from src.level import Level, LevelState
 from src.maze_convert import level_maze, generate_hex_maze
 import json
 from typing import Any
@@ -42,11 +42,14 @@ class Game:
     def main_loop(self):
         """Main game loop"""
         running: bool = True
+        level_list: list[Any] = []
 
-        index = 0
-        maze = generate_hex_maze(self.level_list[index].get("height"), self.level_list[index].get("width"), self.config.seed)
+        # index = 0
+        for index in range(0, 10):
+            maze = generate_hex_maze(self.level_list[index].get("height"), self.level_list[index].get("width"), self.config.seed)
         # maze = level_maze(self.level_list[index].get("height"), self.level_list[index].get("width"), self.config.seed)
-        maze_class = Maze(maze)
+            maze_class = Maze(maze)
+            level_list.append((maze, maze_class))
         while running:
             self.screen.fill(Color.BLACK.value)
             for event in pg.event.get():
@@ -63,6 +66,7 @@ class Game:
 
             display_lives = Text("Lives: " + str(self.lives), Color.RED.value, 500, 500, Size.TEXT.value)
             display_lives.show_text(self.screen)
+            number_level: int = self.next_level()
             render_maze(maze, maze_class, self.screen)
 
             # for index in range(0, 10):
@@ -73,6 +77,11 @@ class Game:
         # need to do timer, levels, lives
         # display if cheat on or not
         # render maze, pacgum, pacman and ghost
+    
+    def next_level(self):
+        index: int = 0
+
+        return index
 
     def game_over(self):
         """Game over screen"""

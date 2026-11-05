@@ -16,7 +16,6 @@ def render_maze(walls : list[list[int]], maze: Maze, screen):
         "left": 8,
         "right": 2,
     }
-    print(walls)
     for rows in range(len(walls)):
         for cols in range(len(walls[index])):
             cell = walls[rows][cols]

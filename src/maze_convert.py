@@ -25,7 +25,6 @@ def generate_hex_maze(height: int, width: int, seed: int | None) -> list[str]:
     maze = MazeGenerator((height, width), perfect=False, entry_cell=(0,0), exit_cell=(width -1, height -1), seed=seed)
     maze.generate()
     # rows: list[str] = maze.maze_hexa()
-    print(maze._maze)
     # return rows
     return maze._maze
 
