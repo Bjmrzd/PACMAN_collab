@@ -13,6 +13,7 @@ clean:
 	@rm -rf src/__pycache__
 	@rm -rf __pycache__
 	@rm -rf .mypy_cache
+	@rm -rf mazegenerator/__pycache__
 
 install:
 	@printf "\nInstalling required packages ! \n\n"
