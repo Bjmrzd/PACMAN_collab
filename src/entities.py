@@ -1,5 +1,7 @@
 from src.maze import Maze, Direction, Cell
 from enum import Enum
+from typing import Callable
+from abc import ABC, abstractmethod
 import random
 
 
@@ -23,7 +25,7 @@ class Personnality(Enum):
 	CLYDE = "clyde"	 	#Chases when far, goes home when close
 
 
-class Mover:
+class Mover(ABC):
 	def __init__(self, maze: Maze, cell: Cell, speed: float) -> None:
 		self.maze = maze
 		self.speed = speed
@@ -32,6 +34,7 @@ class Mover:
 		self.direction: Direction | None = None
 		self.target: Cell | None = None
 		self.progress: float = 0.0  # 0.0 a 1.0
+
 
 	@property
 	def position(self) -> None:
@@ -42,11 +45,13 @@ class Mover:
 		return (row + (t_row - row) * self.progress,
 				col + (t_col - col) * self.progress)
 
+
 	def reset(self) -> None:
 		self.current_cell = self.spawn
 		self.target = None
 		self.direction = None
 		self.progress = 0.0
+
 
 	def reverse(self) -> None:
 		if self.target is None or self.direction is None:
@@ -55,12 +60,11 @@ class Mover:
 		self.progress = 1.0 - self.progress
 		self.direction = self.direction.opposite
 
-	def choose_direction(self) -> None:
-		#pac-man: en fonction des touches
+
+	@abstractmethod
+	def choose_direction(self) -> Direction | None:
 		return
 
-	def on_cell_reached(self) -> None:
-		return
 
 	def start_move(self) -> bool:
 		direction = self.choose_direction
@@ -70,6 +74,7 @@ class Mover:
 		self.target = self.maze.step(self.current_cell, direction)
 		self.progress = 0.0
 		return True
+
 
 	def advance(self, dt: float) -> None:
 		distance = self.speed * dt
@@ -87,7 +92,37 @@ class Mover:
 			self.on_cell_reached()
 
 
-# class Player(Mover):
+class PacMan(Mover):
+	def __init__(self, maze: Maze, cell: Cell, speed: float = 5.0) -> None:
+		"""Create the Pac-Man. Key_direction is the direction saved each time we press a directional key"""
+		super.__init__(maze, cell, speed)
+		self.key_direction: Direction | None = None
+		self.on_cell_center: Callable[[Cell], None] = None
+
+
+	def set_next_move(self, direction):
+		"""The next direction is defined and saved by the key pressed (applied at the next cell's center)"""
+		self.key_direction = direction
+		if self.direction is not None and direction is self.direction.opposite:
+			self.reverse()
+
+
+	def choose_direction(self) -> Direction | None:
+		"""Try the choosen direction, advance if direction is valid, stay still if not"""
+		for direction in (self.key_direction, self.direction):
+			if direction is not None and self.maze.can_move(self.cell, direction):
+				return direction
+		return None
+
+
+	def cell_reached(self) -> None:
+		if self.on_cell_center is not None:
+			self.on_cell_center(self.cell)
+
+
+	def reset(self) -> None:
+		super().reset()
+		self.key_direction = None
 
 
 class Ghost(Mover):
@@ -98,7 +133,6 @@ class Ghost(Mover):
 		self.spawn = corner
 		self.speed = GhostFeatures.NORMAL_SPEED
 		self.rng = rng
-		self.respawn_delay = GhostFeatures.RESPAWN_DELAY
 		self.state = State.NORMAL
 		self.timer = 0.0
 		self.player_cell: Cell = corner
@@ -186,9 +220,8 @@ class Ghost(Mover):
 
 	def eaten(self) -> None:
 		super().reset()
-		self.state = State.NORMAL
-		self.speed = GhostFeatures.NORMAL_SPEED
-		self.timer = 0.0
+		self.state = State.EATEN
+		self.timer = GhostFeatures.RESPAWN_DELAY
 
 	def reset(self) -> None:
 		super().reset()

@@ -2,7 +2,7 @@ from enum import Enum
 import random
 import math
 
-from src.entities import Ghost, State, Personnality
+from src.entities import Ghost,PacMan, State, Personnality
 from src.maze import Maze, Cell
 from src.scoring import GameState
 
@@ -29,9 +29,11 @@ class Level():
 		self.level_state = LevelState.PLAYING
 		self.pacgums: set[Cell] = maze.pacgum_positions()
 		self.super_pacgums: set[Cell] = maze.super_pacgum_positions()
-		self.player = Player() # A modifier quand on aura la class Player finie
+		self.pac_man = PacMan(maze, maze.spawn)
+		self.pac_man.on_cell_center = self.pacman_reach_cell
 		Personnalities = [Personnality.BLINKY, Personnality.PINKY, Personnality.INKY, Personnality.CLYDE]
 		self.ghosts = [Ghost(maze, corner, personnality, rng) for corner in maze.ghost_corners for personnality in Personnalities]
+
 
 	def update(self, dt:float) -> None:
 		if self.level_state is not LevelState.PLAYING:
@@ -40,14 +42,15 @@ class Level():
 		if self.remaining_time <= 0:
 			self.lose_life()
 			return
-		self.player.advance(dt)
+		self.pac_man.advance(dt)
 		for ghost in self.ghosts:
-			ghost.tick(dt, self.player.cell, self.player.direction)
+			ghost.tick(dt, self.pac_man.cell, self.pac_man.direction)
 		self.collisions()
 		if self.level_state is LevelState.PLAYING and not self.pacgums:
 			self.level_state = LevelState.WON
 
-	def player_reach_cell(self, cell: Cell) -> None:
+
+	def pacman_reach_cell(self, cell: Cell) -> None:
 		rules = self.state.rules
 		if cell in self.pacgums:
 			self.pacgums.discard(cell)
@@ -58,8 +61,9 @@ class Level():
 			for ghost in self.ghosts:
 				ghost.is_edible(LevelFeatures.PACMAN_HUNT)
 
+
 	def collisions(self) -> None:
-		p_row, p_col = self.player.position
+		p_row, p_col = self.pac_man.position
 		for ghost in self.ghosts:
 			if ghost.state is State.EATEN:
 				continue
@@ -75,11 +79,12 @@ class Level():
 			else:
 				continue
 
+
 	def lose_life(self):
 		self.state.lose_life()
 		if self.state.game_over():
 			self.status = LevelState.GAME_OVER
 			return
-		self.player.reset()
+		self.pac_man.reset()
 		for ghost in self.ghosts:
 			ghost.reset()
