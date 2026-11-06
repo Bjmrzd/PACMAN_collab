@@ -50,8 +50,11 @@ class Game:
         # maze = level_maze(self.level_list[index].get("height"), self.level_list[index].get("width"), self.config.seed)
             maze_class = Maze(maze)
             level_list.append((maze, maze_class))
+
         while running:
+            
             self.screen.fill(Color.BLACK.value)
+
             for event in pg.event.get():
                 keys = pg.key.get_pressed()
                 if keys[pg.K_ESCAPE]:

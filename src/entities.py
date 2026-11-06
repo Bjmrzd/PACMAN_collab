@@ -3,6 +3,8 @@ from enum import Enum
 from typing import Callable
 from abc import ABC, abstractmethod
 import random
+import pygame as pg
+from helper import Images
 
 
 class State(Enum):
@@ -92,10 +94,27 @@ class Mover(ABC):
 			self.on_cell_reached()
 
 
-class PacMan(Mover):
+class Pac_anim(Enum):
+	UP = Images.PACMAN.value.subsurface((3, 74, 26, 25))
+	RIGHT = Images.PACMAN.value.subsurface((2, 3, 25, 25))
+	LEFT = Images.PACMAN.value.subsurface((5, 35, 25, 25))
+	DOWN = Images.PACMAN.value.subsurface((3, 100, 26, 25))
+	C_UP = Images.PACMAN.value.subsurface((35, 69, 25, 25))
+	C_RIGHT = Images.PACMAN.value.subsurface((35, 4, 25, 25))
+	C_LEFT = Images.PACMAN.value.subsurface((35, 35, 25, 25))
+	C_DOWN = Images.PACMAN.value.subsurface((35, 100, 25, 25))
+
+
+
+class PacMan(Mover, pg.sprite.Sprite):
 	def __init__(self, maze: Maze, cell: Cell, speed: float = 5.0) -> None:
 		"""Create the Pac-Man. Key_direction is the direction saved each time we press a directional key"""
 		super.__init__(maze, cell, speed)
+		pg.sprite.Sprite.__init__()
+		self.sprite = Images.PACMAN.value
+		self.base_sprite = Pac_anim.RIGHT.value
+		self.rect = self.sprite.get_rect()
+		self.rect.topleft = (Cell[0], Cell[1]) # may need to change the order for row and col
 		self.key_direction: Direction | None = None
 		self.on_cell_center: Callable[[Cell], None] = None
 
