@@ -63,6 +63,8 @@ class Game:
                     self.win()
                 if keys[pg.K_2]:
                     self.game_over()
+                if keys[pg.K_n]:
+                    self.next_level()
 
             display_lives = Text("Lives: " + str(self.lives), Color.RED.value, 500, 500, Size.TEXT.value)
             display_lives.show_text(self.screen)
@@ -288,10 +290,12 @@ class Game:
                 video.handle_event(event)
                 keys = pg.key.get_pressed()
                 if keys[pg.K_ESCAPE]:
+                    pv.quit_all()
                     pg.quit()
                     sys.exit()
                 if event.type == pg.MOUSEBUTTONDOWN:
                     if exit_button.rect.collidepoint(mouse):
+                        pv.quit_all()
                         pg.quit()
                         sys.exit()
                     if resume_button.rect.collidepoint(mouse):

@@ -92,6 +92,10 @@ class MainMenu():
         """Init the tuto menu with the buttons instructions and how to play"""
         running = True
         arrows = pg.image.load("assets/arrows.png")
+        video = pv.Video("assets/sleep.mp4")
+        video.set_size((400, 400))
+        video.preplay(-1)
+
 
         while running:
 
@@ -99,13 +103,18 @@ class MainMenu():
             mouse = pg.mouse.get_pos()
 
             for event in pg.event.get():
+                video.handle_event(event)
                 if event.type == pg.QUIT:
                     pg.quit()
                     sys.exit()
                 keys = pg.key.get_pressed()
                 if keys[pg.K_ESCAPE]:
+                    pv.quit_all()
                     running = False
             self.screen.blit(arrows, (200, 200))
+            video.draw_and_update(self.screen, (1900, 500))
+
+            
 
             command_text = Text("Movements: WASD or keypad arrows", Color.RED.value, 500, 150, Size.TEXT.value)
             command_text.show_text(self.screen)
@@ -113,7 +122,7 @@ class MainMenu():
             cheat_screen = Text("Press C for the cheat screen", Color.RED.value, 2100, 150, Size.TEXT.value)
             cheat_screen.show_text(self.screen)
 
-            win_lose = Text("Press 1 to win or 2 to lose", Color.RED.value, 500, 350, Size.TEXT.value)
+            win_lose = Text("Press 1 to win or 2 to lose", Color.RED.value, 2100, 350, Size.TEXT.value)
             win_lose.show_text(self.screen)
 
             pg.display.flip()
