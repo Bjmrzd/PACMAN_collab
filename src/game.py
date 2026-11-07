@@ -7,6 +7,7 @@ from src.renderer import render_maze
 from src.maze import Maze
 from src.level import Level, LevelState
 from src.maze_convert import level_maze, generate_hex_maze
+from src.entities import PacMan
 import json
 from typing import Any
 import sys
@@ -43,6 +44,7 @@ class Game:
         """Main game loop"""
         running: bool = True
         level_list: list[Any] = []
+        sprites_grp = pg.sprite.Group()
 
         # index = 0
         for index in range(0, 10):
@@ -50,9 +52,11 @@ class Game:
         # maze = level_maze(self.level_list[index].get("height"), self.level_list[index].get("width"), self.config.seed)
             maze_class = Maze(maze)
             level_list.append((maze, maze_class))
+        pac = PacMan(maze_class, maze_class.spawn)
+        sprites_grp.add(pac)
 
         while running:
-            
+
             self.screen.fill(Color.BLACK.value)
 
             for event in pg.event.get():
@@ -73,6 +77,7 @@ class Game:
             display_lives.show_text(self.screen)
             number_level: int = self.next_level()
             render_maze(maze, maze_class, self.screen)
+            sprites_grp.draw(self.screen)
 
             # for index in range(0, 10):
                 # Level(maze)

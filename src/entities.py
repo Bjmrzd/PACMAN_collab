@@ -4,7 +4,7 @@ from typing import Callable
 from abc import ABC, abstractmethod
 import random
 import pygame as pg
-from helper import Images
+from src.helper import Images
 
 
 class State(Enum):
@@ -109,12 +109,14 @@ class Pac_anim(Enum):
 class PacMan(Mover, pg.sprite.Sprite):
 	def __init__(self, maze: Maze, cell: Cell, speed: float = 5.0) -> None:
 		"""Create the Pac-Man. Key_direction is the direction saved each time we press a directional key"""
-		super.__init__(maze, cell, speed)
-		pg.sprite.Sprite.__init__()
+		super().__init__(maze, cell, speed)
+		pg.sprite.Sprite.__init__(self)
+
 		self.sprite = Images.PACMAN.value
-		self.base_sprite = Pac_anim.RIGHT.value
+		self.image = Pac_anim.RIGHT.value
 		self.rect = self.sprite.get_rect()
-		self.rect.topleft = (Cell[0], Cell[1]) # may need to change the order for row and col
+		self.rect.topleft = (cell[0], cell[1]) # may need to change the order for row and col
+
 		self.key_direction: Direction | None = None
 		self.on_cell_center: Callable[[Cell], None] = None
 
@@ -156,6 +158,9 @@ class Ghost(Mover):
 		self.timer = 0.0
 		self.player_cell: Cell = corner
 		self.player_dir: Direction | None = None
+
+		# self.sprite = Images
+		# self.image
 
 
 	def tick(self, dt: float, player_cell: Cell, player_dir: Direction | None) -> None:
