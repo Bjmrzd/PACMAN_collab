@@ -41,6 +41,7 @@ class MainMenu():
                     sys.exit()
                 keys = pg.key.get_pressed()
                 if keys[pg.K_ESCAPE]:
+                    pv.quit_all()
                     pg.quit()
                     sys.exit()
 
@@ -102,6 +103,7 @@ class MainMenu():
             self.screen.fill(Color.BLACK.value)
             mouse = pg.mouse.get_pos()
 
+            video.draw_and_update(self.screen, (1900, 500))
             for event in pg.event.get():
                 video.handle_event(event)
                 if event.type == pg.QUIT:
@@ -112,7 +114,6 @@ class MainMenu():
                     pv.quit_all()
                     running = False
             self.screen.blit(arrows, (200, 200))
-            video.draw_and_update(self.screen, (1900, 500))
 
             
 
