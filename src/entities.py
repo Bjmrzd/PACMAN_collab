@@ -1,6 +1,6 @@
 from src.maze import Maze, Direction, Cell
 from enum import Enum
-from typing import Callable
+from typing import Callable, Any
 from abc import ABC, abstractmethod
 import random
 import pygame as pg
@@ -105,7 +105,6 @@ class Pac_anim(Enum):
 	C_DOWN = Images.PACMAN.value.subsurface((35, 100, 25, 25))
 
 
-
 class PacMan(Mover, pg.sprite.Sprite):
 	def __init__(self, maze: Maze, cell: Cell, speed: float = 5.0) -> None:
 		"""Create the Pac-Man. Key_direction is the direction saved each time we press a directional key"""
@@ -120,6 +119,18 @@ class PacMan(Mover, pg.sprite.Sprite):
 		self.key_direction: Direction | None = None
 		self.on_cell_center: Callable[[Cell], None] = None
 
+	def check_keys(self, keys):
+		direction: Any = None
+		if keys[pg.K_LEFT] or keys[pg.K_a]:
+			direction = Direction.West.value
+		if keys[pg.K_RIGHT] or keys[pg.K_d]:
+			direction = Direction.EAST.value
+		if keys[pg.K_UP] or keys[pg.K_w]:
+			direction = Direction.North.value
+		if keys[pg.K_DOWN] or keys[pg.K_s]:
+			direction = Direction.South.value
+			
+		return direction
 
 	def set_next_move(self, direction):
 		"""The next direction is defined and saved by the key pressed (applied at the next cell's center)"""
