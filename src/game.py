@@ -80,6 +80,7 @@ class Game:
             render_maze(maze, maze_class, self.screen)
             sprites_grp.draw(self.screen)
             pac.set_next_move(pac.check_keys(keys))
+            pac.choose_direction()
             pac.advance(1.0)
             # for index in range(0, 10):
                 # Level(maze)

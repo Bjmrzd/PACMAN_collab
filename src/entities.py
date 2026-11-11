@@ -119,6 +119,7 @@ class PacMan(Mover, pg.sprite.Sprite):
 
 		self.key_direction: Direction | None = None
 		self.on_cell_center: Callable[[Cell], None] = None
+		self.cell = None # doesnt exist for now and is needed in choose direction, need to create it
 
 	def check_keys(self, keys):
 		direction: Any = None
