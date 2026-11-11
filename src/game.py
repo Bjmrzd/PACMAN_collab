@@ -60,18 +60,19 @@ class Game:
             self.screen.fill(Color.BLACK.value)
 
             for event in pg.event.get():
-                keys = pg.key.get_pressed()
-                if keys[pg.K_ESCAPE]:
-                    self.pause_menu()
-                if keys[pg.K_c]:
-                    list_cheat = self.cheat_screen()
-                    print(list_cheat)
-                if keys[pg.K_1]:
-                    self.win()
-                if keys[pg.K_2]:
-                    self.game_over()
-                if keys[pg.K_n]:
-                    self.next_level()
+                pass
+            keys = pg.key.get_pressed()
+            if keys[pg.K_ESCAPE]:
+                self.pause_menu()
+            if keys[pg.K_c]:
+                list_cheat = self.cheat_screen()
+                print(list_cheat)
+            if keys[pg.K_1]:
+                self.win()
+            if keys[pg.K_2]:
+                self.game_over()
+            if keys[pg.K_n]:
+                self.next_level()
 
             display_lives = Text("Lives: " + str(self.lives), Color.RED.value, 500, 500, Size.TEXT.value)
             display_lives.show_text(self.screen)

@@ -124,7 +124,7 @@ class PacMan(Mover, pg.sprite.Sprite):
 		if keys[pg.K_LEFT] or keys[pg.K_a]:
 			direction = Direction.West.value
 		if keys[pg.K_RIGHT] or keys[pg.K_d]:
-			direction = Direction.EAST.value
+			direction = Direction.East.value
 		if keys[pg.K_UP] or keys[pg.K_w]:
 			direction = Direction.North.value
 		if keys[pg.K_DOWN] or keys[pg.K_s]:
