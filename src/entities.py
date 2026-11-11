@@ -69,10 +69,10 @@ class Mover(ABC):
 
 
 	def start_move(self) -> bool:
-		direction = self.choose_direction
+		direction = self.choose_direction()
+		self.direction = direction
 		if self.target is None:
 			return False
-		self.direction = direction
 		self.target = self.maze.step(self.current_cell, direction)
 		self.progress = 0.0
 		return True
@@ -82,6 +82,7 @@ class Mover(ABC):
 		distance = self.speed * dt
 		while distance > 0:
 			if self.target is None or self.start_move() is False:
+				print(distance)
 				return
 			remaining = 1.0 - self.progress
 			if distance < remaining:
@@ -122,13 +123,13 @@ class PacMan(Mover, pg.sprite.Sprite):
 	def check_keys(self, keys):
 		direction: Any = None
 		if keys[pg.K_LEFT] or keys[pg.K_a]:
-			direction = Direction.West.value
+			direction = Direction.West
 		if keys[pg.K_RIGHT] or keys[pg.K_d]:
-			direction = Direction.East.value
+			direction = Direction.East
 		if keys[pg.K_UP] or keys[pg.K_w]:
-			direction = Direction.North.value
+			direction = Direction.North
 		if keys[pg.K_DOWN] or keys[pg.K_s]:
-			direction = Direction.South.value
+			direction = Direction.South
 			
 		return direction
 

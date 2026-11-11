@@ -56,7 +56,9 @@ class Maze: #faire des méthodes intermédiaires pour assurer qu'il n'y ait pas 
             return True
 
     def step(self, cell: Cell, direction: Direction) -> Cell:
+        print(direction)
         dir_row, dir_col = direction.value
+        print(dir_row, dir_col)
         return cell[0] + dir_row, cell[1] + dir_col
 
     def can_move(self, cell: Cell, direction: Direction) -> bool:
