@@ -79,13 +79,15 @@ class Game:
             display_lives = Text("Lives: " + str(self.lives), Color.RED.value, 1700, 200, Size.TEXT.value)
             display_lives.show_text(self.screen)
             number_level: int = self.next_level()
-            render_maze(maze, maze_class, self.screen, self.screen_width, self.screen_height)
+            render_maze(maze, maze_class, self.screen, self.screen_width, self.screen_height, pac)
 
-            sprites_grp.draw(self.screen)
 
             direction = pac.check_keys(keys)
             pac.set_next_move(direction)
             pac.advance(1.0)
+            pac.check_directions()
+            sprites_grp.draw(self.screen)
+            # print(pac.key_direction)
             # for index in range(0, 10):
                 # Level(maze)
 

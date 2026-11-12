@@ -36,6 +36,8 @@ class Mover(ABC):
 		self.direction: Direction | None = None
 		self.target: Cell | None = None
 		self.progress: float = 0.0  # 0.0 a 1.0
+		self.position_screen = None
+
 
 
 	@property
@@ -116,11 +118,12 @@ class PacMan(Mover, pg.sprite.Sprite):
 		self.sprite = Images.PACMAN.value
 		self.image = Pac_anim.RIGHT.value
 		self.rect = self.sprite.get_rect()
-		self.rect.topleft = (cell[0], cell[1]) # may need to change the order for row and col
+		self.rect.center = (cell[0], cell[1]) # may need to change the order for row and col
 
 		self.key_direction: Direction | None = None
 		self.on_cell_center: Callable[[Cell], None] = None
-		self.cell = None # doesnt exist for now and is needed in choose direction, need to create it
+		self.spawn = (cell[0], cell[1])
+		# self.position_screen = self.rect.center
 
 	def check_keys(self, keys):
 		direction: Any = None
@@ -134,6 +137,26 @@ class PacMan(Mover, pg.sprite.Sprite):
 			direction = Direction.South
 			
 		return direction
+
+	def check_directions(self):
+		# if self.key_direction:
+		# 	return
+
+		if self.key_direction == Direction.West:
+			print(self.rect.center)
+			print('test')
+			self.position_screen = (self.rect.centerx - 50, self.rect.centery)
+			self.rect.center = self.position_screen
+			print(self.rect.center)
+		if self.key_direction == Direction.East:
+			self.position_screen = (self.rect.centerx + 50, self.rect.centery)
+			self.rect.center = self.position_screen
+		if self.key_direction == Direction.North:
+			self.position_screen = (self.rect.centerx, self.rect.centery - 50)
+			self.rect.center = self.position_screen
+		if self.key_direction == Direction.South:
+			self.position_screen = (self.rect.centerx, self.rect.centery + 50)
+			self.rect.center = self.position_screen
 
 	def set_next_move(self, direction):
 		"""The next direction is defined and saved by the key pressed (applied at the next cell's center)"""
@@ -208,7 +231,7 @@ class Ghost(Mover, pg.sprite.Sprite):
 				return self.home
 
 	def choose_direction(self) -> Direction | None:
-		choices = self.maze.valid_directions
+		choices = self.maze.valid_directions()
 		if not choices:
 			return None
 		if self.direction is not None and len(choices) > 1:

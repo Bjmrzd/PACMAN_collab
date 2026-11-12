@@ -4,7 +4,7 @@ from src.helper import Font, Color
 from src.maze import Maze, Direction, WALL_BITS
 from typing import Any
 
-def render_maze(walls : list[list[int]], maze: Maze, screen, screen_width, screen_height):
+def render_maze(walls : list[list[int]], maze: Maze, screen, screen_width, screen_height, pacman):
     list_cell: list[Any] = []
     index: int = 0
     # start_x: int = 50
@@ -37,4 +37,11 @@ def render_maze(walls : list[list[int]], maze: Maze, screen, screen_width, scree
                 pg.draw.line(screen, Color.WHITE.value, (start_x, start_y ), (start_x, end_y), 5)
             if (cell & direction["right"]):
                 pg.draw.line(screen, Color.WHITE.value, (end_x, start_y), (end_x, end_y), 5)
-        index += 1
+
+            if maze.spawn == (cols, rows) and index < 1:
+                # print(start_x, start_y) # + 50 each movement
+                index += 1
+                # print(pacman.rect.center)
+                pacman.rect.center = (start_x, start_y) 
+
+
