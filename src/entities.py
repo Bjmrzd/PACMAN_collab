@@ -70,9 +70,9 @@ class Mover(ABC):
 
 	def start_move(self) -> bool:
 		direction = self.choose_direction()
-		self.direction = direction
-		if self.target is None:
+		if direction is None:
 			return False
+		self.direction = direction
 		self.target = self.maze.step(self.current_cell, direction)
 		self.progress = 0.0
 		return True
@@ -81,9 +81,10 @@ class Mover(ABC):
 	def advance(self, dt: float) -> None:
 		distance = self.speed * dt
 		while distance > 0:
-			if self.target is None or self.start_move() is False:
-				print(distance)
-				return
+			if self.target is None:
+				if not self.start_move():
+					return
+			print("test")
 			remaining = 1.0 - self.progress
 			if distance < remaining:
 				self.progress += distance
@@ -92,7 +93,7 @@ class Mover(ABC):
 			self.current_cell = self.target
 			self.target = None
 			self.progress = 0.0
-			self.on_cell_reached()
+			self.cell_reached()
 
 
 class Pac_anim(Enum):
@@ -144,7 +145,7 @@ class PacMan(Mover, pg.sprite.Sprite):
 	def choose_direction(self) -> Direction | None:
 		"""Try the choosen direction, advance if direction is valid, stay still if not"""
 		for direction in (self.key_direction, self.direction):
-			if direction is not None and self.maze.can_move(self.cell, direction):
+			if direction is not None and self.maze.can_move(self.current_cell, direction):
 				return direction
 		return None
 
