@@ -52,7 +52,9 @@ class Game:
         # maze = level_maze(self.level_list[index].get("height"), self.level_list[index].get("width"), self.config.seed)
             maze_class = Maze(maze)
             level_list.append((maze, maze_class))
+        print(maze_class.spawn)
         pac = PacMan(maze_class, maze_class.spawn)
+        # pac.rect.center = (9, 9)
         sprites_grp.add(pac)
 
         while running:
@@ -74,11 +76,13 @@ class Game:
             if keys[pg.K_n]:
                 self.next_level()
 
-            display_lives = Text("Lives: " + str(self.lives), Color.RED.value, 500, 500, Size.TEXT.value)
+            display_lives = Text("Lives: " + str(self.lives), Color.RED.value, 1700, 200, Size.TEXT.value)
             display_lives.show_text(self.screen)
             number_level: int = self.next_level()
-            render_maze(maze, maze_class, self.screen)
+            render_maze(maze, maze_class, self.screen, self.screen_width, self.screen_height)
+
             sprites_grp.draw(self.screen)
+
             direction = pac.check_keys(keys)
             pac.set_next_move(direction)
             pac.advance(1.0)

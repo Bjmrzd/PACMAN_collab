@@ -4,12 +4,14 @@ from src.helper import Font, Color
 from src.maze import Maze, Direction, WALL_BITS
 from typing import Any
 
-def render_maze(walls : list[list[int]], maze: Maze, screen):
+def render_maze(walls : list[list[int]], maze: Maze, screen, screen_width, screen_height):
     list_cell: list[Any] = []
     index: int = 0
-    start_x: int = 50
-    start_y: int = 50
+    # start_x: int = 50
+    # start_y: int = 50
     space: int = 50
+    middle_x: int = (screen_width  - len(walls[0]) * space) // 2
+    middle_y: int = (screen_height - len(walls) * space) // 2
     direction: dict[str | int] = {
         "top": 1,
         "bottom": 4,
@@ -17,12 +19,12 @@ def render_maze(walls : list[list[int]], maze: Maze, screen):
         "right": 2,
     }
     for rows in range(len(walls)):
-        for cols in range(len(walls[index])):
+        for cols in range(len(walls[0])):
             cell = walls[rows][cols]
             list_cell.append(cell)
 
-            start_x = cols * space
-            start_y = rows * space
+            start_x = middle_x + cols * space
+            start_y = middle_y + rows * space
 
             end_x = start_x + space
             end_y = start_y + space
