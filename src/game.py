@@ -52,7 +52,7 @@ class Game:
         # maze = level_maze(self.level_list[index].get("height"), self.level_list[index].get("width"), self.config.seed)
             maze_class = Maze(maze)
             level_list.append((maze, maze_class))
-        print(maze_class.spawn)
+        print(maze_class.spawn, maze_class.height, maze_class.width)
         pac = PacMan(maze_class, maze_class.spawn)
         # pac.rect.center = (9, 9)
         sprites_grp.add(pac)
@@ -81,11 +81,11 @@ class Game:
             number_level: int = self.next_level()
             render_maze(maze, maze_class, self.screen, self.screen_width, self.screen_height, pac)
 
-
             direction = pac.check_keys(keys)
             pac.set_next_move(direction)
-            pac.advance(1.0)
-            pac.check_directions()
+            # pac.advance(1.0)
+            n_direction = pac.check_directions()
+            # print(n_direction)
             sprites_grp.draw(self.screen)
             # print(pac.key_direction)
             # for index in range(0, 10):
@@ -96,7 +96,7 @@ class Game:
         # need to do timer, levels, lives
         # display if cheat on or not
         # render maze, pacgum, pacman and ghost
-    
+
     def next_level(self):
         index: int = 0
 

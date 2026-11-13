@@ -98,6 +98,7 @@ class Mover(ABC):
 			self.cell_reached()
 
 
+
 class Pac_anim(Enum):
 	UP = Images.PACMAN.value.subsurface((3, 74, 26, 25))
 	RIGHT = Images.PACMAN.value.subsurface((2, 3, 25, 25))
@@ -138,16 +139,13 @@ class PacMan(Mover, pg.sprite.Sprite):
 			
 		return direction
 
-	def check_directions(self):
+	def check_directions(self,):
 		# if self.key_direction:
 		# 	return
-
+		
 		if self.key_direction == Direction.West:
-			print(self.rect.center)
-			print('test')
 			self.position_screen = (self.rect.centerx - 50, self.rect.centery)
 			self.rect.center = self.position_screen
-			print(self.rect.center)
 		if self.key_direction == Direction.East:
 			self.position_screen = (self.rect.centerx + 50, self.rect.centery)
 			self.rect.center = self.position_screen
@@ -157,6 +155,8 @@ class PacMan(Mover, pg.sprite.Sprite):
 		if self.key_direction == Direction.South:
 			self.position_screen = (self.rect.centerx, self.rect.centery + 50)
 			self.rect.center = self.position_screen
+
+		return self.position_screen
 
 	def set_next_move(self, direction):
 		"""The next direction is defined and saved by the key pressed (applied at the next cell's center)"""
