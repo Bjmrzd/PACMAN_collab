@@ -137,9 +137,11 @@ class PacMan(Mover, pg.sprite.Sprite):
 			
 		return direction
 
-	def check_directions(self,):
+	def check_directions(self, direction):
 		# if self.key_direction:
 		# 	return
+
+		self.key_direction = direction
 		
 		if self.key_direction == Direction.West:
 			self.position_screen = (self.rect.centerx - 50, self.rect.centery)

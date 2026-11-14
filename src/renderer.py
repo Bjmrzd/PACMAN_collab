@@ -19,12 +19,12 @@ def render_maze(walls: list[list[int]], maze: Maze, screen, screen_width, screen
         "left": 8,
         "right": 2,
     }
+    pacman_pos: (0, 0)
     # print(maze.width, maze.height)
 
     for rows in range(len(walls)):
         for cols in range(len(walls[0])):
             cell = walls[rows][cols]
-            print(rows, cols)
             list_cell.append(cell)
 
             start_x = middle_x + cols * space
@@ -42,11 +42,12 @@ def render_maze(walls: list[list[int]], maze: Maze, screen, screen_width, screen
             if (cell & direction["right"]):
                 pg.draw.line(screen, Color.WHITE.value, (end_x, start_y), (end_x, end_y), 5)
 
-            # if maze.spawn == (cols, rows):
-            if cols == 9 and rows == 9:
+            if maze.spawn == (cols, rows):
                 # print(start_x, start_y) # + 50 each movement
-                pacman.rect.center = (start_x, start_y)
+                # pacman.rect.topleft = (start_x, start_y)
+                pacman_pos = (start_x, start_y)
 
             if cols == 9 and rows == 9:
                 # print("test")
                 pg.draw.circle(screen, Color.RED.value, (start_x, start_y), 5.0)
+    return pacman_pos
