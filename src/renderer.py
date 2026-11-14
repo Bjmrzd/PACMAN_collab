@@ -4,7 +4,8 @@ from src.helper import Font, Color
 from src.maze import Maze, Direction, WALL_BITS
 from typing import Any
 
-def render_maze(walls : list[list[int]], maze: Maze, screen, screen_width, screen_height, pacman):
+
+def render_maze(walls: list[list[int]], maze: Maze, screen, screen_width, screen_height, pacman):
     list_cell: list[Any] = []
     index: int = 0
     # start_x: int = 50
@@ -42,13 +43,10 @@ def render_maze(walls : list[list[int]], maze: Maze, screen, screen_width, scree
                 pg.draw.line(screen, Color.WHITE.value, (end_x, start_y), (end_x, end_y), 5)
 
             # if maze.spawn == (cols, rows):
-            if cols == 5 and rows == 5:
+            if cols == 9 and rows == 9:
                 # print(start_x, start_y) # + 50 each movement
                 pacman.rect.center = (start_x, start_y)
 
-            if cols == 5 and rows == 5:
+            if cols == 9 and rows == 9:
                 # print("test")
                 pg.draw.circle(screen, Color.RED.value, (start_x, start_y), 5.0)
-
-
-

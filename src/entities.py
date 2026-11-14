@@ -97,8 +97,6 @@ class Mover(ABC):
 			self.progress = 0.0
 			self.cell_reached()
 
-
-
 class Pac_anim(Enum):
 	UP = Images.PACMAN.value.subsurface((3, 74, 26, 25))
 	RIGHT = Images.PACMAN.value.subsurface((2, 3, 25, 25))
