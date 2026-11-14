@@ -46,7 +46,6 @@ class Game:
         level_list: list[Any] = []
         sprites_grp = pg.sprite.Group()
 
-        # index = 0
         for index in range(0, 10):
             maze = generate_hex_maze(self.level_list[index].get("height"), self.level_list[index].get("width"), self.config.seed)
         # maze = level_maze(self.level_list[index].get("height"), self.level_list[index].get("width"), self.config.seed)
@@ -56,6 +55,7 @@ class Game:
         pac = PacMan(maze_class, maze_class.spawn)
         # pac.rect.center = (9, 9)
         sprites_grp.add(pac)
+        index = 0
 
         while running:
 
@@ -79,12 +79,13 @@ class Game:
             display_lives = Text("Lives: " + str(self.lives), Color.RED.value, 1700, 200, Size.TEXT.value)
             display_lives.show_text(self.screen)
             number_level: int = self.next_level()
-            pacman_pos = render_maze(maze, maze_class, self.screen, self.screen_width, self.screen_height, pac)
+            render_maze(maze, maze_class, self.screen, self.screen_width, self.screen_height, pac, index)
+            index += 1
 
             direction = pac.check_keys(keys)
-            # pac.set_next_move(direction)
+            pac.set_next_move(direction)
             # pac.advance(1.0)
-            n_direction = pac.check_directions(direction)
+            n_direction = pac.check_directions()
             # print(n_direction)
             sprites_grp.draw(self.screen)
             # print(pac.key_direction)

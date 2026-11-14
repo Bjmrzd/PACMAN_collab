@@ -5,23 +5,28 @@ from src.maze import Maze, Direction, WALL_BITS
 from typing import Any
 
 
-def render_maze(walls: list[list[int]], maze: Maze, screen, screen_width, screen_height, pacman):
+def render_maze(walls: list[list[int]], maze: Maze, screen, screen_width, screen_height, pacman, index):
     list_cell: list[Any] = []
-    index: int = 0
+    # index: int = 0
     # start_x: int = 50
     # start_y: int = 50
     space: int = 50
     middle_x: int = (screen_width - len(walls[0]) * space) // 2
     middle_y: int = (screen_height - len(walls) * space) // 2
+    iseven: bool = True
+    if maze.spawn[0] % 2 == 0 and maze.spawn[1] % 2 == 0 and index < 1:
+        # print(maze.spawn[0], maze.spawn[1])
+        iseven = True
+    elif not maze.spawn[0] % 2 == 0 and not maze.spawn[1] % 2 == 0 and index < 1:
+        maze.spawn = (maze.spawn[0] - 1, maze.spawn[1] - 1)
     direction: dict[str | int] = {
         "top": 1,
         "bottom": 4,
         "left": 8,
         "right": 2,
     }
-    pacman_pos: (0, 0)
+    # pacman_pos: (0, 0)
     # print(maze.width, maze.height)
-
     for rows in range(len(walls)):
         for cols in range(len(walls[0])):
             cell = walls[rows][cols]
@@ -42,12 +47,19 @@ def render_maze(walls: list[list[int]], maze: Maze, screen, screen_width, screen
             if (cell & direction["right"]):
                 pg.draw.line(screen, Color.WHITE.value, (end_x, start_y), (end_x, end_y), 5)
 
-            if maze.spawn == (cols, rows):
-                # print(start_x, start_y) # + 50 each movement
-                # pacman.rect.topleft = (start_x, start_y)
-                pacman_pos = (start_x, start_y)
+            if maze.spawn == (cols, rows) and index < 1 and not iseven:
+                pacman.rect.topleft = (start_x, start_y)
+                print("test")
+
+            if maze.spawn == (cols, rows) and index < 1 and iseven:
+                print(maze.spawn, cols, rows)
+                pacman.rect.topleft = (end_x - 50, end_y - 50)
+                print("testsssssssssssss")
+
+            elif pacman.pos_maze == (cols, rows) and pacman.key_direction:
+                pacman.rect.topleft = (start_x, start_y)
 
             if cols == 9 and rows == 9:
                 # print("test")
                 pg.draw.circle(screen, Color.RED.value, (start_x, start_y), 5.0)
-    return pacman_pos
+    # return pacman_pos

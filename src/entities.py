@@ -36,7 +36,7 @@ class Mover(ABC):
 		self.direction: Direction | None = None
 		self.target: Cell | None = None
 		self.progress: float = 0.0  # 0.0 a 1.0
-		self.position_screen = None
+		# self.position_screen = None
 
 
 
@@ -109,7 +109,7 @@ class Pac_anim(Enum):
 
 
 class PacMan(Mover, pg.sprite.Sprite):
-	def __init__(self, maze: Maze, cell: Cell, speed: float = 5.0) -> None:
+	def __init__(self, maze: Maze, cell: Cell, speed: float = 1.0) -> None:
 		"""Create the Pac-Man. Key_direction is the direction saved each time we press a directional key"""
 		super().__init__(maze, cell, speed)
 		pg.sprite.Sprite.__init__(self)
@@ -122,7 +122,8 @@ class PacMan(Mover, pg.sprite.Sprite):
 		self.key_direction: Direction | None = None
 		self.on_cell_center: Callable[[Cell], None] = None
 		self.spawn = (cell[0], cell[1])
-		# self.position_screen = self.rect.center
+		self.position_screen = self.rect.center
+		self.pos_maze = self.spawn
 
 	def check_keys(self, keys):
 		direction: Any = None
@@ -137,24 +138,27 @@ class PacMan(Mover, pg.sprite.Sprite):
 			
 		return direction
 
-	def check_directions(self, direction):
+	def check_directions(self):
 		# if self.key_direction:
 		# 	return
-
-		self.key_direction = direction
 		
 		if self.key_direction == Direction.West:
 			self.position_screen = (self.rect.centerx - 50, self.rect.centery)
 			self.rect.center = self.position_screen
+			self.pos_maze = (self.pos_maze[0] - 1, self.pos_maze[1])
 		if self.key_direction == Direction.East:
 			self.position_screen = (self.rect.centerx + 50, self.rect.centery)
 			self.rect.center = self.position_screen
+			self.pos_maze = (self.pos_maze[0] + 1, self.pos_maze[1])
 		if self.key_direction == Direction.North:
 			self.position_screen = (self.rect.centerx, self.rect.centery - 50)
 			self.rect.center = self.position_screen
+			self.pos_maze = (self.pos_maze[0], self.pos_maze[1] - 1)
 		if self.key_direction == Direction.South:
 			self.position_screen = (self.rect.centerx, self.rect.centery + 50)
 			self.rect.center = self.position_screen
+			self.pos_maze = (self.pos_maze[0], self.pos_maze[1] + 1)
+
 
 		return self.position_screen
 
