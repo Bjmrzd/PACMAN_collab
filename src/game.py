@@ -6,6 +6,7 @@ from src.highscore import ranking_score, valid_highscore
 from src.renderer import render_maze
 from src.maze import Maze
 from src.level import Level, LevelState
+from src.scoring import GameState, ScoringRules
 from src.maze_convert import level_maze, generate_hex_maze
 from src.entities import PacMan
 import json
@@ -55,7 +56,11 @@ class Game:
         pac = PacMan(maze_class, maze_class.spawn)
         # pac.rect.center = (9, 9)
         sprites_grp.add(pac)
-        index = 0
+        index: int = 0
+        time: int = self.config.level_1.get("lvl_max_time")
+        rules = ScoringRules(self.config.level_1.get("pacgum_pts"), self.config.level_1.get("super_pacgum_pts"), self.config.level_1.get("ghost_pts"))
+        state = GameState(self.config.level_1.get("lives"), rules)
+        first_level = Level(maze_class, state, 1, time)
 
         while running:
 
@@ -78,7 +83,7 @@ class Game:
 
             display_lives = Text("Lives: " + str(self.lives), Color.RED.value, 1700, 200, Size.TEXT.value)
             display_lives.show_text(self.screen)
-            number_level: int = self.next_level()
+            current_level: int = self.next_level(level_list, state, first_level)
             render_maze(maze, maze_class, self.screen, self.screen_width, self.screen_height, pac, index)
             index += 1
 
@@ -88,6 +93,7 @@ class Game:
             n_direction = pac.check_directions()
             # print(n_direction)
             sprites_grp.draw(self.screen)
+            
             # print(pac.key_direction)
             # for index in range(0, 10):
                 # Level(maze)
@@ -98,8 +104,12 @@ class Game:
         # display if cheat on or not
         # render maze, pacgum, pacman and ghost
 
-    def next_level(self):
+    def next_level(self, level_list: list[Any], state, first_level):
         index: int = 0
+
+        new_level = Level(level_list[index], state, index, )
+        index += 1
+        return new_level
 
         return index
 
