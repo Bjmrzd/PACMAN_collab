@@ -188,9 +188,9 @@ class PacMan(Mover, pg.sprite.Sprite):
 
 
 class Ghost(Mover, pg.sprite.Sprite):
-	def __init__(self, maze: Maze, corner: Cell, personnality: Personnality, rng: random.Random) -> None:
-		super().__init__(maze, corner)
-		pg.sprite.Sprite().__init__(self)
+	def __init__(self, maze: Maze, corner: Cell, personnality: Personnality, rng: random.Random, speed: float = 1.0) -> None:
+		super().__init__(maze, corner, speed)
+		pg.sprite.Sprite.__init__(self)
 		self.state: State = "normal"
 		self.personnality = personnality
 		self.spawn = corner

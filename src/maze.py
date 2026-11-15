@@ -108,7 +108,7 @@ class Maze: #faire des méthodes intermédiaires pour assurer qu'il n'y ait pas 
         return valid_cells - {self.spawn, *self.ghost_corners}
 
     def super_pacgum_positions(self) -> set[Cell]:
-        valid_cells = set[Cell] = {}
+        valid_cells: set[Cell] = {}
         for cell in self.ghost_corners:
             if cell in self.distance_map(self.spawn):
                 valid_cells.add(cell)

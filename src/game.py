@@ -12,6 +12,7 @@ from src.entities import PacMan
 import json
 from typing import Any
 import sys
+from random import random
 import logging
 
 
@@ -46,6 +47,7 @@ class Game:
         running: bool = True
         level_list: list[Any] = []
         sprites_grp = pg.sprite.Group()
+        random_float = random()
 
         for index in range(0, 10):
             maze = generate_hex_maze(self.level_list[index].get("height"), self.level_list[index].get("width"), self.config.seed)
@@ -57,10 +59,10 @@ class Game:
         # pac.rect.center = (9, 9)
         sprites_grp.add(pac)
         index: int = 0
-        time: int = self.config.level_1.get("lvl_max_time")
-        rules = ScoringRules(self.config.level_1.get("pacgum_pts"), self.config.level_1.get("super_pacgum_pts"), self.config.level_1.get("ghost_pts"))
-        state = GameState(self.config.level_1.get("lives"), rules)
-        first_level = Level(maze_class, state, 1, time)
+        time: int = self.config.lvl_max_time
+        rules = ScoringRules(self.config.pacgum_pts, self.config.super_pacgum_pts, self.config.ghost_pts)
+        state = GameState(self.config.lives, rules)
+        first_level = Level(maze_class, state, 1, time, random_float)
 
         while running:
 
@@ -83,7 +85,11 @@ class Game:
 
             display_lives = Text("Lives: " + str(self.lives), Color.RED.value, 1700, 200, Size.TEXT.value)
             display_lives.show_text(self.screen)
-            current_level: int = self.next_level(level_list, state, first_level)
+
+            # current_level: int = self.next_level(level_list, state, first_level, random_float, time)
+            # to go to the next level but crash, need to fix
+
+
             render_maze(maze, maze_class, self.screen, self.screen_width, self.screen_height, pac, index)
             index += 1
 
@@ -104,10 +110,10 @@ class Game:
         # display if cheat on or not
         # render maze, pacgum, pacman and ghost
 
-    def next_level(self, level_list: list[Any], state, first_level):
+    def next_level(self, level_list: list[Any], state, first_level, random_float, time):
         index: int = 0
 
-        new_level = Level(level_list[index], state, index, )
+        new_level = Level(level_list[index], state, index, time, random_float)
         index += 1
         return new_level
 
