@@ -48,6 +48,7 @@ class Game:
         level_list: list[Any] = []
         sprites_grp = pg.sprite.Group()
         random_float = random()
+        clock = pg.time.Clock()
 
         for index in range(0, 10):
             maze = generate_hex_maze(self.level_list[index].get("height"), self.level_list[index].get("width"), self.config.seed)
@@ -83,12 +84,18 @@ class Game:
             if keys[pg.K_n]:
                 self.next_level()
 
-            display_lives = Text("Lives: " + str(self.lives), Color.RED.value, 1700, 200, Size.TEXT.value)
+            time -= clock.tick(120) / 1000
+            accurate_time = round(time, 2)
+
+            display_lives = Text("Lives: " + str(self.lives), Color.RED.value, 1800, 200, Size.TEXT.value)
             display_lives.show_text(self.screen)
+
+            display_time = Text("Timer: " + str(accurate_time), Color.RED.value, 2000, 400, Size.TEXT.value)
+            display_time.show_text(self.screen)
 
             # current_level: int = self.next_level(level_list, state, first_level, random_float, time)
             # to go to the next level but crash, need to fix
-
+            
 
             render_maze(maze, maze_class, self.screen, self.screen_width, self.screen_height, pac, index)
             index += 1
