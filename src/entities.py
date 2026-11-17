@@ -8,22 +8,22 @@ from src.helper import Images
 
 
 class State(Enum):
-	NORMAL = "normal",
-	EDIBLE = "edible",
+	NORMAL = "normal"
+	EDIBLE = "edible"
 	EATEN = "eaten"
 
 class GhostFeatures(Enum):
-	NORMAL_SPEED = 5.0,
-	EDIBLE_SPEED = 2.5,
-	CLYDE_DISTANCE = 8,
-	PINKY_LOOKAHEAD = 4,
-	INKY_SIGHT = 4,
-	RESPAWN_DELAY = 5.0
+	NORMAL_SPEED    = 5.0
+	EDIBLE_SPEED    = 2.5
+	CLYDE_DISTANCE  = 8
+	PINKY_LOOKAHEAD = 4
+	INKY_SIGHT      = 4
+	RESPAWN_DELAY   = 5.0
 
 class Personnality(Enum):
-	BLINKY = "blinky",  #Aims the player's cell
-	PINKY = "pinky",	#Aims a few cells ahead of the player
-	INKY = "inky",	  	#Chaotic movements
+	BLINKY = "blinky"   #Aims the player's cell
+	PINKY = "pinky"	    #Aims a few cells ahead of the player
+	INKY = "inky"	  	#Chaotic movements
 	CLYDE = "clyde"	 	#Chases when far, goes home when close
 
 
@@ -37,7 +37,6 @@ class Mover(ABC):
 		self.target: Cell | None = None
 		self.progress: float = 0.0  # 0.0 a 1.0
 		# self.position_screen = None
-
 
 
 	@property
@@ -201,7 +200,7 @@ class Ghost(Mover, pg.sprite.Sprite):
 		self.state: State = "normal"
 		self.personnality = personnality
 		self.spawn = corner
-		self.speed = GhostFeatures.NORMAL_SPEED
+		self.speed = GhostFeatures.NORMAL_SPEED.value
 		self.rng = rng
 		self.state = State.NORMAL
 		self.timer = 0.0
@@ -215,11 +214,11 @@ class Ghost(Mover, pg.sprite.Sprite):
 	def tick(self, dt: float, player_cell: Cell, player_dir: Direction | None) -> None:
 		self.player_cell = player_cell
 		self.player_dir = player_dir
-		if self.state is not State.Normal:
+		if self.state is not State.NORMAL:
 			self.timer -= dt
 			if self.timer <= 0:
 				self.state = State.NORMAL
-				self.speed = GhostFeatures.NORMAL_SPEED
+				self.speed = GhostFeatures.NORMAL_SPEED.value
 		if self.state is not State.EATEN:
 			self.advance(dt)
 
@@ -230,19 +229,19 @@ class Ghost(Mover, pg.sprite.Sprite):
 		if self.personnality is Personnality.PINKY:
 			if self.player_dir is None:
 				return self.player_cell
-			return self.maze.steps_forward(self.player_cell, self.player_dir, GhostFeatures.PINKY_LOOKAHEAD)
+			return self.maze.steps_forward(self.player_cell, self.player_dir, GhostFeatures.PINKY_LOOKAHEAD.value)
 		if self.personnality is Personnality.INKY:
-			if distance <= GhostFeatures.INKY_SIGHT:
+			if distance <= GhostFeatures.INKY_SIGHT.value:
 				return self.player_cell
 			return None
 		if self.personnality is Personnality.CLYDE:
-			if distance > GhostFeatures.CLYDE_DISTANCE:
+			if distance > GhostFeatures.CLYDE_DISTANCE.value:
 				return self.player_cell
 			else:
 				return self.home
 
 	def choose_direction(self) -> Direction | None:
-		choices = self.maze.valid_directions()
+		choices = self.maze.valid_directions(self.current_cell)
 		if not choices:
 			return None
 		if self.direction is not None and len(choices) > 1:
@@ -288,18 +287,18 @@ class Ghost(Mover, pg.sprite.Sprite):
 			return
 		self.state = State.EDIBLE
 		self.timer = duration
-		self.speed = GhostFeatures.EDIBLE_SPEED
+		self.speed = GhostFeatures.EDIBLE_SPEED.value
 		self.reverse()
 
 	def eaten(self) -> None:
 		super().reset()
 		self.state = State.EATEN
-		self.timer = GhostFeatures.RESPAWN_DELAY
+		self.timer = GhostFeatures.RESPAWN_DELAY.value
 
 	def reset(self) -> None:
 		super().reset()
 		self.state = State.NORMAL
-		self.speed = GhostFeatures.NORMAL_SPEED
+		self.speed = GhostFeatures.NORMAL_SPEED.value
 		self.timer = 0.0
 
 
