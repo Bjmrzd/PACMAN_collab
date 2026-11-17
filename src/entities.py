@@ -169,7 +169,7 @@ class PacMan(Mover, pg.sprite.Sprite):
 		rules = state.rules
 		if pg.sprite.spritecollide(self, gum, True):
 			gum.state = State.EATEN
-			state.add_point(state.rules.pacgum)
+			state.add_points(state.rules.pacgum)
 
 
 		return self.position_screen
@@ -282,9 +282,9 @@ class Ghost(Mover, pg.sprite.Sprite):
 			else:
 				is_better = score < best_score
 
-			print("Score : ", score)
-			print("Best Score : ", best_score)
-			print("List Directions: ", direction)
+			# print("Score : ", score)
+			# print("Best Score : ", best_score)
+			# print("List Directions: ", direction)
 			if is_better:
 				best_score = score
 				best_directions = [direction]
@@ -314,6 +314,16 @@ class Ghost(Mover, pg.sprite.Sprite):
 
 
 class Pacgum(pg.sprite.Sprite):
+	def __init__(self, cell: Cell, state: State):
+		super().__init__()
+
+		self.position = cell
+		self.state = state
+		self.image = Images.SUPERGUM.value
+		self.rect = self.image.get_rect()
+		self.rect.center = (0, 0)
+
+class Super_gum(pg.sprite.Sprite):
 	def __init__(self, cell: Cell, state: State):
 		super().__init__()
 

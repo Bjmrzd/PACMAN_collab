@@ -108,7 +108,7 @@ class Game:
                         level.pac_man.set_next_move(self.key.get[event.key])
             level.update(dt)
             level.pacman_reach_cell(pac, dict_gum)
-            accurate_time = round(timer, 2)
+            accurate_time = round(dt, 2)
 
             display_lives = Text("Lives: " + str(self.lives), Color.RED.value, 1800, 200, Size.TEXT.value)
             display_lives.show_text(self.screen)

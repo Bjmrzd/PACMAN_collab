@@ -52,7 +52,7 @@ class Level():
 
 
 	def pacman_reach_cell(self, pac: PacMan, gum) -> None:
-		pac.check_gum(gum.get("sprite"), self.state, gum.get("entities"))
+		pac.check_gum(gum.get("sprite"), self.state)
 		self.pacgums = self.is_pacgum(gum.get("entities"))
 		# rules = self.state.rules
 		# if cell in self.pacgums:

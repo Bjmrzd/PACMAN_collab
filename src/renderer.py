@@ -53,12 +53,9 @@ def render_maze(walls: list[list[int]], maze: Maze, screen, screen_width, screen
 
             if maze.spawn == (cols, rows) and index < 1 and not iseven:
                 pacman.rect.topleft = (start_x, start_y)
-                print("test")
 
             if maze.spawn == (cols, rows) and index < 1 and iseven:
-                print(maze.spawn, cols, rows)
                 pacman.rect.topleft = (end_x - 50, end_y - 50)
-                print("testsssssssssssss")
 
             elif pacman.pos_maze == (cols, rows) and pacman.key_direction:
                 pacman.rect.topleft = (start_x, start_y)

@@ -61,10 +61,11 @@ class Maze: #faire des méthodes intermédiaires pour assurer qu'il n'y ait pas 
 
     def can_move(self, cell: Cell, direction: Direction) -> bool:
         # a corriger plus tard, mis la en l'attente de debugger le reste 
-        if cell is None:
+        if cell is None or cell[0] >= len(self.walls[0]) or cell[1] >= len(self.walls):
             return False
         #
         row, col = cell
+        print(row, col, len(self.walls[0]), len(self.walls))
         if self.walls[row][col] & direction.wall_bit:  #check si il y a un mur dans cette direction
             return False
         target = self.step(cell, direction)
