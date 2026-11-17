@@ -75,11 +75,12 @@ class Game:
         maze = generate_hex_maze(self.level_list[index].get("height"), self.level_list[index].get("width"), self.config.seed)    
         maze_class = Maze(maze)
         sprites_grp = pg.sprite.Group()
+        gum_grp = pg.sprite.Group()
         level = Level(maze_class, state, level_number, self.max_time, self.rng)
         pac = PacMan(maze_class, maze_class.spawn)
-        render_maze(maze, maze_class, self.screen, self.screen_width, self.screen_height, pac, index)
         sprites_grp.add(pac)
         while level.level_state is LevelState.PLAYING:
+
             self.screen.fill(Color.BLACK.value)
             dt = timer.tick(self.fps) / 1000
             render_maze(maze, maze_class, self.screen, self.screen_width, self.screen_height, pac, index)

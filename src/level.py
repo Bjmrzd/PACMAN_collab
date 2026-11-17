@@ -44,7 +44,7 @@ class Level():
 			return
 		self.pac_man.advance(dt)
 		for ghost in self.ghosts:
-			ghost.tick(dt, self.pac_man.cell, self.pac_man.direction)
+			ghost.tick(dt, self.pac_man.current_cell, self.pac_man.direction)
 		self.collisions()
 		if self.level_state is LevelState.PLAYING and not self.pacgums:
 			self.level_state = LevelState.WON
