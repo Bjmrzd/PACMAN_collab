@@ -66,7 +66,7 @@ class Game:
             if level_state is LevelState.GAME_OVER:
                 self.game_over()
                 return
-            self.win()
+        self.win()
 
 
     def play_level(self, level_number: int, state: GameState, timer: pg.time.Clock) -> LevelState | None:
@@ -79,7 +79,7 @@ class Game:
         pac = PacMan(maze_class, maze_class.spawn)
         render_maze(maze, maze_class, self.screen, self.screen_width, self.screen_height, pac, index)
         sprites_grp.add(pac)
-        while LevelState is LevelState.PLAYING:
+        while level.level_state is LevelState.PLAYING:
             self.screen.fill(Color.BLACK.value)
             dt = timer.tick(self.fps) / 1000
             render_maze(maze, maze_class, self.screen, self.screen_width, self.screen_height, pac, index)

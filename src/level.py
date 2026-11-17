@@ -2,7 +2,7 @@ from enum import Enum
 import random
 import math
 
-from src.entities import Ghost,PacMan, State, Personnality
+from src.entities import Ghost, PacMan, State, Personnality
 from src.maze import Maze, Cell
 from src.scoring import GameState
 
@@ -69,7 +69,7 @@ class Level():
 				continue
 			g_row, g_col = ghost.position
 
-			if math.sqrt(abs(g_row - p_row)**2 + abs(g_col - p_col)**2 ) < LevelFeatures:
+			if math.sqrt(abs(g_row - p_row)**2 + abs(g_col - p_col)**2 ) < LevelFeatures.COLLISION_RANGE.value:
 				if ghost.state is State.EDIBLE:
 					ghost.eaten
 					self.state.add_points(self.state.rules.ghost)
