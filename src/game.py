@@ -79,11 +79,15 @@ class Game:
         pac = PacMan(maze_class, maze_class.spawn)
         sprites_grp.add(pac)
         while level.level_state is LevelState.PLAYING:
-
             self.screen.fill(Color.BLACK.value)
             dt = timer.tick(self.fps) / 1000
             dict_gum = render_maze(maze, maze_class, self.screen, self.screen_width, self.screen_height, pac, index)
             index += 1
+            #
+            # print("Pac current cell: ", pac.current_cell)
+            # for ghost in level.ghosts:
+            #     print(f"{ghost.personnality.value} cell : ",ghost.current_cell)
+            #
             for event in pg.event.get():
                 if event.type == pg.QUIT:
                     pg.quit()

@@ -85,7 +85,7 @@ class Mover(ABC):
 			if self.target is None:
 				if not self.start_move():
 					return
-			print("test")
+			# print("test")
 			remaining = 1.0 - self.progress
 			if distance < remaining:
 				self.progress += distance
@@ -229,7 +229,7 @@ class Ghost(Mover, pg.sprite.Sprite):
 			self.advance(dt)
 
 	def goal(self) -> Cell | None:
-		distance = self.maze.distance_map(self.player_cell).get(self.cell)
+		distance = self.maze.distance_map(self.player_cell).get(self.current_cell)
 		if self.personnality is Personnality.BLINKY:
 			return self.player_cell
 		if self.personnality is Personnality.PINKY:
@@ -269,9 +269,11 @@ class Ghost(Mover, pg.sprite.Sprite):
 		best_directions: list[Direction] = []
 
 		for direction in choices:
-			neighbour = self.maze.step(self.cell, direction)
+			neighbour = self.maze.step(self.current_cell, direction)
 			if neighbour in distance:
 				score = distance[neighbour]
+			else:
+				score = 10**9
 
 			if best_score is None:
 				is_better = True
@@ -280,6 +282,9 @@ class Ghost(Mover, pg.sprite.Sprite):
 			else:
 				is_better = score < best_score
 
+			print("Score : ", score)
+			print("Best Score : ", best_score)
+			print("List Directions: ", direction)
 			if is_better:
 				best_score = score
 				best_directions = [direction]
