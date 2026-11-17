@@ -106,6 +106,13 @@ class Pac_anim(Enum):
 	C_RIGHT = Images.PACMAN.value.subsurface((35, 4, 25, 25))
 	C_LEFT = Images.PACMAN.value.subsurface((35, 35, 25, 25))
 	C_DOWN = Images.PACMAN.value.subsurface((35, 100, 25, 25))
+	CLYDE_RIGHT = Images.PACMAN.value.subsurface((3, 125, 25, 25))
+	PINKY_RIGHT = Images.PACMAN.value.subsurface((3, 150, 25, 25))
+	INKY_RIGHT = Images.PACMAN.value.subsurface((3, 175, 25, 25))
+	BLINKY_RIGHT = Images.PACMAN.value.subsurface((3, 200, 25, 25))
+
+
+
 
 
 class PacMan(Mover, pg.sprite.Sprite):
@@ -294,3 +301,10 @@ class Ghost(Mover, pg.sprite.Sprite):
 		self.state = State.NORMAL
 		self.speed = GhostFeatures.NORMAL_SPEED
 		self.timer = 0.0
+
+
+class Pacgum(pg.sprite.Sprite):
+	def __init__(self, position: tuple[int, int], state: State):
+		super().__init__(self)
+		self.position = position
+		self.state = state

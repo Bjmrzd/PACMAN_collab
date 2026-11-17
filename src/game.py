@@ -4,7 +4,7 @@ from src.parsing import parsing
 from src.helper import Color, Box_Button, Font, Size, Text
 from src.highscore import ranking_score, valid_highscore
 from src.renderer import render_maze
-from src.maze import Maze
+from src.maze import Maze, Direction
 from src.level import Level, LevelState
 from src.scoring import GameState, ScoringRules
 from src.maze_convert import level_maze, generate_hex_maze
@@ -12,13 +12,15 @@ from src.entities import PacMan
 import json
 from typing import Any
 import sys
-from random import random
+import random
 import logging
+from enum import Enum
 
 
 class Game:
     """Class for the pacman game"""
     def __init__(self, screen, screen_width, screen_height):
+        self.fps: int = 60
         self.screen = screen
         self.screen_width = screen_width
         self.screen_height = screen_height
@@ -26,6 +28,7 @@ class Game:
         self.config = parsing()
         self.lives: int = self.config.lives
         self.max_time: int = self.config.lvl_max_time
+        self.rng = random.Random(self.config.seed)
         logging.basicConfig(filename="error.logs", filemode="a",
                             format="%(asctime)s - %(message)s",
                             datefmt='%m/%d/%Y %I:%M:%S %p')
@@ -41,51 +44,66 @@ class Game:
             self.config.level_9,
             self.config.level_10,
         ]
+        self.keys = {pg.K_UP : Direction.North,
+                     pg.K_w : Direction.North,
+                     pg.K_RIGHT : Direction.East,
+                     pg.K_d : Direction.East,
+                     pg.K_DOWN : Direction.South,
+                     pg.K_s : Direction.South,
+                     pg.K_LEFT : Direction.West,
+                     pg.K_a : Direction.West}
+
 
     def main_loop(self):
-        """Main game loop"""
-        running: bool = True
-        level_list: list[Any] = []
-        sprites_grp = pg.sprite.Group()
-        random_float = random()
-        clock = pg.time.Clock()
-
-        for index in range(0, 10):
-            maze = generate_hex_maze(self.level_list[index].get("height"), self.level_list[index].get("width"), self.config.seed)
-        # maze = level_maze(self.level_list[index].get("height"), self.level_list[index].get("width"), self.config.seed)
-            maze_class = Maze(maze)
-            level_list.append((maze, maze_class))
-        print(maze_class.spawn, maze_class.height, maze_class.width)
-        pac = PacMan(maze_class, maze_class.spawn)
-        # pac.rect.center = (9, 9)
-        sprites_grp.add(pac)
-        index: int = 0
-        time: int = self.config.lvl_max_time
         rules = ScoringRules(self.config.pacgum_pts, self.config.super_pacgum_pts, self.config.ghost_pts)
-        state = GameState(self.config.lives, rules)
-        first_level = Level(maze_class, state, 1, time, random_float)
-
-        while running:
-
-            self.screen.fill(Color.BLACK.value)
-
-            for event in pg.event.get():
-                pass
-            keys = pg.key.get_pressed()
-            if keys[pg.K_ESCAPE]:
-                self.pause_menu()
-            if keys[pg.K_c]:
-                list_cheat = self.cheat_screen()
-                print(list_cheat)
-            if keys[pg.K_1]:
-                self.win()
-            if keys[pg.K_2]:
+        state = GameState(self.lives, rules)
+        timer = pg.time.Clock()
+        nb_levels: int = len(self.level_list)
+        for n in range(1, nb_levels + 1):
+            level_state = self.play_level(n, state, timer)
+            if level_state is None:
+                return
+            if level_state is LevelState.GAME_OVER:
                 self.game_over()
-            if keys[pg.K_n]:
-                self.next_level()
+                return
+            self.win()
 
-            time -= clock.tick(120) / 1000
-            accurate_time = round(time, 2)
+
+    def play_level(self, level_number: int, state: GameState, timer: pg.time.Clock) -> LevelState | None:
+        # maze = level_maze(self.level_list[level_number].get("height"), self.level_list[level_number].get("width"), self.config.seed)
+        index: int = 0
+        maze = generate_hex_maze(self.level_list[index].get("height"), self.level_list[index].get("width"), self.config.seed)    
+        maze_class = Maze(maze)
+        sprites_grp = pg.sprite.Group()
+        level = Level(maze_class, state, level_number, self.max_time, self.rng)
+        pac = PacMan(maze_class, maze_class.spawn)
+        render_maze(maze, maze_class, self.screen, self.screen_width, self.screen_height, pac, index)
+        sprites_grp.add(pac)
+        while LevelState is LevelState.PLAYING:
+            self.screen.fill(Color.BLACK.value)
+            dt = timer.tick(self.fps) / 1000
+            render_maze(maze, maze_class, self.screen, self.screen_width, self.screen_height, pac, index)
+            index += 1
+            for event in pg.event.get():
+                if event.type == pg.QUIT:
+                    pg.quit()
+                    sys.exit()
+                if event.type == pg.KEYDOWN:
+                    if event.key == pg.K_ESCAPE:
+                        self.pause_menu()
+                    if event.key == pg.K_c:
+                        list_cheat = self.cheat_screen()
+                        print(list_cheat)
+                    if event.key == pg.K_1:
+                        self.win()
+                    if event.key == pg.K_2:
+                        self.game_over()
+                    if event.key == pg.K_n:
+                        self.next_level()
+                    elif event.key in self.keys:
+                        level.pac_man.set_next_move(self.key.get[event.key])
+            level.update(dt)
+            accurate_time = round(timer, 2)
 
             display_lives = Text("Lives: " + str(self.lives), Color.RED.value, 1800, 200, Size.TEXT.value)
             display_lives.show_text(self.screen)
@@ -93,29 +111,11 @@ class Game:
             display_time = Text("Timer: " + str(accurate_time), Color.RED.value, 2000, 400, Size.TEXT.value)
             display_time.show_text(self.screen)
 
-            # current_level: int = self.next_level(level_list, state, first_level, random_float, time)
-            # to go to the next level but crash, need to fix
-            
-
-            render_maze(maze, maze_class, self.screen, self.screen_width, self.screen_height, pac, index)
-            index += 1
-
-            direction = pac.check_keys(keys)
-            pac.set_next_move(direction)
-            # pac.advance(1.0)
-            n_direction = pac.check_directions()
-            # print(n_direction)
             sprites_grp.draw(self.screen)
-            
-            # print(pac.key_direction)
-            # for index in range(0, 10):
-                # Level(maze)
-
+            #draw the level: maze, pacman, ghosts and pacgums
             pg.display.flip()
+        return level.level_state
 
-        # need to do timer, levels, lives
-        # display if cheat on or not
-        # render maze, pacgum, pacman and ghost
 
     def next_level(self, level_list: list[Any], state, first_level, random_float, time):
         index: int = 0
@@ -124,7 +124,7 @@ class Game:
         index += 1
         return new_level
 
-        return index
+
 
     def game_over(self):
         """Game over screen"""
