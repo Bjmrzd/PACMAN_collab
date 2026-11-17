@@ -75,7 +75,6 @@ class Game:
         maze = generate_hex_maze(self.level_list[index].get("height"), self.level_list[index].get("width"), self.config.seed)    
         maze_class = Maze(maze)
         sprites_grp = pg.sprite.Group()
-        gum_grp = pg.sprite.Group()
         level = Level(maze_class, state, level_number, self.max_time, self.rng)
         pac = PacMan(maze_class, maze_class.spawn)
         sprites_grp.add(pac)
@@ -83,7 +82,7 @@ class Game:
 
             self.screen.fill(Color.BLACK.value)
             dt = timer.tick(self.fps) / 1000
-            render_maze(maze, maze_class, self.screen, self.screen_width, self.screen_height, pac, index)
+            dict_gum = render_maze(maze, maze_class, self.screen, self.screen_width, self.screen_height, pac, index)
             index += 1
             for event in pg.event.get():
                 if event.type == pg.QUIT:
@@ -104,6 +103,7 @@ class Game:
                     elif event.key in self.keys:
                         level.pac_man.set_next_move(self.key.get[event.key])
             level.update(dt)
+            level.pacman_reach_cell(pac, dict_gum)
             accurate_time = round(timer, 2)
 
             display_lives = Text("Lives: " + str(self.lives), Color.RED.value, 1800, 200, Size.TEXT.value)
@@ -113,6 +113,7 @@ class Game:
             display_time.show_text(self.screen)
 
             sprites_grp.draw(self.screen)
+            dict_gum.get("sprite").draw(self.screen)
             #draw the level: maze, pacman, ghosts and pacgums
             pg.display.flip()
         return level.level_state

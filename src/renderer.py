@@ -3,6 +3,7 @@ from src.entities import Ghost, State, Personnality
 from src.helper import Font, Color
 from src.maze import Maze, Direction, WALL_BITS
 from typing import Any
+from src.entities import Pacgum
 
 
 def render_maze(walls: list[list[int]], maze: Maze, screen, screen_width, screen_height, pacman, index):
@@ -14,6 +15,9 @@ def render_maze(walls: list[list[int]], maze: Maze, screen, screen_width, screen
     middle_x: int = (screen_width - len(walls[0]) * space) // 2
     middle_y: int = (screen_height - len(walls) * space) // 2
     iseven: bool = True
+    gum_grp = pg.sprite.Group()
+    base_state = State.EDIBLE
+    list_gum: list[Any] = []
     if maze.spawn[0] % 2 == 0 and maze.spawn[1] % 2 == 0 and index < 1:
         # print(maze.spawn[0], maze.spawn[1])
         iseven = True
@@ -62,4 +66,12 @@ def render_maze(walls: list[list[int]], maze: Maze, screen, screen_width, screen
             if cols == 9 and rows == 9:
                 # print("test")
                 pg.draw.circle(screen, Color.RED.value, (start_x, start_y), 5.0)
+
+            gum = Pacgum(cell, base_state)
+            gum.rect.topleft = (start_x, start_y)
+            gum_grp.add(gum)
+            list_gum.append(gum)
+
+    return {"sprite": gum_grp, "entities": list_gum}
+            
     # return pacman_pos

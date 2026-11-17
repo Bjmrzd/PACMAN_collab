@@ -165,6 +165,12 @@ class PacMan(Mover, pg.sprite.Sprite):
 			self.rect.center = self.position_screen
 			self.pos_maze = (self.pos_maze[0], self.pos_maze[1] + 1)
 
+	def check_gum(self, gum, state):
+		rules = state.rules
+		if pg.sprite.spritecollide(self, gum, True):
+			gum.state = State.EATEN
+			state.add_point(state.rules.pacgum)
+
 
 		return self.position_screen
 
@@ -304,9 +310,10 @@ class Ghost(Mover, pg.sprite.Sprite):
 
 class Pacgum(pg.sprite.Sprite):
 	def __init__(self, cell: Cell, state: State):
-		super().__init__(self)
+		super().__init__()
+
 		self.position = cell
 		self.state = state
 		self.image = Images.SUPERGUM.value
 		self.rect = self.image.get_rect()
-		self.rect.center = (cell[0], cell[1])
+		self.rect.center = (0, 0)

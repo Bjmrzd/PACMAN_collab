@@ -27,7 +27,8 @@ class Level():
 		self.time = float(time)
 		self.remaining_time = float(time)
 		self.level_state = LevelState.PLAYING
-		self.pacgums: set[Cell] = maze.pacgum_positions()
+		# self.pacgums: set[Cell] = maze.pacgum_positions()
+		self.pacgums: bool = False
 		self.super_pacgums: set[Cell] = maze.super_pacgum_positions()
 		self.pac_man = PacMan(maze, maze.spawn)
 		self.pac_man.on_cell_center = self.pacman_reach_cell
@@ -46,20 +47,31 @@ class Level():
 		for ghost in self.ghosts:
 			ghost.tick(dt, self.pac_man.current_cell, self.pac_man.direction)
 		self.collisions()
-		if self.level_state is LevelState.PLAYING and not self.pacgums:
+		if self.level_state is LevelState.PLAYING and self.pacgums:
 			self.level_state = LevelState.WON
 
 
-	def pacman_reach_cell(self, cell: Cell) -> None:
-		rules = self.state.rules
-		if cell in self.pacgums:
-			self.pacgums.discard(cell)
-			self.state.add_points(rules.pacgum)
-		if cell in self.super_pacgums:
-			self.super_pacgums.discard(cell)
-			self.state.add_points(rules.super_pacgum)
-			for ghost in self.ghosts:
-				ghost.is_edible(LevelFeatures.PACMAN_HUNT)
+	def pacman_reach_cell(self, pac: PacMan, gum) -> None:
+		pac.check_gum(gum.get("sprite"), self.state, gum.get("entities"))
+		self.pacgums = self.is_pacgum(gum.get("entities"))
+		# rules = self.state.rules
+		# if cell in self.pacgums:
+		# 	self.pacgums.discard(cell)
+		# 	self.state.add_points(rules.pacgum)
+		# if cell in self.super_pacgums:
+		# 	self.super_pacgums.discard(cell)
+		# 	self.state.add_points(rules.super_pacgum)
+			# for ghost in self.ghosts:
+			# 	ghost.is_edible(LevelFeatures.PACMAN_HUNT)
+	
+	def is_pacgum(self, gum):
+		index: int = 0
+		for args in gum:
+			if args.state is State.EATEN:
+				index += 1
+		if index == len(gum):
+			return True
+		return False
 
 
 	def collisions(self) -> None:
