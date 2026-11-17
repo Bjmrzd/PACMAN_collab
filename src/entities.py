@@ -308,7 +308,10 @@ class Ghost(Mover, pg.sprite.Sprite):
 
 
 class Pacgum(pg.sprite.Sprite):
-	def __init__(self, position: tuple[int, int], state: State):
+	def __init__(self, cell: Cell, state: State):
 		super().__init__(self)
-		self.position = position
+		self.position = cell
 		self.state = state
+		self.image = Images.SUPERGUM.value
+		self.rect = self.image.get_rect()
+		self.rect.center = (cell[0], cell[1])

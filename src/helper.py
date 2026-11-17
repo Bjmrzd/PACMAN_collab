@@ -21,9 +21,11 @@ class Color(Enum):
     RED = pg.Color("deeppink3")
     GREY = (100, 100, 100)
 
+
 class Images(Enum):
     PACMAN = pg.image.load("assets/pacsprites.png")
     SUPERGUM = pg.image.load("assets/pacs.jpg")
+
 
 class Box_Button():
     """Class to create button that resize based on the text inside"""

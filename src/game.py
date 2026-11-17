@@ -75,6 +75,7 @@ class Game:
         maze = generate_hex_maze(self.level_list[index].get("height"), self.level_list[index].get("width"), self.config.seed)    
         maze_class = Maze(maze)
         sprites_grp = pg.sprite.Group()
+        gum_grp = pg.sprite.Group()
         level = Level(maze_class, state, level_number, self.max_time, self.rng)
         pac = PacMan(maze_class, maze_class.spawn)
         sprites_grp.add(pac)
