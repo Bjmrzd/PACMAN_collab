@@ -78,12 +78,12 @@ class Game:
         pac = PacMan(maze_class, maze_class.spawn)
         level = Level(maze_class, state, level_number, self.max_time, self.rng, PacMan(maze_class, maze_class.spawn))
         level.pac_man = pac
-        dt = self.max_time
+        dt = 0
         sprites_grp.add(pac)
         while level.level_state is LevelState.PLAYING:
             self.screen.fill(Color.BLACK.value)
             dict_gum = render_maze(maze_class.walls, maze_class, self.screen, self.screen_width, self.screen_height, pac, index)
-            dt -= timer.tick(self.fps) / 1000
+            dt = timer.tick(self.fps) / 1000
             if index < 1:
                 level.pacgum = dict_gum
             else:
@@ -119,7 +119,7 @@ class Game:
             level.update(dt)
             level.pacman_reach_cell(pac, dict_gum)
 
-            accurate_time = round(dt, 2)
+            accurate_time = round(level.remaining_time, 2)
 
             display_score = Text("Score: " + str(state.score), Color.RED.value, 1800, 100, Size.TEXT.value)
             display_score.show_text(self.screen)

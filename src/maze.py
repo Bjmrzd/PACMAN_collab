@@ -42,16 +42,17 @@ class Maze: #faire des méthodes intermédiaires pour assurer qu'il n'y ait pas 
         self.width = len(walls[0])
         self.spawn: Cell = (self.height // 2, self.width // 2)
         self.ghost_corners: list[Cell] = [(0,0),
-                                          (0, self.width),
-                                          (self.height, 0),
-                                          (self.height, self.width)]
+                                          (0, self.width -1),
+                                          (self.height -1, 0),
+                                          (self.height -1, self.width -1)]
         self.distances: dict[Cell, dict[Cell, int]] = {}
         self.is_init: bool = False
 
     def in_maze(self, cell: Cell) -> bool:
-        if cell[0] < 0 or cell[0] > self.height:
+        row, col = cell
+        if row < 0 or row > self.height:
             return False
-        elif cell[1] < 0 or cell[1] > self.width:
+        elif col < 0 or col > self.width:
             return False
         else:
             return True
