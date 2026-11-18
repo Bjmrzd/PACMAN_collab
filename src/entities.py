@@ -148,13 +148,16 @@ class PacMan(Mover, pg.sprite.Sprite):
 	# 		direction = Direction.South
 	# 	return direction
 
-	def check_gum(self, gum: pg.sprite.Group, state: GameState):
-		eaten: list[Any] = pg.sprite.spritecollide(self, gum, True)
+	def check_gum(self, gum: pg.sprite.Group, state: GameState, supergum: pg.sprite.Group):
+		eaten: list[Any] = pg.sprite.spritecollide(self, supergum, True)
+		eaten_gum: list[Any] = pg.sprite.spritecollide(self, gum, True )
+
 		for sprite in eaten:
 			sprite.state = State.EATEN
 			if isinstance(sprite, Super_gum):
 				state.add_points(state.rules.super_pacgum)
-			else:
+		for sprite in eaten_gum:
+			if isinstance(sprite, Pacgum):
 				state.add_points(state.rules.pacgum)
 		return eaten
 
