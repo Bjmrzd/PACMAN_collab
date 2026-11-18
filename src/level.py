@@ -34,14 +34,15 @@ class Level():
 		self.pac_man = pac
 		# self.pac_man.on_cell_center = self.pacman_reach_cell(self.pac_man, self.pacgum) # besoin de faire passer pacman et list pacgum ici
 		Personnalities = [Personnality.BLINKY, Personnality.PINKY, Personnality.INKY, Personnality.CLYDE]
-		self.ghosts = [Ghost(maze, corner, personnality, rng) for corner in maze.ghost_corners for personnality in Personnalities]
+		self.ghosts = [Ghost(maze, corner, personnality, rng) for corner, personnality in zip(maze.ghost_corners, Personnalities)]
 
 
 	def update(self, dt:float) -> None:
 		if self.level_state is not LevelState.PLAYING:
 			return
-		self.remaining_time -= dt
+		self.remaining_time = max(0, self.remaining_time - dt)
 		if self.remaining_time <= 0:
+			self.remaining_time = 0
 			self.lose_life()
 			return
 		self.pac_man.advance(dt)
@@ -86,7 +87,7 @@ class Level():
 			g_row, g_col = ghost.position
 			if math.sqrt(abs(g_row - p_row)**2 + abs(g_col - p_col)**2 ) < LevelFeatures.COLLISION_RANGE.value:
 				if ghost.state is State.EDIBLE:
-					ghost.eaten
+					ghost.eaten()
 					self.state.add_points(self.state.rules.ghost)
 				else:
 					self.lose_life()
@@ -98,7 +99,8 @@ class Level():
 	def lose_life(self):
 		self.state.lose_life()
 		if self.state.game_over():
-			self.status = LevelState.GAME_OVER
+			self.level_state = LevelState.GAME_OVER
+			self.remaining_time = 0
 			return
 		self.pac_man.reset()
 		for ghost in self.ghosts:
