@@ -135,8 +135,8 @@ class PacMan(Mover, pg.sprite.Sprite):
 		self.position_screen = self.rect.center
 		self.pos_maze = cell
 
-	def check_keys(self, keys):
-		direction: Any = None
+	def check_keys(self, keys): # peut etre obsolete voir plus tard
+		direction: Any = None 
 		if keys[pg.K_LEFT] or keys[pg.K_a]:
 			direction = Direction.West
 		if keys[pg.K_RIGHT] or keys[pg.K_d]:
@@ -180,6 +180,7 @@ class PacMan(Mover, pg.sprite.Sprite):
 	def set_next_move(self, direction):
 		"""The next direction is defined and saved by the key pressed (applied at the next cell's center)"""
 		self.key_direction = direction
+		self.check_directions() # voir s'il faut le changer de place ou l'enlever plus tard
 		if self.direction is not None and direction is self.direction.opposite:
 			self.reverse()
 
@@ -324,6 +325,7 @@ class Pacgum(pg.sprite.Sprite):
 		self.image = Images.SUPERGUM.value
 		self.rect = self.image.get_rect()
 		self.rect.center = (0, 0)
+
 
 class Super_gum(pg.sprite.Sprite):
 	def __init__(self, cell: Cell, state: State):

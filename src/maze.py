@@ -65,7 +65,7 @@ class Maze: #faire des méthodes intermédiaires pour assurer qu'il n'y ait pas 
             return False
         #
         row, col = cell
-        print(row, col, len(self.walls[0]), len(self.walls))
+        # print(row, col, len(self.walls[0]), len(self.walls))
         if self.walls[row][col] & direction.wall_bit:  #check si il y a un mur dans cette direction
             return False
         target = self.step(cell, direction)

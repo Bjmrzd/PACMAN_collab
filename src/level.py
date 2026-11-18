@@ -1,6 +1,7 @@
 from enum import Enum
 import random
 import math
+from typing import Any
 
 from src.entities import Ghost, PacMan, State, Personnality, Pacgum, Super_gum
 from src.maze import Maze, Cell
@@ -19,7 +20,7 @@ class LevelFeatures(Enum):
 
 
 class Level():
-	def __init__(self, maze: Maze, state: GameState, level_number: int, time: int, rng: random.Random):
+	def __init__(self, maze: Maze, state: GameState, level_number: int, time: int, rng: random.Random, pac):
 		
 		self.maze = maze
 		self.state = state
@@ -28,10 +29,11 @@ class Level():
 		self.remaining_time = float(time)
 		self.level_state = LevelState.PLAYING
 		# self.pacgums: set[Cell] = maze.pacgum_positions()
-		self.pacgums: bool = False
-		self.super_pacgums: set[Cell] = maze.super_pacgum_positions()
-		self.pac_man = PacMan(maze, maze.spawn)
-		self.pac_man.on_cell_center = self.pacman_reach_cell
+		self.pacgum_done: bool = False
+		self.pacgum: dict[Any] = {}
+		self.super_pacgum_done: set[Cell] = maze.super_pacgum_positions()
+		self.pac_man = pac
+		self.pac_man.on_cell_center = self.pacman_reach_cell(self.pac_man, self.pacgum) # besoin de faire passer pacman et list pacgum ici
 		Personnalities = [Personnality.BLINKY, Personnality.PINKY, Personnality.INKY, Personnality.CLYDE]
 		self.ghosts = [Ghost(maze, corner, personnality, rng) for corner in maze.ghost_corners for personnality in Personnalities]
 
@@ -47,11 +49,13 @@ class Level():
 		for ghost in self.ghosts:
 			ghost.tick(dt, self.pac_man.current_cell, self.pac_man.direction)
 		self.collisions()
-		if self.level_state is LevelState.PLAYING and self.pacgums:
+		if self.level_state is LevelState.PLAYING and self.pacgum_done:
 			self.level_state = LevelState.WON
 
 
 	def pacman_reach_cell(self, pac: PacMan, gum) -> None:
+		if len(gum) < 1:
+			return
 		eaten = pac.check_gum(gum.get("sprite"), self.state)
 		super_pacgum_eaten: bool = False
 		for sprite in eaten:
@@ -61,7 +65,7 @@ class Level():
 		if super_pacgum_eaten:
 			for ghost in self.ghosts:
 				ghost.is_edible(LevelFeatures.PACMAN_HUNT.value)
-		self.pacgums = self.is_pacgum(gum.get("entities"))
+		self.pacgum_done = self.is_pacgum(gum.get("entities"))
 
 
 	def is_pacgum(self, gum):
