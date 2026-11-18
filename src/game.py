@@ -79,16 +79,15 @@ class Game:
         pac = PacMan(maze_class, maze_class.spawn)
         level = Level(maze_class, state, level_number, self.max_time, self.rng, pac)
         level.pac_man = pac
+        dt = self.max_time
         sprites_grp.add(pac)
         while level.level_state is LevelState.PLAYING:
             self.screen.fill(Color.BLACK.value)
             dict_gum = render_maze(maze_class.walls, maze_class, self.screen, self.screen_width, self.screen_height, pac, index)
-            dt = timer.tick(self.fps) / 1000
+            dt -= timer.tick(self.fps) / 1000
             if index < 1:
-                print(f"gum {dict_gum}")
                 level.pacgum = dict_gum
             else:
-                print(f"test {dict_gum}")
                 dict_gum = level.pacgum
             index += 1
             #
