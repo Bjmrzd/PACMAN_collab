@@ -1,12 +1,12 @@
 import pygame as pg
-from src.entities import Ghost, State, Personnality
+from src.entities import Ghost, State, Personnality, PacMan
 from src.helper import Font, Color
 from src.maze import Maze, Direction, WALL_BITS
 from typing import Any
 from src.entities import Pacgum
 
 
-def render_maze(walls: list[list[int]], maze: Maze, screen, screen_width, screen_height, pacman, index):
+def render_maze(walls: list[list[int]], maze: Maze, screen: Any, screen_width: int, screen_height: int, pacman: PacMan, index: int) -> dict[str, Any]:
     list_cell: list[Any] = []
     # index: int = 0
     # start_x: int = 50
@@ -57,9 +57,6 @@ def render_maze(walls: list[list[int]], maze: Maze, screen, screen_width, screen
             if maze.spawn == (cols, rows) and index < 1 and iseven:
                 pacman.rect.topleft = (end_x - 50, end_y - 50)
 
-            if pacman.pos_maze == (cols, rows) and pacman.key_direction:
-                pacman.rect.topleft = (start_x, start_y)
-
             if rows <= len(walls) and cols <= len(walls[0]) and maze.is_init is False:
                 gum = Pacgum(cell, base_state)
                 gum.rect.topleft = (start_x, start_y)
@@ -67,4 +64,8 @@ def render_maze(walls: list[list[int]], maze: Maze, screen, screen_width, screen
                 list_gum.append(gum)
             if rows == len(walls) and cols == len(walls[0]):
                 maze.is_init = True
+
+    row, col = pacman.position
+    pacman.rect.center = (int(middle_x + (col + 0.5) * space), int(middle_y + (row + 0.5) * space))
+
     return {"sprite": gum_grp, "entities": list_gum}

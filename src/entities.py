@@ -120,7 +120,7 @@ class Pac_anim(Enum):
 
 
 class PacMan(Mover, pg.sprite.Sprite):
-	def __init__(self, maze: Maze, cell: Cell, speed: float = 1.0) -> None:
+	def __init__(self, maze: Maze, cell: Cell, speed: float = 5.0) -> None:
 		"""Create the Pac-Man. Key_direction is the direction saved each time we press a directional key"""
 		super().__init__(maze, cell, speed)
 		pg.sprite.Sprite.__init__(self)
@@ -132,8 +132,8 @@ class PacMan(Mover, pg.sprite.Sprite):
 
 		self.key_direction: Direction | None = None
 		self.on_cell_center: Callable[[Cell], None] = None
-		self.position_screen = self.rect.center
-		self.pos_maze = cell
+		# self.position_screen = self.rect.center
+		# self.pos_maze = cell
 
 	def check_keys(self, keys): # peut etre obsolete voir plus tard
 		direction: Any = None 
@@ -147,40 +147,41 @@ class PacMan(Mover, pg.sprite.Sprite):
 			direction = Direction.South
 		return direction
 
-	def check_directions(self):
-		# if self.key_direction:
-		# 	return
+	# def check_directions(self):
+	# 	# if self.key_direction:
+	# 	# 	return
 		
-		if self.key_direction == Direction.West and self.maze.can_move(self.current_cell, self.key_direction):
-			self.position_screen = (self.rect.centerx - 50, self.rect.centery)
-			self.rect.center = self.position_screen
-			self.pos_maze = (self.pos_maze[0] - 1, self.pos_maze[1])
-		if self.key_direction == Direction.East and self.maze.can_move(self.current_cell, self.key_direction):
-			self.position_screen = (self.rect.centerx + 50, self.rect.centery)
-			self.rect.center = self.position_screen
-			self.pos_maze = (self.pos_maze[0] + 1, self.pos_maze[1])
-		if self.key_direction == Direction.North and self.maze.can_move(self.current_cell, self.key_direction):
-			self.position_screen = (self.rect.centerx, self.rect.centery - 50)
-			self.rect.center = self.position_screen
-			self.pos_maze = (self.pos_maze[0], self.pos_maze[1] - 1)
-		if self.key_direction == Direction.South and self.maze.can_move(self.current_cell, self.key_direction):
-			self.position_screen = (self.rect.centerx, self.rect.centery + 50)
-			self.rect.center = self.position_screen
-			self.pos_maze = (self.pos_maze[0], self.pos_maze[1] + 1)
+	# 	if self.key_direction == Direction.West:
+	# 		self.position_screen = (self.rect.centerx - 50, self.rect.centery)
+	# 		self.rect.center = self.position_screen
+	# 		self.pos_maze = (self.pos_maze[0] - 1, self.pos_maze[1])
+	# 	if self.key_direction == Direction.East:
+	# 		self.position_screen = (self.rect.centerx + 50, self.rect.centery)
+	# 		self.rect.center = self.position_screen
+	# 		self.pos_maze = (self.pos_maze[0] + 1, self.pos_maze[1])
+	# 	if self.key_direction == Direction.North:
+	# 		self.position_screen = (self.rect.centerx, self.rect.centery - 50)
+	# 		self.rect.center = self.position_screen
+	# 		self.pos_maze = (self.pos_maze[0], self.pos_maze[1] - 1)
+	# 	if self.key_direction == Direction.South:
+	# 		self.position_screen = (self.rect.centerx, self.rect.centery + 50)
+	# 		self.rect.center = self.position_screen
+	# 		self.pos_maze = (self.pos_maze[0], self.pos_maze[1] + 1)
 
-	def check_gum(self, gum, state: GameState):
-		rules = state.rules
-		if pg.sprite.spritecollide(self, gum, True):
-			gum.state = State.EATEN
-			state.add_points(state.rules.pacgum)
-
-
-		return self.position_screen
+	def check_gum(self, gum: pg.sprite.Group, state: GameState):
+		eaten: list[Any] = pg.sprite.spritecollide(self, gum, True)
+		for sprite in eaten:
+			sprite.state = State.EATEN
+			if isinstance(sprite, Super_gum):
+				state.add_points(state.rules.super_pacgum)
+			else:
+				state.add_points(state.rules.pacgum)
+		return eaten
 
 	def set_next_move(self, direction):
 		"""The next direction is defined and saved by the key pressed (applied at the next cell's center)"""
 		self.key_direction = direction
-		self.check_directions() # voir s'il faut le changer de place ou l'enlever plus tard
+		# self.check_directions() # voir s'il faut le changer de place ou l'enlever plus tard
 		if self.direction is not None and direction is self.direction.opposite:
 			self.reverse()
 

@@ -20,7 +20,7 @@ class LevelFeatures(Enum):
 
 
 class Level():
-	def __init__(self, maze: Maze, state: GameState, level_number: int, time: int, rng: random.Random, pac):
+	def __init__(self, maze: Maze, state: GameState, level_number: int, time: int, rng: random.Random, pac: PacMan):
 		
 		self.maze = maze
 		self.state = state
