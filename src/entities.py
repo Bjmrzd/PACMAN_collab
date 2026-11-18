@@ -151,19 +151,19 @@ class PacMan(Mover, pg.sprite.Sprite):
 		# if self.key_direction:
 		# 	return
 		
-		if self.key_direction == Direction.West:
+		if self.key_direction == Direction.West and self.maze.can_move(self.current_cell, self.key_direction):
 			self.position_screen = (self.rect.centerx - 50, self.rect.centery)
 			self.rect.center = self.position_screen
 			self.pos_maze = (self.pos_maze[0] - 1, self.pos_maze[1])
-		if self.key_direction == Direction.East:
+		if self.key_direction == Direction.East and self.maze.can_move(self.current_cell, self.key_direction):
 			self.position_screen = (self.rect.centerx + 50, self.rect.centery)
 			self.rect.center = self.position_screen
 			self.pos_maze = (self.pos_maze[0] + 1, self.pos_maze[1])
-		if self.key_direction == Direction.North:
+		if self.key_direction == Direction.North and self.maze.can_move(self.current_cell, self.key_direction):
 			self.position_screen = (self.rect.centerx, self.rect.centery - 50)
 			self.rect.center = self.position_screen
 			self.pos_maze = (self.pos_maze[0], self.pos_maze[1] - 1)
-		if self.key_direction == Direction.South:
+		if self.key_direction == Direction.South and self.maze.can_move(self.current_cell, self.key_direction):
 			self.position_screen = (self.rect.centerx, self.rect.centery + 50)
 			self.rect.center = self.position_screen
 			self.pos_maze = (self.pos_maze[0], self.pos_maze[1] + 1)
