@@ -46,6 +46,7 @@ class Maze: #faire des méthodes intermédiaires pour assurer qu'il n'y ait pas 
                                           (self.height, 0),
                                           (self.height, self.width)]
         self.distances: dict[Cell, dict[Cell, int]] = {}
+        self.is_init: bool = False
 
     def in_maze(self, cell: Cell) -> bool:
         if cell[0] < 0 or cell[0] > self.height:
