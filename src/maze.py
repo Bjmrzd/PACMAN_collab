@@ -62,8 +62,7 @@ class Maze: #faire des méthodes intermédiaires pour assurer qu'il n'y ait pas 
         return cell[0] + dir_row, cell[1] + dir_col
 
     def can_move(self, cell: Cell, direction: Direction) -> bool:
-        # a corriger plus tard, mis la en l'attente de debugger le reste 
-        if cell is None or cell[0] >= len(self.walls[0]) or cell[1] >= len(self.walls):
+        if not self.in_maze(cell):
             return False
         #
         row, col = cell
@@ -74,7 +73,7 @@ class Maze: #faire des méthodes intermédiaires pour assurer qu'il n'y ait pas 
         if not self.in_maze(target):
             return False
         opposite_bit = direction.opposite.wall_bit
-        return not self.walls[target[0]][target[1]] & opposite_bit
+        return not (self.walls[target[0]][target[1]] & opposite_bit)
 
     def valid_directions(self, cell: Cell) -> list[Direction]:
         list_dir = []
