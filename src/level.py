@@ -55,6 +55,7 @@ class Level():
 
 	def pacman_reach_cell(self, pac: PacMan, gum) -> None:
 		if len(gum) < 1:
+			gum = self.pacgum
 			return
 		eaten = pac.check_gum(gum.get("sprite"), self.state)
 		super_pacgum_eaten: bool = False

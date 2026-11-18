@@ -57,18 +57,14 @@ def render_maze(walls: list[list[int]], maze: Maze, screen, screen_width, screen
             if maze.spawn == (cols, rows) and index < 1 and iseven:
                 pacman.rect.topleft = (end_x - 50, end_y - 50)
 
-            elif pacman.pos_maze == (cols, rows) and pacman.key_direction:
+            if pacman.pos_maze == (cols, rows) and pacman.key_direction:
                 pacman.rect.topleft = (start_x, start_y)
 
-            if cols == 9 and rows == 9:
-                # print("test")
-                pg.draw.circle(screen, Color.RED.value, (start_x, start_y), 5.0)
-
-            gum = Pacgum(cell, base_state)
-            gum.rect.topleft = (start_x, start_y)
-            gum_grp.add(gum)
-            list_gum.append(gum)
-
+            if rows <= len(walls) and cols <= len(walls[0]) and maze.is_init is False:
+                gum = Pacgum(cell, base_state)
+                gum.rect.topleft = (start_x, start_y)
+                gum_grp.add(gum)
+                list_gum.append(gum)
+            if rows == len(walls) and cols == len(walls[0]):
+                maze.is_init = True
     return {"sprite": gum_grp, "entities": list_gum}
-            
-    # return pacman_pos

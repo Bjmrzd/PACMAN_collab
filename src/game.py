@@ -82,10 +82,14 @@ class Game:
         sprites_grp.add(pac)
         while level.level_state is LevelState.PLAYING:
             self.screen.fill(Color.BLACK.value)
-            dt = timer.tick(self.fps) / 1000
             dict_gum = render_maze(maze_class.walls, maze_class, self.screen, self.screen_width, self.screen_height, pac, index)
-            level.pacgum = dict_gum
-            print(level.pacgum)
+            dt = timer.tick(self.fps) / 1000
+            if index < 1:
+                print(f"gum {dict_gum}")
+                level.pacgum = dict_gum
+            else:
+                print(f"test {dict_gum}")
+                dict_gum = level.pacgum
             index += 1
             #
             # print("Pac current cell: ", pac.current_cell)
