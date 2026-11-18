@@ -54,10 +54,10 @@ def render_maze(walls: list[list[int]], maze: Maze, screen, screen_width, screen
                 pg.draw.line(screen, Color.WHITE.value, (end_x, start_y), (end_x, end_y), 5)
 
             if maze.spawn == (cols, rows) and index < 1 and not iseven:
-                pacman.rect.center = (start_x, start_y)
+                pacman.rect.center = (start_x + 25, start_y + 25)
 
             if maze.spawn == (cols, rows) and index < 1 and iseven:
-                pacman.rect.center = (end_x - 50, end_y - 50)
+                pacman.rect.center = (start_x + 25, start_y + 25)
 
             if pacman.pos_maze == (cols, rows) and pacman.key_direction:
                 pacman.rect.center = (start_x + 25, start_y + 25)
