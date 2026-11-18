@@ -63,6 +63,7 @@ class Game:
             level_state = self.play_level(n, state, timer)
             if level_state is None:
                 return
+            self.score = state.score
             if level_state is LevelState.GAME_OVER:
                 self.game_over()
                 return
@@ -76,7 +77,7 @@ class Game:
         maze_class = Maze(maze)
         sprites_grp = pg.sprite.Group()
         level = Level(maze_class, state, level_number, self.max_time, self.rng)
-        pac = PacMan(maze_class, maze_class.spawn)
+        pac = level.pac_man
         sprites_grp.add(pac)
         while level.level_state is LevelState.PLAYING:
             self.screen.fill(Color.BLACK.value)
@@ -99,21 +100,29 @@ class Game:
                         list_cheat = self.cheat_screen()
                         print(list_cheat)
                     if event.key == pg.K_1:
+                        self.score = state.score
                         self.win()
+                        return None
                     if event.key == pg.K_2:
+                        self.score = state.score
                         self.game_over()
+                        return None
                     if event.key == pg.K_n:
-                        self.next_level()
+                        level.level_state = LevelState.WON
                     elif event.key in self.keys:
-                        level.pac_man.set_next_move(self.key.get[event.key])
+                        level.pac_man.set_next_move(self.keys[event.key])
             level.update(dt)
             level.pacman_reach_cell(pac, dict_gum)
+
             accurate_time = round(dt, 2)
 
+            display_score = Text("Score: " + str(state.score), Color.RED.value, 1800, 100, Size.TEXT.value)
+            display_score.show_text(self.screen)
+            
             display_lives = Text("Lives: " + str(self.lives), Color.RED.value, 1800, 200, Size.TEXT.value)
             display_lives.show_text(self.screen)
 
-            display_time = Text("Timer: " + str(accurate_time), Color.RED.value, 2000, 400, Size.TEXT.value)
+            display_time = Text("Timer: " + str(accurate_time), Color.RED.value, 1800, 400, Size.TEXT.value)
             display_time.show_text(self.screen)
 
             sprites_grp.draw(self.screen)
@@ -121,14 +130,6 @@ class Game:
             #draw the level: maze, pacman, ghosts and pacgums
             pg.display.flip()
         return level.level_state
-
-
-    def next_level(self, level_list: list[Any], state, first_level, random_float, time):
-        index: int = 0
-
-        new_level = Level(level_list[index], state, index, time, random_float)
-        index += 1
-        return new_level
 
 
 

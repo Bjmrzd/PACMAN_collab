@@ -69,6 +69,10 @@ class Mover(ABC):
 		return
 
 
+	def cell_reached(self) -> None:
+		return None
+
+
 	def start_move(self) -> bool:
 		direction = self.choose_direction()
 		if direction is None:
@@ -122,14 +126,13 @@ class PacMan(Mover, pg.sprite.Sprite):
 
 		self.sprite = Images.PACMAN.value
 		self.image = Pac_anim.RIGHT.value
-		self.rect = self.sprite.get_rect()
-		self.rect.center = (cell[0], cell[1]) # may need to change the order for row and col
+		self.rect = self.image.get_rect()
+		self.rect.center = (cell[0], cell[1])
 
 		self.key_direction: Direction | None = None
 		self.on_cell_center: Callable[[Cell], None] = None
-		self.spawn = (cell[0], cell[1])
 		self.position_screen = self.rect.center
-		self.pos_maze = self.spawn
+		self.pos_maze = cell
 
 	def check_keys(self, keys):
 		direction: Any = None
@@ -141,7 +144,6 @@ class PacMan(Mover, pg.sprite.Sprite):
 			direction = Direction.North
 		if keys[pg.K_DOWN] or keys[pg.K_s]:
 			direction = Direction.South
-			
 		return direction
 
 	def check_directions(self):
@@ -191,7 +193,7 @@ class PacMan(Mover, pg.sprite.Sprite):
 
 	def cell_reached(self) -> None:
 		if self.on_cell_center is not None:
-			self.on_cell_center(self.cell)
+			self.on_cell_center(self.current_cell)
 
 
 	def reset(self) -> None:
@@ -200,13 +202,11 @@ class PacMan(Mover, pg.sprite.Sprite):
 
 
 class Ghost(Mover, pg.sprite.Sprite):
-	def __init__(self, maze: Maze, corner: Cell, personnality: Personnality, rng: random.Random, speed: float = 1.0) -> None:
+	def __init__(self, maze: Maze, corner: Cell, personnality: Personnality, rng: random.Random, speed: float = GhostFeatures.NORMAL_SPEED.value) -> None:
 		super().__init__(maze, corner, speed)
 		pg.sprite.Sprite.__init__(self)
-		self.state: State = "normal"
 		self.personnality = personnality
 		self.spawn = corner
-		self.speed = GhostFeatures.NORMAL_SPEED.value
 		self.rng = rng
 		self.state = State.NORMAL
 		self.timer = 0.0
@@ -243,8 +243,7 @@ class Ghost(Mover, pg.sprite.Sprite):
 		if self.personnality is Personnality.CLYDE:
 			if distance > GhostFeatures.CLYDE_DISTANCE.value:
 				return self.player_cell
-			else:
-				return self.home
+			return self.spawn
 
 	def choose_direction(self) -> Direction | None:
 		choices = self.maze.valid_directions(self.current_cell)
@@ -260,6 +259,8 @@ class Ghost(Mover, pg.sprite.Sprite):
 		if self.state is State.EDIBLE:
 			return self.best_choice(choices, self.player_cell, retreat=True)
 		target = self.goal()
+		if target is None:
+			return self.rng.choice(choices)
 		return self.best_choice(choices, target, retreat=False)
 
 	def best_choice(self, choices: list[Direction], goal: Cell, retreat: bool) -> Direction:
