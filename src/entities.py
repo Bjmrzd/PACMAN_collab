@@ -114,6 +114,8 @@ class Pac_anim(Enum):
 	PINKY_RIGHT = Images.PACMAN.value.subsurface((3, 150, 25, 25))
 	INKY_RIGHT = Images.PACMAN.value.subsurface((3, 175, 25, 25))
 	BLINKY_RIGHT = Images.PACMAN.value.subsurface((3, 200, 25, 25))
+	GUM = Images.SUPERGUM.value.subsurface((8, 5, 8, 8))
+	SUPERGUM = Images.SUPERGUM.value.subsurface((0, 0, 21, 21))
 
 
 
@@ -168,11 +170,14 @@ class PacMan(Mover, pg.sprite.Sprite):
 			self.rect.center = self.position_screen
 			self.pos_maze = (self.pos_maze[0], self.pos_maze[1] + 1)
 
-	def check_gum(self, gum, state: GameState):
+	def check_gum(self, gum, state: GameState, supergum):
 		rules = state.rules
 		if pg.sprite.spritecollide(self, gum, True):
 			gum.state = State.EATEN
 			state.add_points(state.rules.pacgum)
+		if pg.sprite.spritecollide(self, supergum, True):
+			gum.state = State.EATEN
+			state.add_points(state.rules.super_pacgum)
 
 
 		return self.position_screen
@@ -322,7 +327,7 @@ class Pacgum(pg.sprite.Sprite):
 
 		self.position = cell
 		self.state = state
-		self.image = Images.SUPERGUM.value
+		self.image = Pac_anim.GUM.value
 		self.rect = self.image.get_rect()
 		self.rect.center = (0, 0)
 
@@ -333,6 +338,6 @@ class Super_gum(pg.sprite.Sprite):
 
 		self.position = cell
 		self.state = state
-		self.image = Images.SUPERGUM.value
+		self.image = Pac_anim.SUPERGUM.value
 		self.rect = self.image.get_rect()
 		self.rect.center = (0, 0)

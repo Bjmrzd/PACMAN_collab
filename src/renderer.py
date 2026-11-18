@@ -3,7 +3,7 @@ from src.entities import Ghost, State, Personnality
 from src.helper import Font, Color
 from src.maze import Maze, Direction, WALL_BITS
 from typing import Any
-from src.entities import Pacgum
+from src.entities import Pacgum, Super_gum
 
 
 def render_maze(walls: list[list[int]], maze: Maze, screen, screen_width, screen_height, pacman, index):
@@ -16,8 +16,10 @@ def render_maze(walls: list[list[int]], maze: Maze, screen, screen_width, screen
     middle_y: int = (screen_height - len(walls) * space) // 2
     iseven: bool = True
     gum_grp = pg.sprite.Group()
+    supergum_grp = pg.sprite.Group()
     base_state = State.EDIBLE
     list_gum: list[Any] = []
+    super_list: list[Any] = []
     if maze.spawn[0] % 2 == 0 and maze.spawn[1] % 2 == 0 and index < 1:
         # print(maze.spawn[0], maze.spawn[1])
         iseven = True
@@ -61,10 +63,18 @@ def render_maze(walls: list[list[int]], maze: Maze, screen, screen_width, screen
                 pacman.rect.topleft = (start_x, start_y)
 
             if rows <= len(walls) and cols <= len(walls[0]) and maze.is_init is False:
-                gum = Pacgum(cell, base_state)
-                gum.rect.topleft = (start_x, start_y)
-                gum_grp.add(gum)
-                list_gum.append(gum)
+                if cell != 15:
+                    if (rows, cols) != (0, 0) and (rows, cols) != (len(walls) - 1, len(walls[0]) - 1) and (rows, cols) != (len(walls) - 1, 0) and (rows, cols) != (0, len(walls[0]) - 1):
+                        gum = Pacgum(cell, base_state)
+                        gum.rect.topleft = (start_x, start_y)
+                        gum_grp.add(gum)
+                        list_gum.append(gum)
+                    else:
+                        supergum = Super_gum(cell, base_state)
+                        supergum.rect.topleft = (start_x, start_y)
+                        supergum_grp.add(supergum)
+                        super_list.append(supergum)
+
             if rows == len(walls) and cols == len(walls[0]):
                 maze.is_init = True
-    return {"sprite": gum_grp, "entities": list_gum}
+    return {"sprite": gum_grp, "entities": list_gum, "super": supergum_grp, "super_list": super_list}

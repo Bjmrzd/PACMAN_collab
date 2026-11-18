@@ -57,7 +57,7 @@ class Level():
 		if len(gum) < 1:
 			gum = self.pacgum
 			return
-		eaten = pac.check_gum(gum.get("sprite"), self.state)
+		eaten = pac.check_gum(gum.get("sprite"), self.state, gum.get("super"))
 		super_pacgum_eaten: bool = False
 		for sprite in eaten:
 			if isinstance(sprite, Super_gum):

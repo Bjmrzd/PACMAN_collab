@@ -87,6 +87,7 @@ class Game:
             dt -= timer.tick(self.fps) / 1000
             if index < 1:
                 level.pacgum = dict_gum
+                print(dict_gum.get("supersprite"))
             else:
                 dict_gum = level.pacgum
             index += 1
@@ -133,11 +134,10 @@ class Game:
 
             sprites_grp.draw(self.screen)
             dict_gum.get("sprite").draw(self.screen)
+            dict_gum.get("super").draw(self.screen)
             #draw the level: maze, pacman, ghosts and pacgums
             pg.display.flip()
         return level.level_state
-
-
 
     def game_over(self):
         """Game over screen"""
