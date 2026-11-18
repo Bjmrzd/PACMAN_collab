@@ -341,3 +341,10 @@ class Super_gum(pg.sprite.Sprite):
 		self.image = Pac_anim.SUPERGUM.value
 		self.rect = self.image.get_rect()
 		self.rect.center = (0, 0)
+
+class Clyde(Ghost):
+	def __init__(self, maze: Maze, corner: Cell, personnality: Personnality, rng: random.Random, speed: float = GhostFeatures.NORMAL_SPEED.value) -> None:
+		super().__init__(maze, corner, speed)
+		pg.sprite.Sprite().__init__(maze, corner, speed)
+
+	

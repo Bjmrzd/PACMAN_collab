@@ -87,7 +87,6 @@ class Game:
             dt -= timer.tick(self.fps) / 1000
             if index < 1:
                 level.pacgum = dict_gum
-                print(dict_gum.get("supersprite"))
             else:
                 dict_gum = level.pacgum
             index += 1

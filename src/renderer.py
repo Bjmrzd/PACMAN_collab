@@ -54,24 +54,24 @@ def render_maze(walls: list[list[int]], maze: Maze, screen, screen_width, screen
                 pg.draw.line(screen, Color.WHITE.value, (end_x, start_y), (end_x, end_y), 5)
 
             if maze.spawn == (cols, rows) and index < 1 and not iseven:
-                pacman.rect.topleft = (start_x, start_y)
+                pacman.rect.center = (start_x, start_y)
 
             if maze.spawn == (cols, rows) and index < 1 and iseven:
-                pacman.rect.topleft = (end_x - 50, end_y - 50)
+                pacman.rect.center = (end_x - 50, end_y - 50)
 
             if pacman.pos_maze == (cols, rows) and pacman.key_direction:
-                pacman.rect.topleft = (start_x, start_y)
+                pacman.rect.center = (start_x + 25, start_y + 25)
 
             if rows <= len(walls) and cols <= len(walls[0]) and maze.is_init is False:
                 if cell != 15:
                     if (rows, cols) != (0, 0) and (rows, cols) != (len(walls) - 1, len(walls[0]) - 1) and (rows, cols) != (len(walls) - 1, 0) and (rows, cols) != (0, len(walls[0]) - 1):
                         gum = Pacgum(cell, base_state)
-                        gum.rect.topleft = (start_x, start_y)
+                        gum.rect.center = (start_x + 25, start_y + 25)
                         gum_grp.add(gum)
                         list_gum.append(gum)
                     else:
                         supergum = Super_gum(cell, base_state)
-                        supergum.rect.topleft = (start_x, start_y)
+                        supergum.rect.center = (start_x + 25, start_y + 25)
                         supergum_grp.add(supergum)
                         super_list.append(supergum)
 
