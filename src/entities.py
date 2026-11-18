@@ -14,7 +14,7 @@ class State(Enum):
 	EATEN = "eaten"
 
 class GhostFeatures(Enum):
-	NORMAL_SPEED    = 5.0
+	NORMAL_SPEED    = 3.0
 	EDIBLE_SPEED    = 2.5
 	CLYDE_DISTANCE  = 8
 	PINKY_LOOKAHEAD = 4
