@@ -28,12 +28,11 @@ class Level():
 		self.time = float(time)
 		self.remaining_time = float(time)
 		self.level_state = LevelState.PLAYING
-		# self.pacgums: set[Cell] = maze.pacgum_positions()
 		self.pacgum_done: bool = False
-		self.pacgum: dict[Any] = {}
+		self.pacgum: dict[str, Any] = {}
 		self.super_pacgum_done: set[Cell] = maze.super_pacgum_positions()
 		self.pac_man = pac
-		self.pac_man.on_cell_center = self.pacman_reach_cell(self.pac_man, self.pacgum) # besoin de faire passer pacman et list pacgum ici
+		# self.pac_man.on_cell_center = self.pacman_reach_cell(self.pac_man, self.pacgum) # besoin de faire passer pacman et list pacgum ici
 		Personnalities = [Personnality.BLINKY, Personnality.PINKY, Personnality.INKY, Personnality.CLYDE]
 		self.ghosts = [Ghost(maze, corner, personnality, rng) for corner in maze.ghost_corners for personnality in Personnalities]
 
@@ -69,7 +68,7 @@ class Level():
 		self.pacgum_done = self.is_pacgum(gum.get("entities"))
 
 
-	def is_pacgum(self, gum):
+	def is_pacgum(self, gum: Any) -> bool:
 		index: int = 0
 		for args in gum:
 			if args.state is State.EATEN:
@@ -85,7 +84,6 @@ class Level():
 			if ghost.state is State.EATEN:
 				continue
 			g_row, g_col = ghost.position
-
 			if math.sqrt(abs(g_row - p_row)**2 + abs(g_col - p_col)**2 ) < LevelFeatures.COLLISION_RANGE.value:
 				if ghost.state is State.EDIBLE:
 					ghost.eaten

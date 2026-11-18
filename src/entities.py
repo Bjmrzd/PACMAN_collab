@@ -114,6 +114,8 @@ class Pac_anim(Enum):
 	PINKY_RIGHT = Images.PACMAN.value.subsurface((3, 150, 25, 25))
 	INKY_RIGHT = Images.PACMAN.value.subsurface((3, 175, 25, 25))
 	BLINKY_RIGHT = Images.PACMAN.value.subsurface((3, 200, 25, 25))
+	GUM = Images.SUPERGUM.value.subsurface((8, 5, 8, 8))
+	SUPERGUM = Images.SUPERGUM.value.subsurface((0, 0, 21, 21))
 
 
 
@@ -132,41 +134,19 @@ class PacMan(Mover, pg.sprite.Sprite):
 
 		self.key_direction: Direction | None = None
 		self.on_cell_center: Callable[[Cell], None] = None
-		# self.position_screen = self.rect.center
-		# self.pos_maze = cell
 
-	def check_keys(self, keys): # peut etre obsolete voir plus tard
-		direction: Any = None 
-		if keys[pg.K_LEFT] or keys[pg.K_a]:
-			direction = Direction.West
-		if keys[pg.K_RIGHT] or keys[pg.K_d]:
-			direction = Direction.East
-		if keys[pg.K_UP] or keys[pg.K_w]:
-			direction = Direction.North
-		if keys[pg.K_DOWN] or keys[pg.K_s]:
-			direction = Direction.South
-		return direction
 
-	# def check_directions(self):
-	# 	# if self.key_direction:
-	# 	# 	return
-		
-	# 	if self.key_direction == Direction.West:
-	# 		self.position_screen = (self.rect.centerx - 50, self.rect.centery)
-	# 		self.rect.center = self.position_screen
-	# 		self.pos_maze = (self.pos_maze[0] - 1, self.pos_maze[1])
-	# 	if self.key_direction == Direction.East:
-	# 		self.position_screen = (self.rect.centerx + 50, self.rect.centery)
-	# 		self.rect.center = self.position_screen
-	# 		self.pos_maze = (self.pos_maze[0] + 1, self.pos_maze[1])
-	# 	if self.key_direction == Direction.North:
-	# 		self.position_screen = (self.rect.centerx, self.rect.centery - 50)
-	# 		self.rect.center = self.position_screen
-	# 		self.pos_maze = (self.pos_maze[0], self.pos_maze[1] - 1)
-	# 	if self.key_direction == Direction.South:
-	# 		self.position_screen = (self.rect.centerx, self.rect.centery + 50)
-	# 		self.rect.center = self.position_screen
-	# 		self.pos_maze = (self.pos_maze[0], self.pos_maze[1] + 1)
+	# def check_keys(self, keys):
+	# 	direction: Any = None 
+	# 	if keys[pg.K_LEFT] or keys[pg.K_a]:
+	# 		direction = Direction.West
+	# 	if keys[pg.K_RIGHT] or keys[pg.K_d]:
+	# 		direction = Direction.East
+	# 	if keys[pg.K_UP] or keys[pg.K_w]:
+	# 		direction = Direction.North
+	# 	if keys[pg.K_DOWN] or keys[pg.K_s]:
+	# 		direction = Direction.South
+	# 	return direction
 
 	def check_gum(self, gum: pg.sprite.Group, state: GameState):
 		eaten: list[Any] = pg.sprite.spritecollide(self, gum, True)
@@ -323,7 +303,7 @@ class Pacgum(pg.sprite.Sprite):
 
 		self.position = cell
 		self.state = state
-		self.image = Images.SUPERGUM.value
+		self.image = Pac_anim.GUM.value
 		self.rect = self.image.get_rect()
 		self.rect.center = (0, 0)
 
@@ -334,6 +314,13 @@ class Super_gum(pg.sprite.Sprite):
 
 		self.position = cell
 		self.state = state
-		self.image = Images.SUPERGUM.value
+		self.image = Pac_anim.SUPERGUM.value
 		self.rect = self.image.get_rect()
 		self.rect.center = (0, 0)
+
+class Clyde(Ghost):
+	def __init__(self, maze: Maze, corner: Cell, personnality: Personnality, rng: random.Random, speed: float = GhostFeatures.NORMAL_SPEED.value) -> None:
+		super().__init__(maze, corner, speed)
+		pg.sprite.Sprite().__init__(maze, corner, speed)
+
+	
