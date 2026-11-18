@@ -2,7 +2,7 @@ from enum import Enum
 import random
 import math
 
-from src.entities import Ghost, PacMan, State, Personnality
+from src.entities import Ghost, PacMan, State, Personnality, Pacgum, Super_gum
 from src.maze import Maze, Cell
 from src.scoring import GameState
 
@@ -52,18 +52,18 @@ class Level():
 
 
 	def pacman_reach_cell(self, pac: PacMan, gum) -> None:
-		pac.check_gum(gum.get("sprite"), self.state)
+		eaten = pac.check_gum(gum.get("sprite"), self.state)
+		super_pacgum_eaten: bool = False
+		for sprite in eaten:
+			if isinstance(sprite, Super_gum):
+				super_pacgum_eaten = True
+				break
+		if super_pacgum_eaten:
+			for ghost in self.ghosts:
+				ghost.is_edible(LevelFeatures.PACMAN_HUNT.value)
 		self.pacgums = self.is_pacgum(gum.get("entities"))
-		# rules = self.state.rules
-		# if cell in self.pacgums:
-		# 	self.pacgums.discard(cell)
-		# 	self.state.add_points(rules.pacgum)
-		# if cell in self.super_pacgums:
-		# 	self.super_pacgums.discard(cell)
-		# 	self.state.add_points(rules.super_pacgum)
-			# for ghost in self.ghosts:
-			# 	ghost.is_edible(LevelFeatures.PACMAN_HUNT)
-	
+
+
 	def is_pacgum(self, gum):
 		index: int = 0
 		for args in gum:

@@ -82,7 +82,7 @@ class Game:
         while level.level_state is LevelState.PLAYING:
             self.screen.fill(Color.BLACK.value)
             dt = timer.tick(self.fps) / 1000
-            dict_gum = render_maze(maze, maze_class, self.screen, self.screen_width, self.screen_height, pac, index)
+            dict_gum = render_maze(maze_class.walls, maze_class, self.screen, self.screen_width, self.screen_height, pac, index)
             index += 1
             #
             # print("Pac current cell: ", pac.current_cell)

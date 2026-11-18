@@ -5,6 +5,7 @@ from abc import ABC, abstractmethod
 import random
 import pygame as pg
 from src.helper import Images
+from src.scoring import GameState
 
 
 class State(Enum):
@@ -167,7 +168,7 @@ class PacMan(Mover, pg.sprite.Sprite):
 			self.rect.center = self.position_screen
 			self.pos_maze = (self.pos_maze[0], self.pos_maze[1] + 1)
 
-	def check_gum(self, gum, state):
+	def check_gum(self, gum, state: GameState):
 		rules = state.rules
 		if pg.sprite.spritecollide(self, gum, True):
 			gum.state = State.EATEN
