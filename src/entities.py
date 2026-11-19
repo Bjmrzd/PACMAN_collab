@@ -109,7 +109,7 @@ class Pac_anim(Enum):
 	C_RIGHT = Images.PACMAN.value.subsurface((35, 4, 25, 25))
 	C_LEFT = Images.PACMAN.value.subsurface((35, 35, 25, 25))
 	C_DOWN = Images.PACMAN.value.subsurface((35, 100, 25, 25))
-	CLYDE_RIGHT = Images.PACMAN.value.subsurface((3, 125, 25, 25))
+	CLYDE_RIGHT = Images.PACMAN.value.subsurface((3, 135, 24, 24))
 	PINKY_RIGHT = Images.PACMAN.value.subsurface((3, 150, 25, 25))
 	INKY_RIGHT = Images.PACMAN.value.subsurface((3, 175, 25, 25))
 	BLINKY_RIGHT = Images.PACMAN.value.subsurface((3, 200, 25, 25))
@@ -171,11 +171,6 @@ class PacMan(Mover, pg.sprite.Sprite):
 		self.key_direction = None
 
 
-# Sprites_dict : dict[Personnality, Pac_anim]= {Personnality.CLYDE : Pac_anim.CLYDE_RIGHT.value,
-# 											  Personnality.PINKY : Pac_anim.PINKY_RIGHT.value,
-# 											  Personnality.INKY : Pac_anim.INKY_RIGHT.value,
-# 											  Personnality.BLINKY : Pac_anim.BLINKY_RIGHT.value}
-
 
 class Ghost(Mover, pg.sprite.Sprite):
 	def __init__(self, maze: Maze, corner: Cell, personnality: Personnality, rng: random.Random, speed: float = GhostFeatures.NORMAL_SPEED.value) -> None:
@@ -188,9 +183,22 @@ class Ghost(Mover, pg.sprite.Sprite):
 		self.timer = 0.0
 		self.player_cell: Cell = corner
 		self.player_dir: Direction | None = None
-		# self.image = Sprites_dict[personnality]
-		# self.rect = self.image.get_rect()
 
+		self.image = self.init_sprite()
+		self.rect = self.image.get_rect()
+		self.rect.center = self.position
+
+	def init_sprite(self):
+		sprite: Any = None
+		if self.personnality is Personnality.BLINKY:
+			sprite = Pac_anim.BLINKY_RIGHT.value
+		elif self.personnality is Personnality.INKY:
+			sprite = Pac_anim.INKY_RIGHT.value
+		elif self.personnality is Personnality.PINKY:
+			sprite = Pac_anim.PINKY_RIGHT.value
+		elif self.personnality is Personnality.CLYDE:
+			sprite = Pac_anim.CLYDE_RIGHT.value
+		return sprite
 
 	def tick(self, dt: float, player_cell: Cell, player_dir: Direction | None) -> None:
 		self.player_cell = player_cell
