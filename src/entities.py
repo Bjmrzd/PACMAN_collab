@@ -190,8 +190,6 @@ class Ghost(Mover, pg.sprite.Sprite):
 		self.player_dir: Direction | None = None
 		# self.image = Sprites_dict[personnality]
 		# self.rect = self.image.get_rect()
-		# self.sprite = Images
-		# self.image
 
 
 	def tick(self, dt: float, player_cell: Cell, player_dir: Direction | None) -> None:
