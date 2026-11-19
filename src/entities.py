@@ -171,6 +171,7 @@ class PacMan(Mover, pg.sprite.Sprite):
 		self.key_direction = None
 
 
+
 class Ghost(Mover, pg.sprite.Sprite):
 	def __init__(self, maze: Maze, corner: Cell, personnality: Personnality, rng: random.Random, speed: float = GhostFeatures.NORMAL_SPEED.value) -> None:
 		super().__init__(maze, corner, speed)
