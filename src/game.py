@@ -125,8 +125,6 @@ class Game:
                     pac.move(direction)
             level.update(dt)
             level.pacman_reach_cell(pac, dict_gum)
-            # for ghost in level.ghosts:
-            #     print(ghost.rect.center, ghost.position)
 
             accurate_time = round(level.remaining_time, 2)
 
