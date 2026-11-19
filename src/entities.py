@@ -136,18 +136,6 @@ class PacMan(Mover, pg.sprite.Sprite):
 		self.on_cell_center: Callable[[Cell], None] = None
 
 
-	# def check_keys(self, keys):
-	# 	direction: Any = None 
-	# 	if keys[pg.K_LEFT] or keys[pg.K_a]:
-	# 		direction = Direction.West
-	# 	if keys[pg.K_RIGHT] or keys[pg.K_d]:
-	# 		direction = Direction.East
-	# 	if keys[pg.K_UP] or keys[pg.K_w]:
-	# 		direction = Direction.North
-	# 	if keys[pg.K_DOWN] or keys[pg.K_s]:
-	# 		direction = Direction.South
-	# 	return direction
-
 	def check_gum(self, gum: pg.sprite.Group, state: GameState, supergum: pg.sprite.Group):
 		eaten: list[Any] = pg.sprite.spritecollide(self, supergum, True)
 		eaten_gum: list[Any] = pg.sprite.spritecollide(self, gum, True )
@@ -161,19 +149,30 @@ class PacMan(Mover, pg.sprite.Sprite):
 				state.add_points(state.rules.pacgum)
 		return eaten
 
-	def set_next_move(self, direction):
-		"""The next direction is defined and saved by the key pressed (applied at the next cell's center)"""
-		self.key_direction = direction
-		# self.check_directions() # voir s'il faut le changer de place ou l'enlever plus tard
-		if self.direction is not None and direction is self.direction.opposite:
-			self.reverse()
+	# def set_next_move(self, direction):
+	# 	"""The next direction is defined and saved by the key pressed (applied at the next cell's center)"""
+	# 	self.key_direction = direction
+	# 	# self.check_directions() # voir s'il faut le changer de place ou l'enlever plus tard
+	# 	if self.direction is not None and direction is self.direction.opposite:
+	# 		self.reverse()
+
+
+	def move(self, direction: Direction) -> None:
+		if self.target is not None:
+			if (self.direction is not None and direction is self.direction.opposite):
+				self.reverse()
+			return
+		if self.maze.can_move(self.current_cell, direction):
+			self.direction = direction
+			self.target = self.maze.step(self.current_cell, direction)
+			self.progress = 0.0
 
 
 	def choose_direction(self) -> Direction | None:
-		"""Try the choosen direction, advance if direction is valid, stay still if not"""
-		for direction in (self.key_direction, self.direction):
-			if direction is not None and self.maze.can_move(self.current_cell, direction):
-				return direction
+		# """Try the choosen direction, advance if direction is valid, stay still if not"""
+		# for direction in (self.key_direction, self.direction):
+		# 	if direction is not None and self.maze.can_move(self.current_cell, direction):
+		# 		return direction
 		return None
 
 
@@ -215,7 +214,7 @@ class Ghost(Mover, pg.sprite.Sprite):
 			self.advance(dt)
 
 	def goal(self) -> Cell | None:
-		distance = self.maze.distance_map(self.player_cell).get(self.current_cell)
+		distance = self.maze.distance_map(self.player_cell).get(self.current_cell, 10**9)
 		if self.personnality is Personnality.BLINKY:
 			return self.player_cell
 		if self.personnality is Personnality.PINKY:

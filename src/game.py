@@ -115,7 +115,11 @@ class Game:
                     if event.key == pg.K_n:
                         level.level_state = LevelState.WON
                     elif event.key in self.keys:
-                        level.pac_man.set_next_move(self.keys[event.key])
+                        level.pac_man.move(self.keys[event.key])
+            pressed = pg.key.get_pressed()
+            for key, direction in self.keys.items():
+                if pressed[key]:
+                    pac.move(direction)
             level.update(dt)
             level.pacman_reach_cell(pac, dict_gum)
 
