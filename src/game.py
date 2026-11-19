@@ -124,7 +124,7 @@ class Game:
             display_score = Text("Score: " + str(state.score), Color.RED.value, 1800, 100, Size.TEXT.value)
             display_score.show_text(self.screen)
             
-            display_lives = Text("Lives: " + str(self.lives), Color.RED.value, 1800, 200, Size.TEXT.value)
+            display_lives = Text("Lives: " + str(state.lives), Color.RED.value, 1800, 200, Size.TEXT.value)
             display_lives.show_text(self.screen)
 
             display_time = Text("Timer: " + str(accurate_time), Color.RED.value, 1800, 400, Size.TEXT.value)
