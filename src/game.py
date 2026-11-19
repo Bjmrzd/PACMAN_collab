@@ -80,9 +80,12 @@ class Game:
         level.pac_man = pac
         dt = 0
         sprites_grp.add(pac)
+        ghost_grp = pg.sprite.Group()
         while level.level_state is LevelState.PLAYING:
             self.screen.fill(Color.BLACK.value)
             dict_gum = render_maze(maze_class.walls, maze_class, self.screen, self.screen_width, self.screen_height, pac, index)
+            for ghost in level.ghosts:
+                ghost_grp.add(ghost)
             dt = timer.tick(self.fps) / 1000
             if index < 1:
                 level.pacgum = dict_gum
@@ -137,6 +140,8 @@ class Game:
             sprites_grp.draw(self.screen)
             dict_gum.get("sprite").draw(self.screen)
             dict_gum.get("super").draw(self.screen)
+            ghost_grp.draw(self.screen)
+
             pg.display.flip()
         return level.level_state
 
