@@ -52,6 +52,7 @@ class Game:
                      pg.K_s : Direction.South,
                      pg.K_LEFT : Direction.West,
                      pg.K_a : Direction.West}
+        self.is_paused: bool = False
 
 
     def main_loop(self):
@@ -72,7 +73,7 @@ class Game:
 
     def play_level(self, level_number: int, state: GameState, timer: pg.time.Clock) -> LevelState | None:
         index: int = 0
-        maze = generate_hex_maze(self.level_list[index].get("height"), self.level_list[index].get("width"), self.config.seed)    
+        maze = generate_hex_maze(self.level_list[level_number].get("height"), self.level_list[level_number].get("width"), self.config.seed)    
         maze_class = Maze(maze)
         sprites_grp = pg.sprite.Group()
         pac = PacMan(maze_class, maze_class.spawn)
@@ -86,7 +87,8 @@ class Game:
             dict_gum = render_maze(maze_class.walls, maze_class, self.screen, self.screen_width, self.screen_height, pac, index, level)
             for ghost in level.ghosts:
                 ghost_grp.add(ghost)
-            dt = timer.tick(self.fps) / 1000
+            if not self.is_paused:
+                dt = timer.tick(self.fps) / 1000
             if index < 1:
                 level.pacgum = dict_gum
             else:
@@ -103,7 +105,9 @@ class Game:
                     sys.exit()
                 if event.type == pg.KEYDOWN:
                     if event.key == pg.K_ESCAPE:
+                        self.is_paused = True
                         self.pause_menu()
+                        self.is_paused = False
                     if event.key == pg.K_c:
                         list_cheat = self.cheat_screen()
                         print(list_cheat)
@@ -128,14 +132,17 @@ class Game:
 
             accurate_time = round(level.remaining_time, 2)
 
-            display_score = Text("Score: " + str(state.score), Color.RED.value, 1800, 100, Size.TEXT.value)
+            display_score = Text("Score: " + str(state.score), Color.RED.value, 1500, 40, Size.TEXT.value)
             display_score.show_text(self.screen)
             
-            display_lives = Text("Lives: " + str(state.lives), Color.RED.value, 1800, 200, Size.TEXT.value)
+            display_lives = Text("Lives: " + str(state.lives), Color.RED.value, 800, 40, Size.TEXT.value)
             display_lives.show_text(self.screen)
 
-            display_time = Text("Timer: " + str(accurate_time), Color.RED.value, 1800, 400, Size.TEXT.value)
+            display_time = Text("Timer: " + str(accurate_time), Color.RED.value, 1800, 40, Size.TEXT.value)
             display_time.show_text(self.screen)
+
+            display_level = Text("Level " + str(level_number), Color.RED.value, 1150, 40, Size.TITLE.value)
+            display_level.show_text(self.screen)
 
             sprites_grp.draw(self.screen)
             dict_gum.get("sprite").draw(self.screen)
@@ -190,7 +197,6 @@ class Game:
                         menu.init_menu(True)
 
             video.draw_and_update(self.screen, (self.screen_width / 2 + 400, self.screen_height / 2))
-
 
             input_name = Box_Button(self.screen_width / 2, self.screen_height / 2, 100, 100, letter, Size.TEXT.value)
             input_name.create_button(self.screen, mouse)
@@ -259,12 +265,11 @@ class Game:
                             letter += event.unicode
                     if keys[pg.K_BACKSPACE]:
                         letter = letter[:-1]
-                    #
-                    if event.key == pg.K_RETURN:
+                    if keys[pg.K_RETURN]:
                         menu = MainMenu(self.screen, self.screen_height, self.screen_width)
                         pv.quit_all()
                         menu.init_menu(True)
-                    #
+
                     if keys[pg.K_SPACE] and count == 0:
                         count += 1
                         no_loop = True

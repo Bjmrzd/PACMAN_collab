@@ -1,3 +1,4 @@
 11/04/2026 08:03:25 AM - Value error, Error: The maze width and height can't be higher than 18 or lower than 10
 11/17/2026 10:17:15 AM - Value error, Error: The Pacman Maze must be a square
 11/17/2026 10:17:43 AM - Value error, Error: The Pacman Maze must be a square
+11/19/2026 07:14:21 PM - Value error, Error: The maze width and height can't be higher than 25 or lower than 10
