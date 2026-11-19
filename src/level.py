@@ -66,7 +66,7 @@ class Level():
 		if super_pacgum_eaten:
 			for ghost in self.ghosts:
 				ghost.is_edible(LevelFeatures.PACMAN_HUNT.value)
-				ghost.image = Pac_anim.SCARED.value
+				# ghost.image = Pac_anim.SCARED.value
 		self.pacgum_done = self.is_pacgum(gum.get("entities"))
 
 
@@ -89,6 +89,7 @@ class Level():
 			if math.sqrt(abs(g_row - p_row)**2 + abs(g_col - p_col)**2 ) < LevelFeatures.COLLISION_RANGE.value:
 				if ghost.state is State.EDIBLE:
 					ghost.eaten()
+					# ghost.image = ghost.init_sprite()
 					self.state.add_points(self.state.rules.ghost)
 				else:
 					self.lose_life()

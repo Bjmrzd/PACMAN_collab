@@ -207,6 +207,7 @@ class Ghost(Mover, pg.sprite.Sprite):
 		if self.state is not State.NORMAL:
 			self.timer -= dt
 			if self.timer <= 0:
+				self.image = self.init_sprite()
 				self.state = State.NORMAL
 				self.speed = GhostFeatures.NORMAL_SPEED.value
 		if self.state is not State.EATEN:
@@ -276,6 +277,7 @@ class Ghost(Mover, pg.sprite.Sprite):
 		return self.rng.choice(best_directions)
 
 	def is_edible(self, duration: float) -> None:
+		self.image = Pac_anim.SCARED.value
 		if self.state is State.EATEN:
 			return
 		self.state = State.EDIBLE
@@ -287,6 +289,7 @@ class Ghost(Mover, pg.sprite.Sprite):
 		super().reset()
 		self.state = State.EATEN
 		self.timer = GhostFeatures.RESPAWN_DELAY.value
+		self.image = self.init_sprite()
 
 	def reset(self) -> None:
 		super().reset()
