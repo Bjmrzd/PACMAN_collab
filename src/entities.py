@@ -135,7 +135,7 @@ class PacMan(Mover, pg.sprite.Sprite):
 
 	def check_gum(self, gum: pg.sprite.Group, state: GameState, supergum: pg.sprite.Group):
 		eaten: list[Any] = pg.sprite.spritecollide(self, supergum, True)
-		eaten_gum: list[Any] = pg.sprite.spritecollide(self, gum, True )
+		eaten_gum: list[Any] = pg.sprite.spritecollide(self, gum, True)
 
 		for sprite in eaten:
 			sprite.state = State.EATEN

@@ -70,10 +70,9 @@ class Game:
                 return
         self.win()
 
-
     def play_level(self, level_number: int, state: GameState, timer: pg.time.Clock) -> LevelState | None:
         index: int = 0
-        maze = generate_hex_maze(self.level_list[level_number].get("height"), self.level_list[level_number].get("width"), self.config.seed)    
+        maze = generate_hex_maze(self.level_list[level_number - 1].get("height"), self.level_list[level_number - 1].get("width"), self.config.seed)    
         maze_class = Maze(maze)
         sprites_grp = pg.sprite.Group()
         pac = PacMan(maze_class, maze_class.spawn)
@@ -87,8 +86,8 @@ class Game:
             dict_gum = render_maze(maze_class.walls, maze_class, self.screen, self.screen_width, self.screen_height, pac, index, level)
             for ghost in level.ghosts:
                 ghost_grp.add(ghost)
-            if not self.is_paused:
-                dt = timer.tick(self.fps) / 1000
+
+            dt = timer.tick(self.fps) / 1000
             if index < 1:
                 level.pacgum = dict_gum
             else:
@@ -107,7 +106,6 @@ class Game:
                     if event.key == pg.K_ESCAPE:
                         self.is_paused = True
                         self.pause_menu()
-                        self.is_paused = False
                     if event.key == pg.K_c:
                         list_cheat = self.cheat_screen()
                         print(list_cheat)
@@ -127,14 +125,15 @@ class Game:
             for key, direction in self.keys.items():
                 if pressed[key]:
                     pac.move(direction)
-            level.update(dt)
-            level.pacman_reach_cell(pac, dict_gum)
-
+            if not self.is_paused:
+                level.update(dt)
+                level.pacman_reach_cell(pac, dict_gum)
+            
             accurate_time = round(level.remaining_time, 2)
 
             display_score = Text("Score: " + str(state.score), Color.RED.value, 1500, 40, Size.TEXT.value)
             display_score.show_text(self.screen)
-            
+
             display_lives = Text("Lives: " + str(state.lives), Color.RED.value, 800, 40, Size.TEXT.value)
             display_lives.show_text(self.screen)
 
@@ -364,6 +363,7 @@ class Game:
                 if keys[pg.K_ESCAPE]:
                     pv.quit_all()
                     running = False
+                    self.is_paused = False
                 if event.type == pg.MOUSEBUTTONDOWN:
                     if exit_button.rect.collidepoint(mouse):
                         pv.quit_all()
@@ -381,6 +381,7 @@ class Game:
                         menu.init_tuto()
 
             pg.display.flip()
+        # self.is_paused = False
 
     def cheat_screen(self):
         """Menu to activate/deactivate the cheat"""

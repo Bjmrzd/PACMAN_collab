@@ -36,7 +36,6 @@ class Level():
 		Personnalities = [Personnality.BLINKY, Personnality.PINKY, Personnality.INKY, Personnality.CLYDE]
 		self.ghosts = [Ghost(maze, corner, personnality, rng) for corner, personnality in zip(maze.ghost_corners, Personnalities)]
 
-
 	def update(self, dt:float) -> None:
 		if self.level_state is not LevelState.PLAYING:
 			return
@@ -52,8 +51,9 @@ class Level():
 		if self.level_state is LevelState.PLAYING and self.pacgum_done:
 			self.level_state = LevelState.WON
 
-
 	def pacman_reach_cell(self, pac: PacMan, gum) -> None:
+		if self.level_state is not LevelState.PLAYING:
+			return
 		if len(gum) < 1:
 			gum = self.pacgum
 			return
@@ -68,7 +68,6 @@ class Level():
 				ghost.is_edible(LevelFeatures.PACMAN_HUNT.value)
 		self.pacgum_done = self.is_pacgum(gum.get("entities"))
 
-
 	def is_pacgum(self, gum: Any) -> bool:
 		index: int = 0
 		for args in gum:
@@ -77,7 +76,6 @@ class Level():
 		if index == len(gum):
 			return True
 		return False
-
 
 	def collisions(self) -> None:
 		p_row, p_col = self.pac_man.position
@@ -94,7 +92,6 @@ class Level():
 					return
 			else:
 				continue
-
 
 	def lose_life(self):
 		self.state.lose_life()
