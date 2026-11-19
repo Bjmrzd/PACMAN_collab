@@ -259,6 +259,12 @@ class Game:
                             letter += event.unicode
                     if keys[pg.K_BACKSPACE]:
                         letter = letter[:-1]
+                    #
+                    if event.key == pg.K_RETURN:
+                        menu = MainMenu(self.screen, self.screen_height, self.screen_width)
+                        pv.quit_all()
+                        menu.init_menu(True)
+                    #
                     if keys[pg.K_SPACE] and count == 0:
                         count += 1
                         no_loop = True
@@ -322,6 +328,7 @@ class Game:
         video = pv.Video("assets/wizard.mp4")
         video.set_size((400, 400))
         video.preplay(-1)
+        
 
         while running:
             self.screen.fill(Color.BLACK.value)
@@ -351,8 +358,7 @@ class Game:
                 keys = pg.key.get_pressed()
                 if keys[pg.K_ESCAPE]:
                     pv.quit_all()
-                    pg.quit()
-                    sys.exit()
+                    running = False
                 if event.type == pg.MOUSEBUTTONDOWN:
                     if exit_button.rect.collidepoint(mouse):
                         pv.quit_all()
