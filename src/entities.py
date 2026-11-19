@@ -90,7 +90,6 @@ class Mover(ABC):
 			if self.target is None:
 				if not self.start_move():
 					return
-			# print("test")
 			remaining = 1.0 - self.progress
 			if distance < remaining:
 				self.progress += distance
@@ -116,9 +115,6 @@ class Pac_anim(Enum):
 	BLINKY_RIGHT = Images.PACMAN.value.subsurface((3, 200, 25, 25))
 	GUM = Images.SUPERGUM.value.subsurface((8, 5, 8, 8))
 	SUPERGUM = Images.SUPERGUM.value.subsurface((0, 0, 21, 21))
-
-
-
 
 
 class PacMan(Mover, pg.sprite.Sprite):
@@ -149,13 +145,6 @@ class PacMan(Mover, pg.sprite.Sprite):
 				state.add_points(state.rules.pacgum)
 		return eaten
 
-	# def set_next_move(self, direction):
-	# 	"""The next direction is defined and saved by the key pressed (applied at the next cell's center)"""
-	# 	self.key_direction = direction
-	# 	# self.check_directions() # voir s'il faut le changer de place ou l'enlever plus tard
-	# 	if self.direction is not None and direction is self.direction.opposite:
-	# 		self.reverse()
-
 
 	def move(self, direction: Direction) -> None:
 		if self.target is not None:
@@ -169,10 +158,6 @@ class PacMan(Mover, pg.sprite.Sprite):
 
 
 	def choose_direction(self) -> Direction | None:
-		# """Try the choosen direction, advance if direction is valid, stay still if not"""
-		# for direction in (self.key_direction, self.direction):
-		# 	if direction is not None and self.maze.can_move(self.current_cell, direction):
-		# 		return direction
 		return None
 
 
@@ -280,9 +265,6 @@ class Ghost(Mover, pg.sprite.Sprite):
 			else:
 				is_better = score < best_score
 
-			# print("Score : ", score)
-			# print("Best Score : ", best_score)
-			# print("List Directions: ", direction)
 			if is_better:
 				best_score = score
 				best_directions = [direction]
