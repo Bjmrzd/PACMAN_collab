@@ -115,6 +115,7 @@ class Pac_anim(Enum):
 	BLINKY_RIGHT = Images.PACMAN.value.subsurface((3, 225, 26, 26))
 	GUM = Images.SUPERGUM.value.subsurface((8, 5, 8, 8))
 	SUPERGUM = Images.SUPERGUM.value.subsurface((0, 0, 21, 21))
+	SCARED = Images.PACMAN.value.subsurface((275, 164, 25, 25))
 
 
 class PacMan(Mover, pg.sprite.Sprite):
@@ -315,9 +316,3 @@ class Super_gum(pg.sprite.Sprite):
 		self.rect = self.image.get_rect()
 		self.rect.center = (0, 0)
 
-class Clyde(Ghost):
-	def __init__(self, maze: Maze, corner: Cell, personnality: Personnality, rng: random.Random, speed: float = GhostFeatures.NORMAL_SPEED.value) -> None:
-		super().__init__(maze, corner, speed)
-		pg.sprite.Sprite().__init__(maze, corner, speed)
-
-	

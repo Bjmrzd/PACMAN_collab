@@ -3,7 +3,7 @@ import random
 import math
 from typing import Any
 
-from src.entities import Ghost, PacMan, State, Personnality, Pacgum, Super_gum
+from src.entities import Ghost, PacMan, State, Personnality, Pacgum, Super_gum, Pac_anim
 from src.maze import Maze, Cell
 from src.scoring import GameState
 
@@ -66,6 +66,7 @@ class Level():
 		if super_pacgum_eaten:
 			for ghost in self.ghosts:
 				ghost.is_edible(LevelFeatures.PACMAN_HUNT.value)
+				ghost.image = Pac_anim.SCARED.value
 		self.pacgum_done = self.is_pacgum(gum.get("entities"))
 
 

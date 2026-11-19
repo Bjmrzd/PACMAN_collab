@@ -80,7 +80,6 @@ def render_maze(walls: list[list[int]], maze: Maze, screen: Any, screen_width: i
 
     for ghost in level.ghosts:
         row, col = ghost.position
-        print()
         ghost.rect.center = (int(middle_x + (col + 0.5) * space), int(middle_y + (row + 0.5) * space))
 
     return {"sprite": gum_grp, "entities": list_gum, "super": supergum_grp, "super_list": super_list}
