@@ -171,6 +171,12 @@ class PacMan(Mover, pg.sprite.Sprite):
 		self.key_direction = None
 
 
+# Sprites_dict : dict[Personnality, Pac_anim]= {Personnality.CLYDE : Pac_anim.CLYDE_RIGHT.value,
+# 											  Personnality.PINKY : Pac_anim.PINKY_RIGHT.value,
+# 											  Personnality.INKY : Pac_anim.INKY_RIGHT.value,
+# 											  Personnality.BLINKY : Pac_anim.BLINKY_RIGHT.value}
+
+
 class Ghost(Mover, pg.sprite.Sprite):
 	def __init__(self, maze: Maze, corner: Cell, personnality: Personnality, rng: random.Random, speed: float = GhostFeatures.NORMAL_SPEED.value) -> None:
 		super().__init__(maze, corner, speed)
@@ -182,7 +188,8 @@ class Ghost(Mover, pg.sprite.Sprite):
 		self.timer = 0.0
 		self.player_cell: Cell = corner
 		self.player_dir: Direction | None = None
-
+		# self.image = Sprites_dict[personnality]
+		# self.rect = self.image.get_rect()
 		# self.sprite = Images
 		# self.image
 
