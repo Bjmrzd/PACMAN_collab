@@ -6,7 +6,7 @@ from typing import Any
 from src.entities import Pacgum, Super_gum
 
 
-def render_maze(walls: list[list[int]], maze: Maze, screen: Any, screen_width: int, screen_height: int, pacman: PacMan, index: int) -> dict[str, Any]:
+def render_maze(walls: list[list[int]], maze: Maze, screen: Any, screen_width: int, screen_height: int, pacman: PacMan, index: int, level) -> dict[str, Any]:
     list_cell: list[Any] = []
     # index: int = 0
     # start_x: int = 50
@@ -77,6 +77,8 @@ def render_maze(walls: list[list[int]], maze: Maze, screen: Any, screen_width: i
 
     row, col = pacman.position
     pacman.rect.center = (int(middle_x + (col + 0.5) * space), int(middle_y + (row + 0.5) * space))
+    for ghost in level.ghosts:
+        ghost.rect.center = (int(middle_x + (col + 0.5 * space)), int(middle_y + (row * 0.5) * space))
 
     return {"sprite": gum_grp, "entities": list_gum, "super": supergum_grp, "super_list": super_list}
 

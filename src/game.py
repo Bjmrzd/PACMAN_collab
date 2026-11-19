@@ -83,7 +83,7 @@ class Game:
         ghost_grp = pg.sprite.Group()
         while level.level_state is LevelState.PLAYING:
             self.screen.fill(Color.BLACK.value)
-            dict_gum = render_maze(maze_class.walls, maze_class, self.screen, self.screen_width, self.screen_height, pac, index)
+            dict_gum = render_maze(maze_class.walls, maze_class, self.screen, self.screen_width, self.screen_height, pac, index, level)
             for ghost in level.ghosts:
                 ghost_grp.add(ghost)
             dt = timer.tick(self.fps) / 1000
@@ -125,6 +125,8 @@ class Game:
                     pac.move(direction)
             level.update(dt)
             level.pacman_reach_cell(pac, dict_gum)
+            # for ghost in level.ghosts:
+            #     print(ghost.rect.center, ghost.position)
 
             accurate_time = round(level.remaining_time, 2)
 
