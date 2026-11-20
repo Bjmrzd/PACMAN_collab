@@ -44,15 +44,15 @@ class Game:
             self.config.level_9,
             self.config.level_10,
         ]
-        self.keys = {pg.K_UP : Direction.North,
-                     pg.K_w : Direction.North,
-                     pg.K_RIGHT : Direction.East,
-                     pg.K_d : Direction.East,
-                     pg.K_DOWN : Direction.South,
-                     pg.K_s : Direction.South,
-                     pg.K_LEFT : Direction.West,
-                     pg.K_a : Direction.West}
-        self.is_paused: bool = False
+        self.keys = {pg.K_UP: Direction.North,
+                     pg.K_w: Direction.North,
+                     pg.K_RIGHT: Direction.East,
+                     pg.K_d: Direction.East,
+                     pg.K_DOWN: Direction.South,
+                     pg.K_s: Direction.South,
+                     pg.K_LEFT: Direction.West,
+                     pg.K_a: Direction.West}
+        self.is_paused: bool = True
 
 
     def main_loop(self):
@@ -72,6 +72,7 @@ class Game:
 
     def play_level(self, level_number: int, state: GameState, timer: pg.time.Clock) -> LevelState | None:
         index: int = 0
+        restart_pause: int = 1
         maze = generate_hex_maze(self.level_list[level_number - 1].get("height"), self.level_list[level_number - 1].get("width"), self.config.seed)    
         maze_class = Maze(maze)
         sprites_grp = pg.sprite.Group()
@@ -81,31 +82,34 @@ class Game:
         dt = 0
         sprites_grp.add(pac)
         ghost_grp = pg.sprite.Group()
-        while level.level_state is LevelState.PLAYING:
+        for ghost in level.ghosts:
+            ghost_grp.add(ghost)
+        while level.level_state is LevelState.PLAYING or level.level_state is LevelState.PAUSE:
             self.screen.fill(Color.BLACK.value)
             dict_gum = render_maze(maze_class.walls, maze_class, self.screen, self.screen_width, self.screen_height, pac, index, level)
-            for ghost in level.ghosts:
-                ghost_grp.add(ghost)
-
             dt = timer.tick(self.fps) / 1000
+            if not self.is_paused and level.level_state is not LevelState.PLAYING:
+                restart_pause -= dt
+                # print(dt, self.is_paused, restart_pause)
+                if restart_pause <= 0.0:
+                    level.level_state = LevelState.PLAYING
+                    self.is_paused = True
+                    restart_pause = 1
             if index < 1:
                 level.pacgum = dict_gum
             else:
                 dict_gum = level.pacgum
             index += 1
-            #
-            # print("Pac current cell: ", pac.current_cell)
-            # for ghost in level.ghosts:
-            #     print(f"{ghost.personnality.value} cell : ",ghost.current_cell)
-            #
+
             for event in pg.event.get():
                 if event.type == pg.QUIT:
                     pg.quit()
                     sys.exit()
                 if event.type == pg.KEYDOWN:
                     if event.key == pg.K_ESCAPE:
-                        self.is_paused = True
-                        self.pause_menu()
+                        level.level_state = LevelState.PAUSE
+                        self.is_paused = self.pause_menu()
+                        print(dt)
                     if event.key == pg.K_c:
                         list_cheat = self.cheat_screen()
                         print(list_cheat)
@@ -125,10 +129,11 @@ class Game:
             for key, direction in self.keys.items():
                 if pressed[key]:
                     pac.move(direction)
-            if not self.is_paused:
+
+            if level.level_state is LevelState.PLAYING:
                 level.update(dt)
                 level.pacman_reach_cell(pac, dict_gum)
-            
+
             accurate_time = round(level.remaining_time, 2)
 
             display_score = Text("Score: " + str(state.score), Color.RED.value, 1500, 40, Size.TEXT.value)
@@ -150,6 +155,10 @@ class Game:
 
             pg.display.flip()
         return level.level_state
+
+    def toggle_pause(self, level, keys):
+        if not self.is_paused:
+            level.level_state = LevelState.PAUSE 
 
     def game_over(self):
         """Game over screen"""
@@ -319,7 +328,7 @@ class Game:
 
             pg.display.flip()
 
-    def pause_menu(self):
+    def pause_menu(self) -> bool:
         """Pause Menu"""
         from src.main_menu import MainMenu
         running: bool = True
@@ -382,6 +391,7 @@ class Game:
 
             pg.display.flip()
         # self.is_paused = False
+        return running
 
     def cheat_screen(self):
         """Menu to activate/deactivate the cheat"""

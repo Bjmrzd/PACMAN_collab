@@ -12,6 +12,7 @@ class LevelState(Enum):
 	PLAYING = "playing"
 	WON = "won"
 	GAME_OVER = "game_over"
+	PAUSE = "pause"
 
 
 class LevelFeatures(Enum):
