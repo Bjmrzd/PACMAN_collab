@@ -165,15 +165,44 @@ class PacMan(Mover, pg.sprite.Sprite):
 				state.add_points(state.rules.pacgum)
 		return eaten
 
-	def move(self, direction: Direction) -> None:
+	def move(self, direction: Direction, updated: bool) -> None:
 		if self.target is not None:
 			if (self.direction is not None and direction is self.direction.opposite):
 				self.reverse()
 			return
 		if self.maze.can_move(self.current_cell, direction):
 			self.direction = direction
+			self.change_sprite(direction, updated)
 			self.target = self.maze.step(self.current_cell, direction)
 			self.progress = 0.0
+
+	def change_sprite(self, direction: Direction, updated: bool):
+
+		if direction is Direction.North:
+			if updated:
+				self.image = Pac_anim.UP.value
+			else:
+				self.image = Pac_anim.C_UP.value
+
+		if direction is Direction.South:
+			if updated:
+				self.image = Pac_anim.DOWN.value
+			else:
+				self.image = Pac_anim.C_DOWN.value
+
+		if direction is Direction.East:
+			if updated:
+				self.image = Pac_anim.RIGHT.value
+			else:
+				self.image = Pac_anim.C_RIGHT.value
+
+		if direction is Direction.West:
+			if updated:
+				self.image = Pac_anim.LEFT.value
+			else:
+				self.image = Pac_anim.C_LEFT.value
+
+			
 
 	def choose_direction(self) -> Direction | None:
 		return None

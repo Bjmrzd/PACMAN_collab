@@ -103,10 +103,12 @@ class Game:
 
         restart_pause: int = 0.5
 
-        maze = generate_hex_maze(self.level_list[level_number - 1].get("height"), self.level_list[level_number - 1].get("width"), self.config.seed)    
+        maze = generate_hex_maze(self.level_list[level_number - 1].get("height"), self.level_list[level_number - 1].get("width"), self.config.seed)
         maze_class = Maze(maze)
 
         sprites_grp = pg.sprite.Group()
+
+        updated: bool = False
 
         pac = PacMan(maze_class, maze_class.spawn)
 
@@ -116,6 +118,10 @@ class Game:
         dt = 0
 
         been_paused: bool = False
+
+        sprite_timer = pg.USEREVENT
+
+        pg.time.set_timer(sprite_timer, 45)
 
         sprites_grp.add(pac)
 
@@ -154,6 +160,8 @@ class Game:
             index += 1
 
             for event in pg.event.get():
+                if event.type == sprite_timer:
+                    updated = True
                 if event.type == pg.QUIT:
                     pg.quit()
                     sys.exit()
@@ -174,16 +182,19 @@ class Game:
                     if event.key == pg.K_n:
                         level.level_state = LevelState.WON
                     elif event.key in self.keys:
-                        level.pac_man.move(self.keys[event.key])
+                        level.pac_man.move(self.keys[event.key], updated)
 
             pressed = pg.key.get_pressed()
             for key, direction in self.keys.items():
                 if pressed[key]:
-                    pac.move(direction)
+                    pac.move(direction, updated)
 
             if level.level_state is LevelState.PLAYING:
                 level.update(dt)
                 level.pacman_reach_cell(pac, dict_gum)
+
+            if updated:
+                updated = False
 
             accurate_time = round(level.remaining_time, 2)
 
@@ -222,7 +233,7 @@ class Game:
             pg.display.flip()
 
         self.cheat_speed = False
-        self.cheat_collision = False
+        self.cheat_time = False
         self.cheat_invincible = False
 
         return level.level_state
@@ -329,7 +340,7 @@ class Game:
             self.screen.fill(Color.BLACK.value)
 
             for event in pg.event.get():
-                video.handle_event(event)
+                # video.handle_event(event)
                 keys = pg.key.get_pressed()
                 if keys[pg.K_ESCAPE]:
                     pg.quit()
@@ -431,6 +442,9 @@ class Game:
             instructions_button = Box_Button(self.screen_width / 2, self.screen_height / 2 + 250, width_button, height_button, "Instructions", size_text)
             instructions_button.create_button(self.screen, mouse)
 
+            display_enter = Text("Press Enter to resume", Color.WHITE.value, self.screen_width /2, self.screen_height / 2 - 200, Size.TEXT.value)
+            display_enter.show_text(self.screen)
+
             title_menu = Text("Pause Menu", Color.WHITE.value, self.screen_width / 2, self.screen_height / 2 - 500, Size.TITLE.value)
             title_menu.show_text(self.screen)
 
@@ -438,14 +452,14 @@ class Game:
 
             for event in pg.event.get():
 
-                video.handle_event(event)
+                # video.handle_event(event)
 
                 keys = pg.key.get_pressed()
 
-                if keys[pg.K_ESCAPE]:
-                    pv.quit_all()
+                if keys[pg.K_RETURN]:
                     running = False
                     self.is_paused = False
+                    pv.quit_all()
 
                 if event.type == pg.MOUSEBUTTONDOWN:
 
@@ -545,7 +559,3 @@ class Game:
                         self.cheat_time = True
 
             pg.display.flip()
-
-
-# Need to see if the win and game over function can't be done outside of the class, same for pause menu
-# see if there is a need to create cursor for the button of the menu or not (with pygame.cursor probably)
