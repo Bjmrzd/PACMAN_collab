@@ -270,6 +270,10 @@ class Game:
                     if len(letter) < 10 and not keys[pg.K_BACKSPACE]:
                         if event.unicode.isalpha():
                             letter += event.unicode
+                    if keys[pg.K_RETURN]:
+                        menu = MainMenu(self.screen, self.screen_height, self.screen_width)
+                        pv.quit_all()
+                        menu.init_menu(True)
                     if keys[pg.K_BACKSPACE]:
                         letter = letter[:-1]
                     if keys[pg.K_SPACE] and count == 0:
