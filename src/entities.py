@@ -60,6 +60,14 @@ class Mover(ABC):
 		return (row + (t_row - row) * self.progress,
 				col + (t_col - col) * self.progress)
 
+	@position.setter
+	def position(self, new_cell) -> None:
+		row, col = new_cell
+		if self.target is None:
+			return float(row), float(col)
+		t_row, t_col = self.target
+		return (row + (t_row - row) * self.progress,  col + (t_col - col) * self.progress)
+
 	def reset(self) -> None:
 		self.current_cell = self.spawn
 		self.target = None

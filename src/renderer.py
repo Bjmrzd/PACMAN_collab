@@ -8,9 +8,7 @@ from src.entities import Pacgum, Super_gum
 
 def render_maze(walls: list[list[int]], maze: Maze, screen: Any, screen_width: int, screen_height: int, pacman: PacMan, index: int, level) -> dict[str, Any]:
     list_cell: list[Any] = []
-    # index: int = 0
-    # start_x: int = 50
-    # start_y: int = 50
+
     space: int = 50
     middle_x: int = (screen_width - len(walls[0]) * space) // 2
     middle_y: int = (screen_height - len(walls) * space) // 2
@@ -20,26 +18,18 @@ def render_maze(walls: list[list[int]], maze: Maze, screen: Any, screen_width: i
     base_state = State.EDIBLE
     list_gum: list[Any] = []
     super_list: list[Any] = []
-    if maze.spawn[0] % 2 == 0 and maze.spawn[1] % 2 == 0 and index < 1 and not iseven:
-        iseven = True
-        # print(maze.spawn)
-        # maze.spawn = (maze.spawn[0] - 1, maze.spawn[1] - 1)
-        # print(maze.spawn)
-
-    elif not maze.spawn[0] % 2 == 0 and not maze.spawn[1] % 2 == 0 and index < 1:
-        iseven = False
-        maze.spawn = (maze.spawn[0], maze.spawn[1])
+    # if maze.spawn[0] % 2 == 0 and maze.spawn[1] % 2 == 0 and index < 1:
+    #     iseven = True
+    #     print("test")
+    # elif maze.spawn[0] % 2 > 0 and maze.spawn[1] % 2 > 0 and index < 1:
+    #     iseven = False
     direction: dict[str | int] = {
         "top": 1,
         "bottom": 4,
         "left": 8,
         "right": 2,
     }
-    # pacman_pos: (0, 0)
-    # print(maze.width, maze.height)
-    # if iseven:
-    #     print(maze.spawn)
-    #     maze.spawn = (maze.spawn[0] - 1, maze.spawn[1])
+
     for rows in range(len(walls)):
         for cols in range(len(walls[0])):
             cell = walls[rows][cols]
@@ -60,12 +50,6 @@ def render_maze(walls: list[list[int]], maze: Maze, screen: Any, screen_width: i
             if (cell & direction["right"]):
                 pg.draw.line(screen, Color.WHITE.value, (end_x, start_y), (end_x, end_y), 5)
 
-            if maze.spawn == (cols, rows) and index < 1 and not iseven:
-                pacman.rect.center = (start_x + 25, start_y + 25)
-
-            if maze.spawn == (cols, rows) and index < 1 and iseven:
-                pacman.rect.center = (start_x + 25, start_y + 25)
-
             if rows <= len(walls) and cols <= len(walls[0]) and maze.is_init is False:
                 if cell != 15:
                     if (rows, cols) != (0, 0) and (rows, cols) != (len(walls) - 1, len(walls[0]) - 1) and (rows, cols) != (len(walls) - 1, 0) and (rows, cols) != (0, len(walls[0]) - 1):
@@ -84,6 +68,13 @@ def render_maze(walls: list[list[int]], maze: Maze, screen: Any, screen_width: i
 
     row, col = pacman.position
     pacman.rect.center = (int(middle_x + (col + 0.5) * space), int(middle_y + (row + 0.5) * space))
+    if walls[int(row)][int(col)] == 15:
+        if not iseven and index < 1:
+            print(pacman.position)
+            pacman.current_cell = (int(row) - 1, int(col) - 1)
+            print(pacman.position)
+        pacman.rect.center = (int(middle_x + (col - 1 + 0.5) * space), int(middle_y + (row - 1 + 0.5) * space))
+        iseven = True
 
     for ghost in level.ghosts:
         row, col = ghost.position
