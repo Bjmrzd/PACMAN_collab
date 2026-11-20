@@ -453,6 +453,7 @@ class Game:
             for event in pg.event.get():
 
                 # video.handle_event(event)
+                # make the video crash for some reason and isnt needed to run it
 
                 keys = pg.key.get_pressed()
 
@@ -539,7 +540,7 @@ class Game:
 
             for event in pg.event.get():
 
-                video.handle_event(event)
+                # video.handle_event(event)
 
                 keys = pg.key.get_pressed()
 

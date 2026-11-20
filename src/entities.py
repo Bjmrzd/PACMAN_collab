@@ -161,6 +161,7 @@ class PacMan(Mover, pg.sprite.Sprite):
 			if isinstance(sprite, Super_gum):
 				state.add_points(state.rules.super_pacgum)
 		for sprite in eaten_gum:
+			sprite.state = State.EATEN
 			if isinstance(sprite, Pacgum):
 				state.add_points(state.rules.pacgum)
 		return eaten

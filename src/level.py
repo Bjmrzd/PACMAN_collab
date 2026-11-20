@@ -62,7 +62,10 @@ class Level():
 				self.pac_man.speed = self.pac_base_speed
 
 		self.collisions()
+		# print(self.pacgum_done)
 		if self.level_state is LevelState.PLAYING and self.pacgum_done:
+			print("test")
+			# doesnt enter this condition
 			self.level_state = LevelState.WON
 
 	def pacman_reach_cell(self, pac: PacMan, gum) -> None:
