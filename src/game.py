@@ -34,7 +34,7 @@ class Game:
 
         self.lives: int = self.config.lives
 
-        self.max_time: int = self.config.lvl_max_time
+        self.max_time: int = 0
 
         self.rng = random.Random(self.config.seed)
 
@@ -110,6 +110,7 @@ class Game:
         sprites_grp = pg.sprite.Group()
 
         updated: bool = False
+        self.max_time = abs((maze_class.width*maze_class.height / 5) * 2.5) # 5 being the speed of the PacMan, if we change the speed we have to change the value
 
         level = Level(maze_class, state, level_number, self.max_time, self.rng, PacMan(maze_class, maze_class.center))
         pac = level.pac_man 
