@@ -44,7 +44,7 @@ class Level():
 	def update(self, dt:float) -> None:
 		count: int = 0
 		if self.cheat_speed:
-			self.pac_man.speed += 15.0
+			self.pac_man.speed *= 2
 		if self.level_state is not LevelState.PLAYING:
 			return
 		if not self.cheat_time:

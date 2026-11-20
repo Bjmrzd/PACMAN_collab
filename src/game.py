@@ -101,7 +101,8 @@ class Game:
     def play_level(self, level_number: int, state: GameState, timer: pg.time.Clock) -> LevelState | None:
         index: int = 0
 
-        restart_pause: int = 0.5
+        resume_freeze: float = 1.0
+        restart_pause: float = resume_freeze
 
         maze = generate_hex_maze(self.level_list[level_number - 1].get("height"), self.level_list[level_number - 1].get("width"), self.config.seed)
         maze_class = Maze(maze)
@@ -116,8 +117,6 @@ class Game:
         level.pac_man = pac
 
         dt = 0
-
-        been_paused: bool = False
 
         sprite_timer = pg.USEREVENT
 
@@ -137,21 +136,14 @@ class Game:
 
             if level.level_state is LevelState.PLAYING:
                 dt = timer.tick(self.fps) / 1000
-
-                if been_paused:
-                    dt -= dt
-                    been_paused = False
-
-            if level.level_state is not LevelState.PLAYING:
-
-                if not self.is_paused:
-                    restart_pause -= dt
-
-                    if restart_pause <= 0.0:
-                        level.level_state = LevelState.PLAYING
-                        self.is_paused = True
-                        restart_pause = 0.5
-                        been_paused = True
+            elif not self.is_paused:
+                dt = timer.tick(self.fps) / 1000
+                restart_pause -= dt
+                if restart_pause <= 0.0:
+                    level.level_state = LevelState.PLAYING
+                    self.is_paused = True
+                    restart_pause = resume_freeze
+                    dt = 0.0
 
             if index < 1:
                 level.pacgum = dict_gum
@@ -169,6 +161,10 @@ class Game:
                     if event.key == pg.K_ESCAPE:
                         level.level_state = LevelState.PAUSE
                         self.is_paused = self.pause_menu()
+                        restart_pause = resume_freeze
+                        timer.tick()
+                        pg.event.clear()
+                        break
                     if event.key == pg.K_c:
                         self.cheat_screen()
                     if event.key == pg.K_1:
@@ -229,6 +225,11 @@ class Game:
             dict_gum.get("sprite").draw(self.screen)
             dict_gum.get("super").draw(self.screen)
             ghost_grp.draw(self.screen)
+
+            if level.level_state is LevelState.PAUSE and not self.is_paused:
+                countdown = Text(str(int(restart_pause) + 1), Color.WHITE.value,
+                                self.screen_width / 2, self.screen_height / 2, Size.TITLE.value)
+                countdown.show_text(self.screen)
 
             pg.display.flip()
 
@@ -461,7 +462,7 @@ class Game:
 
                 keys = pg.key.get_pressed()
 
-                if keys[pg.K_RETURN]:
+                if event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE:
                     running = False
                     self.is_paused = False
                     pv.quit_all()

@@ -211,7 +211,6 @@ class PacMan(Mover, pg.sprite.Sprite):
 			else:
 				self.image = Pac_anim.C_LEFT.value
 
-			
 
 	def choose_direction(self) -> Direction | None:
 		return None
