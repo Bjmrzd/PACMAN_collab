@@ -13,7 +13,7 @@
     "level_5": {"width": 14, "height": 14},
     "level_6": {"width": 13, "height": 13},
     "level_7": {"width": 11, "height": 11},
-    "level_8": {"width": 9, "height": 9},
+    "level_8": {"width": 25, "height": 25},
     "level_9": {"width": 16, "height": 16},
     "level_10": {"width": 18, "height": 18}
 }

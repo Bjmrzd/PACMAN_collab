@@ -10,21 +10,33 @@ from src.scoring import GameState
 
 class State(Enum):
 	NORMAL = "normal"
+
 	EDIBLE = "edible"
+
 	EATEN = "eaten"
 
+
 class GhostFeatures(Enum):
-	NORMAL_SPEED    = 3.0
-	EDIBLE_SPEED    = 2.5
-	CLYDE_DISTANCE  = 8
+	NORMAL_SPEED = 3.0
+
+	EDIBLE_SPEED = 2.5
+
+	CLYDE_DISTANCE = 8
+
 	PINKY_LOOKAHEAD = 4
-	INKY_SIGHT      = 4
-	RESPAWN_DELAY   = 5.0
+
+	INKY_SIGHT = 4
+
+	RESPAWN_DELAY = 5.0
+
 
 class Personnality(Enum):
 	BLINKY = "blinky"   #Aims the player's cell
+
 	PINKY = "pinky"	    #Aims a few cells ahead of the player
+
 	INKY = "inky"	  	#Chaotic movements
+
 	CLYDE = "clyde"	 	#Chases when far, goes home when close
 
 
@@ -39,7 +51,6 @@ class Mover(ABC):
 		self.progress: float = 0.0  # 0.0 a 1.0
 		# self.position_screen = None
 
-
 	@property
 	def position(self) -> None:
 		row, col = self.current_cell
@@ -49,13 +60,11 @@ class Mover(ABC):
 		return (row + (t_row - row) * self.progress,
 				col + (t_col - col) * self.progress)
 
-
 	def reset(self) -> None:
 		self.current_cell = self.spawn
 		self.target = None
 		self.direction = None
 		self.progress = 0.0
-
 
 	def reverse(self) -> None:
 		if self.target is None or self.direction is None:
@@ -64,15 +73,12 @@ class Mover(ABC):
 		self.progress = 1.0 - self.progress
 		self.direction = self.direction.opposite
 
-
 	@abstractmethod
 	def choose_direction(self) -> Direction | None:
 		return
 
-
 	def cell_reached(self) -> None:
 		return None
-
 
 	def start_move(self) -> bool:
 		direction = self.choose_direction()
@@ -82,7 +88,6 @@ class Mover(ABC):
 		self.target = self.maze.step(self.current_cell, direction)
 		self.progress = 0.0
 		return True
-
 
 	def advance(self, dt: float) -> None:
 		distance = self.speed * dt
@@ -100,21 +105,36 @@ class Mover(ABC):
 			self.progress = 0.0
 			self.cell_reached()
 
+
 class Pac_anim(Enum):
 	UP = Images.PACMAN.value.subsurface((3, 74, 26, 25))
+
 	RIGHT = Images.PACMAN.value.subsurface((2, 3, 25, 25))
+
 	LEFT = Images.PACMAN.value.subsurface((5, 35, 25, 25))
+
 	DOWN = Images.PACMAN.value.subsurface((3, 100, 26, 25))
+
 	C_UP = Images.PACMAN.value.subsurface((35, 69, 25, 25))
+
 	C_RIGHT = Images.PACMAN.value.subsurface((35, 4, 25, 25))
+
 	C_LEFT = Images.PACMAN.value.subsurface((35, 35, 25, 25))
+
 	C_DOWN = Images.PACMAN.value.subsurface((35, 100, 25, 25))
+
 	CLYDE_RIGHT = Images.PACMAN.value.subsurface((3, 131, 26, 26))
+
 	PINKY_RIGHT = Images.PACMAN.value.subsurface((3, 164, 26, 26))
+
 	INKY_RIGHT = Images.PACMAN.value.subsurface((3, 195, 26, 26))
+
 	BLINKY_RIGHT = Images.PACMAN.value.subsurface((3, 225, 26, 26))
+
 	GUM = Images.SUPERGUM.value.subsurface((8, 5, 8, 8))
+
 	SUPERGUM = Images.SUPERGUM.value.subsurface((0, 0, 21, 21))
+
 	SCARED = Images.PACMAN.value.subsurface((275, 164, 25, 25))
 
 
@@ -132,7 +152,6 @@ class PacMan(Mover, pg.sprite.Sprite):
 		self.key_direction: Direction | None = None
 		self.on_cell_center: Callable[[Cell], None] = None
 
-
 	def check_gum(self, gum: pg.sprite.Group, state: GameState, supergum: pg.sprite.Group):
 		eaten: list[Any] = pg.sprite.spritecollide(self, supergum, True)
 		eaten_gum: list[Any] = pg.sprite.spritecollide(self, gum, True)
@@ -146,7 +165,6 @@ class PacMan(Mover, pg.sprite.Sprite):
 				state.add_points(state.rules.pacgum)
 		return eaten
 
-
 	def move(self, direction: Direction) -> None:
 		if self.target is not None:
 			if (self.direction is not None and direction is self.direction.opposite):
@@ -157,20 +175,16 @@ class PacMan(Mover, pg.sprite.Sprite):
 			self.target = self.maze.step(self.current_cell, direction)
 			self.progress = 0.0
 
-
 	def choose_direction(self) -> Direction | None:
 		return None
-
 
 	def cell_reached(self) -> None:
 		if self.on_cell_center is not None:
 			self.on_cell_center(self.current_cell)
 
-
 	def reset(self) -> None:
 		super().reset()
 		self.key_direction = None
-
 
 
 class Ghost(Mover, pg.sprite.Sprite):

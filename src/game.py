@@ -21,17 +21,27 @@ class Game:
     """Class for the pacman game"""
     def __init__(self, screen, screen_width, screen_height):
         self.fps: int = 60
+
         self.screen = screen
+
         self.screen_width = screen_width
+
         self.screen_height = screen_height
+
         self.score: int = 0
+
         self.config = parsing()
+
         self.lives: int = self.config.lives
+
         self.max_time: int = self.config.lvl_max_time
+
         self.rng = random.Random(self.config.seed)
+
         logging.basicConfig(filename="error.logs", filemode="a",
                             format="%(asctime)s - %(message)s",
                             datefmt='%m/%d/%Y %I:%M:%S %p')
+
         self.level_list: list[Any] = [
             self.config.level_1,
             self.config.level_2,
@@ -44,6 +54,7 @@ class Game:
             self.config.level_9,
             self.config.level_10,
         ]
+
         self.keys = {pg.K_UP: Direction.North,
                      pg.K_w: Direction.North,
                      pg.K_RIGHT: Direction.East,
@@ -52,55 +63,90 @@ class Game:
                      pg.K_s: Direction.South,
                      pg.K_LEFT: Direction.West,
                      pg.K_a: Direction.West}
+
         self.is_paused: bool = True
 
+        self.cheat_speed: bool = False
+
+        self.cheat_invincible: bool = False
+
+        self.cheat_time: bool = False
+
     def main_loop(self):
+
         rules = ScoringRules(self.config.pacgum_pts, self.config.super_pacgum_pts, self.config.ghost_pts)
+
         state = GameState(self.lives, rules)
+
         timer = pg.time.Clock()
+
         nb_levels: int = len(self.level_list)
+
         for n in range(1, nb_levels + 1):
             level_state = self.play_level(n, state, timer)
+
             if level_state is None:
                 return
+
             self.score = state.score
+
             if level_state is LevelState.GAME_OVER:
                 self.game_over()
                 return
+
             state.lives = self.lives
+
         self.win()
 
     def play_level(self, level_number: int, state: GameState, timer: pg.time.Clock) -> LevelState | None:
         index: int = 0
+
         restart_pause: int = 0.5
+
         maze = generate_hex_maze(self.level_list[level_number - 1].get("height"), self.level_list[level_number - 1].get("width"), self.config.seed)    
         maze_class = Maze(maze)
+
         sprites_grp = pg.sprite.Group()
+
         pac = PacMan(maze_class, maze_class.spawn)
+
         level = Level(maze_class, state, level_number, self.max_time, self.rng, PacMan(maze_class, maze_class.spawn))
         level.pac_man = pac
+
         dt = 0
+
         been_paused: bool = False
+
         sprites_grp.add(pac)
+
         ghost_grp = pg.sprite.Group()
+
         for ghost in level.ghosts:
             ghost_grp.add(ghost)
+
         while level.level_state is LevelState.PLAYING or level.level_state is LevelState.PAUSE:
             self.screen.fill(Color.BLACK.value)
+
             dict_gum = render_maze(maze_class.walls, maze_class, self.screen, self.screen_width, self.screen_height, pac, index, level)
+
             if level.level_state is LevelState.PLAYING:
                 dt = timer.tick(self.fps) / 1000
+
                 if been_paused:
                     dt -= dt
                     been_paused = False
+
             if level.level_state is not LevelState.PLAYING:
+
                 if not self.is_paused:
                     restart_pause -= dt
+
                     if restart_pause <= 0.0:
                         level.level_state = LevelState.PLAYING
                         self.is_paused = True
                         restart_pause = 0.5
                         been_paused = True
+
             if index < 1:
                 level.pacgum = dict_gum
             else:
@@ -116,8 +162,7 @@ class Game:
                         level.level_state = LevelState.PAUSE
                         self.is_paused = self.pause_menu()
                     if event.key == pg.K_c:
-                        list_cheat = self.cheat_screen()
-                        print(list_cheat)
+                        self.cheat_screen()
                     if event.key == pg.K_1:
                         self.score = state.score
                         self.win()
@@ -130,6 +175,7 @@ class Game:
                         level.level_state = LevelState.WON
                     elif event.key in self.keys:
                         level.pac_man.move(self.keys[event.key])
+
             pressed = pg.key.get_pressed()
             for key, direction in self.keys.items():
                 if pressed[key]:
@@ -143,6 +189,21 @@ class Game:
 
             display_score = Text("Score: " + str(state.score), Color.RED.value, 1500, 40, Size.TEXT.value)
             display_score.show_text(self.screen)
+
+            if self.cheat_speed:
+                display_speed = Text("Speed boost", Color.RED.value, 500, 500, Size.TITLE.value)
+                display_speed.show_text(self.screen)
+                level.cheat_speed = True
+
+            if self.cheat_invincible:
+                display_inv = Text("Invincible", Color.WHITE.value, 500, 700, Size.TITLE.value)
+                display_inv.show_text(self.screen)
+                level.cheat_invincible = True
+
+            if self.cheat_time:
+                display_col = Text("Time Stop", Color.GREY.value, 500, 900, Size.TITLE.value)
+                display_col.show_text(self.screen)
+                level.cheat_time = True
 
             display_lives = Text("Lives: " + str(state.lives), Color.RED.value, 800, 40, Size.TEXT.value)
             display_lives.show_text(self.screen)
@@ -159,6 +220,11 @@ class Game:
             ghost_grp.draw(self.screen)
 
             pg.display.flip()
+
+        self.cheat_speed = False
+        self.cheat_collision = False
+        self.cheat_invincible = False
+
         return level.level_state
 
     def game_over(self):
@@ -332,11 +398,17 @@ class Game:
     def pause_menu(self) -> bool:
         """Pause Menu"""
         from src.main_menu import MainMenu
+
         running: bool = True
+
         no_resume: bool = True
+
         width_button: int = 100
+
         height_button: int = 100
+
         size_text: int = Size.TEXT.value
+
         menu = MainMenu(self.screen, self.screen_height, self.screen_width)
 
         video = pv.Video("assets/wizard.mp4")
@@ -365,47 +437,57 @@ class Game:
             video.draw_and_update(self.screen, (self.screen_width / 2 + 400, self.screen_height / 2))
 
             for event in pg.event.get():
+
                 video.handle_event(event)
+
                 keys = pg.key.get_pressed()
+
                 if keys[pg.K_ESCAPE]:
                     pv.quit_all()
                     running = False
                     self.is_paused = False
+
                 if event.type == pg.MOUSEBUTTONDOWN:
+
                     if exit_button.rect.collidepoint(mouse):
                         pv.quit_all()
                         pg.quit()
                         sys.exit()
+
                     if resume_button.rect.collidepoint(mouse):
                         pv.quit_all()
                         running = False
+
                     if menu_button.rect.collidepoint(mouse):
                         no_resume = False
                         pv.quit_all()
                         menu.init_menu(no_resume)
+
                         video = pv.Video("assets/wizard.mp4")
                         video.set_size((400, 400))
                         video.preplay(-1)
+
                     if instructions_button.rect.collidepoint(mouse):
                         pv.quit_all()
                         menu.init_tuto()
+
                         video = pv.Video("assets/wizard.mp4")
                         video.set_size((400, 400))
                         video.preplay(-1)
 
             pg.display.flip()
+
         return running
 
     def cheat_screen(self):
         """Menu to activate/deactivate the cheat"""
         running: bool = True
+
         width_button: int = 100
+
         height_button: int = 100
+
         size_text: int = Size.TEXT.value
-        list_cheat: list[bool] = []
-        speed: bool = False
-        invincible: bool = False
-        no_collision: bool = False
 
         video = pv.Video("assets/no_brain.mp4")
         video.set_size((400, 400))
@@ -418,11 +500,23 @@ class Game:
             speed_button = Box_Button(self.screen_width / 2, self.screen_height / 2 + 300, width_button, height_button, "Speeeeeed", size_text)
             speed_button.create_button(self.screen, mouse)
 
+            if self.cheat_speed:
+                active_text = Text("Active", Color.WHITE.value, self.screen_width / 2 - 500, self.screen_height / 2 + 300, Size.TITLE.value)
+                active_text.show_text(self.screen)
+
             invincible_button = Box_Button(self.screen_width / 2, self.screen_height / 2, width_button, height_button, "I am <Title Card>", size_text)
             invincible_button.create_button(self.screen, mouse)
 
-            no_collision_button = Box_Button(self.screen_width / 2, self.screen_height / 2 - 300, width_button, height_button, "Ghost is Ghost !", size_text)
-            no_collision_button.create_button(self.screen, mouse)
+            if self.cheat_invincible:
+                inv_text = Text("Active", Color.WHITE.value, self.screen_width / 2 - 500, self.screen_height / 2, Size.TITLE.value)
+                inv_text.show_text(self.screen)
+
+            no_time_button = Box_Button(self.screen_width / 2, self.screen_height / 2 - 300, width_button, height_button, "Stop Time", size_text)
+            no_time_button.create_button(self.screen, mouse)
+
+            if self.cheat_time:
+                time_text = Text("Active", Color.WHITE.value, self.screen_width / 2 - 500, self.screen_height / 2 - 300, Size.TITLE.value)
+                time_text.show_text(self.screen)
 
             title_menu = Text("Cheat Menu", Color.WHITE.value, self.screen_width / 2, self.screen_height / 2 - 600, Size.TITLE.value)
             title_menu.show_text(self.screen)
@@ -430,25 +524,28 @@ class Game:
             video.draw_and_update(self.screen, (self.screen_width / 2 + 400, self.screen_height / 2))
 
             for event in pg.event.get():
+
                 video.handle_event(event)
+
                 keys = pg.key.get_pressed()
+
                 if keys[pg.K_ESCAPE]:
                     pv.quit_all()
                     running = False
+
                 if event.type == pg.MOUSEBUTTONDOWN:
+
                     if speed_button.rect.collidepoint(mouse):
-                        speed = True
-                        list_cheat.append(speed)
+                        self.cheat_speed = True
+
                     if invincible_button.rect.collidepoint(mouse):
-                        invincible = True
-                        list_cheat.append(invincible)
-                    if no_collision_button.rect.collidepoint(mouse):
-                        no_collision = True
-                        list_cheat.append(no_collision)
+                        self.cheat_invincible = True
+
+                    if no_time_button.rect.collidepoint(mouse):
+                        self.cheat_time = True
 
             pg.display.flip()
 
-        return list_cheat
 
 # Need to see if the win and game over function can't be done outside of the class, same for pause menu
 # see if there is a need to create cursor for the button of the menu or not (with pygame.cursor probably)

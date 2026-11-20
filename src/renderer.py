@@ -14,17 +14,21 @@ def render_maze(walls: list[list[int]], maze: Maze, screen: Any, screen_width: i
     space: int = 50
     middle_x: int = (screen_width - len(walls[0]) * space) // 2
     middle_y: int = (screen_height - len(walls) * space) // 2
-    iseven: bool = True
+    iseven: bool = False
     gum_grp = pg.sprite.Group()
     supergum_grp = pg.sprite.Group()
     base_state = State.EDIBLE
     list_gum: list[Any] = []
     super_list: list[Any] = []
-    if maze.spawn[0] % 2 == 0 and maze.spawn[1] % 2 == 0 and index < 1:
-        # print(maze.spawn[0], maze.spawn[1])
+    if maze.spawn[0] % 2 == 0 and maze.spawn[1] % 2 == 0 and index < 1 and not iseven:
         iseven = True
+        # print(maze.spawn)
+        # maze.spawn = (maze.spawn[0] - 1, maze.spawn[1] - 1)
+        # print(maze.spawn)
+
     elif not maze.spawn[0] % 2 == 0 and not maze.spawn[1] % 2 == 0 and index < 1:
-        maze.spawn = (maze.spawn[0] - 1, maze.spawn[1] - 1)
+        iseven = False
+        maze.spawn = (maze.spawn[0], maze.spawn[1])
     direction: dict[str | int] = {
         "top": 1,
         "bottom": 4,
@@ -33,6 +37,9 @@ def render_maze(walls: list[list[int]], maze: Maze, screen: Any, screen_width: i
     }
     # pacman_pos: (0, 0)
     # print(maze.width, maze.height)
+    # if iseven:
+    #     print(maze.spawn)
+    #     maze.spawn = (maze.spawn[0] - 1, maze.spawn[1])
     for rows in range(len(walls)):
         for cols in range(len(walls[0])):
             cell = walls[rows][cols]
