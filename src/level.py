@@ -33,11 +33,13 @@ class Level():
 		self.pacgum: dict[str, Any] = {}
 		self.super_pacgum_done: set[Cell] = maze.super_pacgum_positions()
 		self.pac_man = pac
+		self.pac_base_speed: float = 5.0
 		# self.pac_man.on_cell_center = self.pacman_reach_cell(self.pac_man, self.pacgum) # besoin de faire passer pacman et list pacgum ici
 		Personnalities = [Personnality.BLINKY, Personnality.PINKY, Personnality.INKY, Personnality.CLYDE]
 		self.ghosts = [Ghost(maze, corner, personnality, rng) for corner, personnality in zip(maze.ghost_corners, Personnalities)]
 
 	def update(self, dt:float) -> None:
+		count: int = 0
 		if self.level_state is not LevelState.PLAYING:
 			return
 		self.remaining_time = max(0, self.remaining_time - dt)
@@ -48,6 +50,11 @@ class Level():
 		self.pac_man.advance(dt)
 		for ghost in self.ghosts:
 			ghost.tick(dt, self.pac_man.current_cell, self.pac_man.direction)
+			if ghost.timer <= 0.0:
+				count += 1
+			if count == 4:
+				self.pac_man.speed = self.pac_base_speed
+
 		self.collisions()
 		if self.level_state is LevelState.PLAYING and self.pacgum_done:
 			self.level_state = LevelState.WON
@@ -65,6 +72,7 @@ class Level():
 				super_pacgum_eaten = True
 				break
 		if super_pacgum_eaten:
+			pac.speed += 1.0
 			for ghost in self.ghosts:
 				ghost.is_edible(LevelFeatures.PACMAN_HUNT.value)
 		self.pacgum_done = self.is_pacgum(gum.get("entities"))

@@ -54,7 +54,6 @@ class Game:
                      pg.K_a: Direction.West}
         self.is_paused: bool = True
 
-
     def main_loop(self):
         rules = ScoringRules(self.config.pacgum_pts, self.config.super_pacgum_pts, self.config.ghost_pts)
         state = GameState(self.lives, rules)
@@ -68,11 +67,12 @@ class Game:
             if level_state is LevelState.GAME_OVER:
                 self.game_over()
                 return
+            state.lives = self.lives
         self.win()
 
     def play_level(self, level_number: int, state: GameState, timer: pg.time.Clock) -> LevelState | None:
         index: int = 0
-        restart_pause: int = 1
+        restart_pause: int = 0.5
         maze = generate_hex_maze(self.level_list[level_number - 1].get("height"), self.level_list[level_number - 1].get("width"), self.config.seed)    
         maze_class = Maze(maze)
         sprites_grp = pg.sprite.Group()
@@ -80,6 +80,7 @@ class Game:
         level = Level(maze_class, state, level_number, self.max_time, self.rng, PacMan(maze_class, maze_class.spawn))
         level.pac_man = pac
         dt = 0
+        been_paused: bool = False
         sprites_grp.add(pac)
         ghost_grp = pg.sprite.Group()
         for ghost in level.ghosts:
@@ -87,14 +88,19 @@ class Game:
         while level.level_state is LevelState.PLAYING or level.level_state is LevelState.PAUSE:
             self.screen.fill(Color.BLACK.value)
             dict_gum = render_maze(maze_class.walls, maze_class, self.screen, self.screen_width, self.screen_height, pac, index, level)
-            dt = timer.tick(self.fps) / 1000
-            if not self.is_paused and level.level_state is not LevelState.PLAYING:
-                restart_pause -= dt
-                # print(dt, self.is_paused, restart_pause)
-                if restart_pause <= 0.0:
-                    level.level_state = LevelState.PLAYING
-                    self.is_paused = True
-                    restart_pause = 1
+            if level.level_state is LevelState.PLAYING:
+                dt = timer.tick(self.fps) / 1000
+                if been_paused:
+                    dt -= dt
+                    been_paused = False
+            if level.level_state is not LevelState.PLAYING:
+                if not self.is_paused:
+                    restart_pause -= dt
+                    if restart_pause <= 0.0:
+                        level.level_state = LevelState.PLAYING
+                        self.is_paused = True
+                        restart_pause = 0.5
+                        been_paused = True
             if index < 1:
                 level.pacgum = dict_gum
             else:
@@ -109,7 +115,6 @@ class Game:
                     if event.key == pg.K_ESCAPE:
                         level.level_state = LevelState.PAUSE
                         self.is_paused = self.pause_menu()
-                        print(dt)
                     if event.key == pg.K_c:
                         list_cheat = self.cheat_screen()
                         print(list_cheat)
@@ -155,10 +160,6 @@ class Game:
 
             pg.display.flip()
         return level.level_state
-
-    def toggle_pause(self, level, keys):
-        if not self.is_paused:
-            level.level_state = LevelState.PAUSE 
 
     def game_over(self):
         """Game over screen"""
@@ -341,13 +342,10 @@ class Game:
         video = pv.Video("assets/wizard.mp4")
         video.set_size((400, 400))
         video.preplay(-1)
-        
 
         while running:
             self.screen.fill(Color.BLACK.value)
             mouse = pg.mouse.get_pos()
-            # maybe need to change menu button pos diff
-            # the click linger and can activate the start game from the menu by accident
 
             exit_button = Box_Button(self.screen_width / 2, self.screen_height / 2 + 400, width_button, height_button, "Quit", size_text)
             exit_button.create_button(self.screen, mouse)
@@ -385,12 +383,17 @@ class Game:
                         no_resume = False
                         pv.quit_all()
                         menu.init_menu(no_resume)
+                        video = pv.Video("assets/wizard.mp4")
+                        video.set_size((400, 400))
+                        video.preplay(-1)
                     if instructions_button.rect.collidepoint(mouse):
                         pv.quit_all()
                         menu.init_tuto()
+                        video = pv.Video("assets/wizard.mp4")
+                        video.set_size((400, 400))
+                        video.preplay(-1)
 
             pg.display.flip()
-        # self.is_paused = False
         return running
 
     def cheat_screen(self):

@@ -53,36 +53,23 @@ class MainMenu():
                 resume_button.set_margin(0, 50)
                 resume_button.set_padding(15)
                 resume_button.translate(0, 150)
-                    # resume_button.draw(self.screen)
-                # if resume_button.is_selected():
-                #     # need to change this part it make the game lag and sometimes crash
-                #     # need to find better way to do this
-                #     for event in pg.event.get():
-                #         keys = pg.key.get_pressed()
-                #         if keys[pg.K_RETURN]:
-                #             running = False
 
             start_button.set_margin(0, 50)
             start_button.set_padding(15)
-            # start_button.draw(self.screen)
             start_button.translate(0, 0)
 
             instructions_button.set_margin(0, 50)
             instructions_button.set_padding(15)
-            # instructions_button.draw(self.screen)
             instructions_button.translate(0, 50)
 
             highscore_button.set_margin(0, 50)
             highscore_button.set_padding(15)
-            # highscore_button.draw(self.screen)
             highscore_button.translate(0, 100)
 
             title_image.translate(0, -300)
-            # title_image.draw(self.screen)
 
             pg.display.flip()
         self.running = True
-            # problem with the resume button the menu buttons duplicate after the second time using it
 
     def init_game(self):
         """Display and init the game loop but do not handle the loop logic"""
@@ -93,10 +80,10 @@ class MainMenu():
         """Init the tuto menu with the buttons instructions and how to play"""
         running = True
         arrows = pg.image.load("assets/arrows.png")
+
         video = pv.Video("assets/sleep.mp4")
         video.set_size((400, 400))
         video.preplay(-1)
-
 
         while running:
 
