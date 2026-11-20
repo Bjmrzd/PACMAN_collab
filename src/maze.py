@@ -40,19 +40,33 @@ class Maze: #faire des méthodes intermédiaires pour assurer qu'il n'y ait pas 
         self.walls = walls
         self.height = len(walls)
         self.width = len(walls[0])
-        self.spawn: Cell = (self.height // 2, self.width // 2)
         self.ghost_corners: list[Cell] = [(0,0),
                                           (0, self.width -1),
                                           (self.height -1, 0),
                                           (self.height -1, self.width -1)]
         self.distances: dict[Cell, dict[Cell, int]] = {}
         self.is_init: bool = False
+        self.center: Cell = self.valid_center()
+
+
+    def valid_center(self) -> Cell:
+        """Search for the open cell closest to the center of the maze (in case of the center being the 42)"""
+        reachable = self.distance_map(self.ghost_corners[0])
+        best_cell: Cell | None = None
+        best_dist: int = 0
+
+        for cell in sorted(reachable):
+            dist = abs(cell[0] - self.height // 2) + abs(cell[1] - self.width // 2)
+            if best_cell is None or dist < best_dist:
+                best_cell = cell
+                best_dist = dist
+        return best_cell
 
     def in_maze(self, cell: Cell) -> bool:
         row, col = cell
-        if row < 0 or row > self.height:
+        if row < 0 or row >= self.height:
             return False
-        elif col < 0 or col > self.width:
+        elif col < 0 or col >= self.width:
             return False
         else:
             return True
@@ -64,10 +78,8 @@ class Maze: #faire des méthodes intermédiaires pour assurer qu'il n'y ait pas 
     def can_move(self, cell: Cell, direction: Direction) -> bool:
         if not self.in_maze(cell):
             return False
-        #
         row, col = cell
-        # print(row, col, len(self.walls[0]), len(self.walls))
-        if self.walls[row][col] & direction.wall_bit:  #check si il y a un mur dans cette direction
+        if self.walls[row][col] & direction.wall_bit:
             return False
         target = self.step(cell, direction)
         if not self.in_maze(target):
@@ -81,7 +93,6 @@ class Maze: #faire des méthodes intermédiaires pour assurer qu'il n'y ait pas 
             if self.can_move(cell, d):
                 list_dir.append(d)
         return list_dir
-        # return [d for d in Direction if self.can\move(cell, d)]
 
     def distance_map(self, goal: Cell) -> dict[Cell, int]: #BFS
         cache = self.distances.get(goal)
@@ -107,13 +118,13 @@ class Maze: #faire des méthodes intermédiaires pour assurer qu'il n'y ait pas 
         return cell
 
     def pacgum_positions(self) -> set[Cell]:
-        # toutes les cells sauf corners et spawn
-        valid_cells = set(self.distance_map(self.spawn))
-        return valid_cells - {self.spawn, *self.ghost_corners}
+        # toutes les cells sauf corners et center
+        valid_cells = set(self.distance_map(self.center))
+        return valid_cells - {self.center, *self.ghost_corners}
 
     def super_pacgum_positions(self) -> set[Cell]:
         valid_cells: set[Cell] = set()
         for cell in self.ghost_corners:
-            if cell in self.distance_map(self.spawn):
+            if cell in self.distance_map(self.center):
                 valid_cells.add(cell)
         return valid_cells

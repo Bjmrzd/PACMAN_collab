@@ -63,7 +63,6 @@ class Level():
 
 		self.collisions()
 		if self.level_state is LevelState.PLAYING and self.pacgum_done:
-
 			self.level_state = LevelState.WON
 
 	def pacman_reach_cell(self, pac: PacMan, gum) -> None:

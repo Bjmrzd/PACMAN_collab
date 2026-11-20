@@ -101,7 +101,7 @@ class Game:
     def play_level(self, level_number: int, state: GameState, timer: pg.time.Clock) -> LevelState | None:
         index: int = 0
 
-        resume_freeze: float = 1.0
+        resume_freeze: float = 2.0
         restart_pause: float = resume_freeze
 
         maze = generate_hex_maze(self.level_list[level_number - 1].get("height"), self.level_list[level_number - 1].get("width"), self.config.seed)
@@ -111,10 +111,8 @@ class Game:
 
         updated: bool = False
 
-        pac = PacMan(maze_class, maze_class.spawn)
-
-        level = Level(maze_class, state, level_number, self.max_time, self.rng, PacMan(maze_class, maze_class.spawn))
-        level.pac_man = pac
+        level = Level(maze_class, state, level_number, self.max_time, self.rng, PacMan(maze_class, maze_class.center))
+        pac = level.pac_man 
 
         dt = 0
 
@@ -130,6 +128,7 @@ class Game:
             ghost_grp.add(ghost)
 
         while level.level_state is LevelState.PLAYING or level.level_state is LevelState.PAUSE:
+            countdown_font = pg.font.Font(Font.FONT1.value, 400)
             self.screen.fill(Color.BLACK.value)
 
             dict_gum = render_maze(maze_class.walls, maze_class, self.screen, self.screen_width, self.screen_height, pac, index, level)
@@ -227,9 +226,10 @@ class Game:
             ghost_grp.draw(self.screen)
 
             if level.level_state is LevelState.PAUSE and not self.is_paused:
-                countdown = Text(str(int(restart_pause) + 1), Color.WHITE.value,
-                                self.screen_width / 2, self.screen_height / 2, Size.TITLE.value)
-                countdown.show_text(self.screen)
+                digit = str(int(restart_pause) + 1)
+                surface = countdown_font.render(digit, False, Color.WHITE.value)
+                rect = surface.get_rect(center=(self.screen_width // 2, self.screen_height // 2))
+                self.screen.blit(surface, rect)
 
             pg.display.flip()
 

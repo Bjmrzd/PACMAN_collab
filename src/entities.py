@@ -49,7 +49,6 @@ class Mover(ABC):
 		self.direction: Direction | None = None
 		self.target: Cell | None = None
 		self.progress: float = 0.0  # 0.0 a 1.0
-		# self.position_screen = None
 
 	@property
 	def position(self) -> None:

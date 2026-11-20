@@ -12,7 +12,6 @@ def render_maze(walls: list[list[int]], maze: Maze, screen: Any, screen_width: i
     space: int = 50
     middle_x: int = (screen_width - len(walls[0]) * space) // 2
     middle_y: int = (screen_height - len(walls) * space) // 2
-    iseven: bool = False
     gum_grp = pg.sprite.Group()
     supergum_grp = pg.sprite.Group()
     base_state = State.EDIBLE
@@ -65,11 +64,6 @@ def render_maze(walls: list[list[int]], maze: Maze, screen: Any, screen_width: i
 
     row, col = pacman.position
     pacman.rect.center = (int(middle_x + (col + 0.5) * space), int(middle_y + (row + 0.5) * space))
-    if walls[int(row)][int(col)] == 15:
-        if not iseven and index < 1:
-            pacman.current_cell = (int(row) - 1, int(col) - 1)
-        pacman.rect.center = (int(middle_x + (col - 1 + 0.5) * space), int(middle_y + (row - 1 + 0.5) * space))
-        iseven = True
 
     for ghost in level.ghosts:
         row, col = ghost.position
