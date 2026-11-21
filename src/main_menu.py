@@ -138,7 +138,6 @@ class MainMenu():
                     count += 1
                     display_score += str(count) + ". " + values[1] + ": "
                     display_score += str(values[0]) + " points"
-                    print(display_score)
                     list_highscore.append(display_score)
                     display_score = ""
 

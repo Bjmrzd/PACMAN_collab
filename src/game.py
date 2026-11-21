@@ -267,21 +267,22 @@ class Game:
                 if keys[pg.K_ESCAPE]:
                     pg.quit()
                     sys.exit()
+                if keys[pg.K_RETURN] and count == 0:
+                    count += 1
+                    no_loop = True
+                    islocked = True
+                if not no_loop and count >= 1:
+                    menu = MainMenu(self.screen, self.screen_height, self.screen_width)
+                    pv.quit_all()
+                    menu.init_menu(True)
                 if event.type == pg.KEYDOWN:
                     # video.handle_event(event)
                     if len(letter) < 10 and not keys[pg.K_BACKSPACE]:
-                        if event.unicode.isalpha():
+                        if (event.unicode.isalpha() or event.unicode.isspace()) and not event.unicode == "\r":
                             letter += event.unicode
-                    if keys[pg.K_RETURN]:
-                        menu = MainMenu(self.screen, self.screen_height, self.screen_width)
-                        pv.quit_all()
-                        menu.init_menu(True)
+
                     if keys[pg.K_BACKSPACE]:
                         letter = letter[:-1]
-                    if keys[pg.K_SPACE] and count == 0:
-                        count += 1
-                        no_loop = True
-                        islocked = True
                 if event.type == pg.MOUSEBUTTONDOWN:
                     if menu_button.rect.collidepoint(mouse):
                         menu = MainMenu(self.screen, self.screen_height, self.screen_width)
@@ -351,21 +352,27 @@ class Game:
                 if keys[pg.K_ESCAPE]:
                     pg.quit()
                     sys.exit()
+                if keys[pg.K_RETURN] and count == 0:
+                    count += 1
+                    no_loop = True
+                    islocked = True
+                if not no_loop and count >= 1:
+                    menu = MainMenu(self.screen, self.screen_height, self.screen_width)
+                    pv.quit_all()
+                    menu.init_menu(True)
+
                 if event.type == pg.KEYDOWN:
                     if len(letter) < 10 and not keys[pg.K_BACKSPACE]:
-                        if event.unicode.isalpha():
+                        if (event.unicode.isalpha() or event.unicode.isspace()) and not event.unicode == "\r":
                             letter += event.unicode
                     if keys[pg.K_BACKSPACE]:
                         letter = letter[:-1]
-                    if keys[pg.K_RETURN]:
-                        menu = MainMenu(self.screen, self.screen_height, self.screen_width)
-                        pv.quit_all()
-                        menu.init_menu(True)
+                    # if keys[pg.K_RETURN] and count > 0:
 
-                    if keys[pg.K_SPACE] and count == 0:
-                        count += 1
-                        no_loop = True
-                        islocked = True
+                    # if keys[pg.K_SPACE] and count == 0:
+                    #     count += 1
+                    #     no_loop = True
+                    #     islocked = True
                 if event.type == pg.MOUSEBUTTONDOWN:
                     if menu_button.rect.collidepoint(mouse):
                         menu = MainMenu(self.screen, self.screen_height, self.screen_width)

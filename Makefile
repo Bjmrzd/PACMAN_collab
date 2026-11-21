@@ -5,7 +5,7 @@ VENV = Pac_venv
 run:
 	@clear
 	@printf "Launching PacMan game ! \n\n"
-	@$(PYTHON) pac-man.py --quiet
+	@$(PYTHON) pac-man.py config.json
 	@ rm -rf src/__pycache__
 
 clean:
