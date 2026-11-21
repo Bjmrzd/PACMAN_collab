@@ -2,6 +2,8 @@ import json
 from pydantic import Field, BaseModel, ValidationError, model_validator
 from typing import Any
 import logging
+import sys
+import pygame as pg
 
 
 class Config(BaseModel):
@@ -53,6 +55,21 @@ def parsing() -> Config:
                         format="%(asctime)s - %(message)s",
                         datefmt='%m/%d/%Y %I:%M:%S %p')
     necessary_keys: list[Any] = ["highscore_filename", "lives", "pacgum_pts", "seed", "super_pacgum_pts", "ghost_pts", "lvl_max_time"]
+
+    try:
+        if len(sys.argv) != 2:
+            raise IndexError
+        if len(sys.argv) == 2:
+            if sys.argv[1] != file:
+                raise IndexError
+        if len(sys.argv) > 2:
+            raise IndexError
+    except IndexError:
+        print("Error: The file couldn't be found or the name is invalid !")
+        logging.error("Error: The file couldn't be found or the name is invalid !")
+        exit()
+        pg.quit()
+    
     try:
         with open(file, "r") as config:
             data = json.load(config)
