@@ -37,6 +37,7 @@ class Level():
 		self.cheat_speed: bool = False
 		self.cheat_invincible: bool = False
 		self.cheat_time: bool = False
+		self.ghosts_eaten_total: int = 0
 		# self.pac_man.on_cell_center = self.pacman_reach_cell(self.pac_man, self.pacgum) # besoin de faire passer pacman et list pacgum ici
 		Personnalities = [Personnality.BLINKY, Personnality.PINKY, Personnality.INKY, Personnality.CLYDE]
 		self.ghosts = [Ghost(maze, corner, personnality, rng) for corner, personnality in zip(maze.ghost_corners, Personnalities)]
@@ -65,6 +66,7 @@ class Level():
 		if self.level_state is LevelState.PLAYING and self.pacgum_done:
 			self.level_state = LevelState.WON
 
+
 	def pacman_reach_cell(self, pac: PacMan, gum) -> None:
 		if self.level_state is not LevelState.PLAYING:
 			return
@@ -80,7 +82,8 @@ class Level():
 		if super_pacgum_eaten:
 			pac.speed += 1.0
 			for ghost in self.ghosts:
-				ghost.is_edible(LevelFeatures.PACMAN_HUNT.value)
+				if ghost.state is State.NORMAL or ghost.state is State.EDIBLE:
+					ghost.is_edible(LevelFeatures.PACMAN_HUNT.value)
 		self.pacgum_done = self.is_pacgum(gum.get("entities"))
 
 	def is_pacgum(self, gum: Any) -> bool:
@@ -102,6 +105,9 @@ class Level():
 				if ghost.state is State.EDIBLE:
 					ghost.eaten()
 					self.state.add_points(self.state.rules.ghost)
+					self.ghosts_eaten_total += 1
+					if self.ghosts_eaten_total % 4 == 0:
+						self.state.add_life()
 				else:
 					if not self.cheat_invincible:
 						self.lose_life()

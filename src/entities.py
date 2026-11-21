@@ -344,6 +344,7 @@ class Ghost(Mover, pg.sprite.Sprite):
 	def reset(self) -> None:
 		super().reset()
 		self.state = State.NORMAL
+		self.image = self.init_sprite()
 		self.speed = GhostFeatures.NORMAL_SPEED.value
 		self.timer = 0.0
 
