@@ -119,7 +119,7 @@ class Game:
 
         sprite_timer = pg.USEREVENT
 
-        pg.time.set_timer(sprite_timer, 45)
+        pg.time.set_timer(sprite_timer, 20)
 
         sprites_grp.add(pac)
 
