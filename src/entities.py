@@ -327,9 +327,9 @@ class Ghost(Mover, pg.sprite.Sprite):
 		return self.rng.choice(best_directions)
 
 	def is_edible(self, duration: float) -> None:
-		self.image = Pac_anim.SCARED.value
 		if self.state is State.EATEN:
 			return
+		self.image = Pac_anim.SCARED.value
 		self.state = State.EDIBLE
 		self.timer = duration
 		self.speed = GhostFeatures.EDIBLE_SPEED.value
@@ -344,6 +344,7 @@ class Ghost(Mover, pg.sprite.Sprite):
 	def reset(self) -> None:
 		super().reset()
 		self.state = State.NORMAL
+		self.image = self.init_sprite()
 		self.speed = GhostFeatures.NORMAL_SPEED.value
 		self.timer = 0.0
 

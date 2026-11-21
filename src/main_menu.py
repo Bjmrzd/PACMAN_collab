@@ -92,7 +92,7 @@ class MainMenu():
 
             video.draw_and_update(self.screen, (1900, 500))
             for event in pg.event.get():
-                video.handle_event(event)
+                # video.handle_event(event)
                 if event.type == pg.QUIT:
                     pg.quit()
                     sys.exit()
@@ -164,7 +164,7 @@ class MainMenu():
                 args.show_text(self.screen)
 
             for event in pg.event.get():
-                video.handle_event(event)
+                # video.handle_event(event)
                 if event.type == pg.QUIT:
                     pg.quit()
                     sys.exit()

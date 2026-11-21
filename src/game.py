@@ -198,17 +198,17 @@ class Game:
             display_score.show_text(self.screen)
 
             if self.cheat_speed:
-                display_speed = Text("Speed boost", Color.RED.value, 500, 500, Size.TITLE.value)
+                display_speed = Text("Speed boost", Color.RED.value, 500, 500, Size.TEXT.value)
                 display_speed.show_text(self.screen)
                 level.cheat_speed = True
 
             if self.cheat_invincible:
-                display_inv = Text("Invincible", Color.WHITE.value, 500, 700, Size.TITLE.value)
+                display_inv = Text("Invincible", Color.WHITE.value, 500, 700, Size.TEXT.value)
                 display_inv.show_text(self.screen)
                 level.cheat_invincible = True
 
             if self.cheat_time:
-                display_col = Text("Time Stop", Color.GREY.value, 500, 900, Size.TITLE.value)
+                display_col = Text("Time Stop", Color.GREY.value, 500, 900, Size.TEXT.value)
                 display_col.show_text(self.screen)
                 level.cheat_time = True
 
@@ -268,7 +268,7 @@ class Game:
                     pg.quit()
                     sys.exit()
                 if event.type == pg.KEYDOWN:
-                    video.handle_event(event)
+                    # video.handle_event(event)
                     if len(letter) < 10 and not keys[pg.K_BACKSPACE]:
                         if event.unicode.isalpha():
                             letter += event.unicode
