@@ -18,7 +18,7 @@ import logging
 
 class Game:
     """Class for the pacman game"""
-    def __init__(self, screen, screen_width, screen_height):
+    def __init__(self, screen, screen_width, screen_height) -> None:
         self.fps: int = 60
 
         self.screen = screen
@@ -73,7 +73,7 @@ class Game:
 
         self.cheat_time: bool = False
 
-    def main_loop(self):
+    def main_loop(self) -> GameState:
         """Switch level and call the main loop for each of them"""
 
         rules = ScoringRules(
