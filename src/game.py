@@ -119,7 +119,7 @@ class Game:
             )
         maze_class: Maze = Maze(maze)
 
-        sprites_grp = pg.sprite.Group()
+        sprites_grp: pg.sprite.Group = pg.sprite.Group()
 
         updated: bool = False
         self.max_time = abs((maze_class.width*maze_class.height / 5) * 2.5)
@@ -145,13 +145,14 @@ class Game:
 
         sprites_grp.add(pac)
 
-        ghost_grp = pg.sprite.Group()
+        ghost_grp: pg.sprite.Group = pg.sprite.Group()
 
         for ghost in level.ghosts:
             ghost_grp.add(ghost)
 
         while (
-            level.level_state in (LevelState.READY, LevelState.PLAYING, LevelState.PAUSE)
+            level.level_state in (
+                LevelState.READY, LevelState.PLAYING, LevelState.PAUSE)
              ):
             countdown_font = pg.font.Font(Font.FONT1.value, 400)
             self.screen.fill(Color.BLACK.value)
@@ -188,7 +189,10 @@ class Game:
                     pg.quit()
                     sys.exit()
                 if event.type == pg.KEYDOWN:
-                    if (level.level_state is LevelState.READY and event.key not in (pg.K_ESCAPE, pg.K_c)):
+                    if (
+                        level.level_state is LevelState.READY
+                        and event.key not in (pg.K_ESCAPE, pg.K_c)
+                       ):
                         level.level_state = LevelState.PLAYING
                     if event.key == pg.K_ESCAPE:
                         level.level_state = LevelState.PAUSE
@@ -309,7 +313,7 @@ class Game:
         letter: str = ""
         no_loop: bool = False
         count: int = 0
-        score_dict: dict[str, int] = {}
+        score_dict: dict[str, list] = {}
         lock = pg.image.load("assets/lock_test.jpg")
         islocked: bool = False
 
@@ -421,7 +425,7 @@ class Game:
         letter: str = ""
         no_loop: bool = False
         count: int = 0
-        score_dict: dict[str, int] = {}
+        score_dict: dict[str, list] = {}
         lock = pg.image.load("assets/lock_test.jpg")
         islocked: bool = False
         video = pv.Video("assets/penguin.mp4")

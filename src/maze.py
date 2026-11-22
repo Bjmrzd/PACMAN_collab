@@ -1,5 +1,6 @@
 from enum import Enum
 from collections import deque
+from typing import Any
 
 Cell = tuple[int, int]
 
@@ -55,9 +56,10 @@ class Maze:
         best_cell: Cell | None = None
         best_dist: int = 0
 
-        for cell in sorted(reachable):
+        for cell in sorted(reachable):  # type: ignore
             dist = abs(
-                cell[0] - self.height // 2) + abs(cell[1] - self.width // 2)
+                cell[0] - self.height // 2)  # type: ignore
+            + abs(cell[1] - self.width // 2)  # type: ignore
             if best_cell is None or dist < best_dist:
                 best_cell = cell
                 best_dist = dist
@@ -96,7 +98,7 @@ class Maze:
         return list_dir
 
     def distance_map(self, goal: Cell | None) -> dict[Cell | None, int]:
-        cache = self.distances.get(goal)
+        cache: dict[tuple[int, int], int] | None = self.distances.get(goal)
         if cache is not None:
             return cache
         dist: dict[Cell | None, int] = {goal: 0}

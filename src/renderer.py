@@ -87,7 +87,6 @@ def render_maze(
                             supergum.rect.center = (start_x + 25, start_y + 25)
                             supergum_grp.add(supergum)
                             super_list.append(supergum)
-
             if rows == len(walls) and cols == len(walls[0]):
                 maze.is_init = True
 
