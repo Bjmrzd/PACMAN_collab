@@ -221,28 +221,46 @@ class Game:
 
             accurate_time = round(level.remaining_time, 2)
 
-            display_score = Text("Score: " + str(state.score), Color.RED.value, 1500, 40, Size.TEXT.value)
+            display_score = Text(
+                "Score: " + str(state.score),
+                Color.RED.value, 1500, 40, Size.TEXT.value
+                )
             display_score.show_text(self.screen)
 
             if self.cheat_speed:
-                display_speed = Text("Speed boost", Color.RED.value, 500, 500, Size.TEXT.value)
+                display_speed = Text(
+                    "Speed boost", Color.RED.value, 500, 500, Size.TEXT.value)
                 display_speed.show_text(self.screen)
                 level.cheat_speed = True
+            else:
+                level.cheat_speed = False
 
             if self.cheat_invincible:
-                display_inv = Text("Invincible", Color.WHITE.value, 500, 700, Size.TEXT.value)
+                display_inv = Text(
+                    "Invincible", Color.WHITE.value, 500, 700, Size.TEXT.value)
                 display_inv.show_text(self.screen)
                 level.cheat_invincible = True
+            else:
+                level.cheat_invincible = False
 
             if self.cheat_time:
-                display_col = Text("Time Stop", Color.GREY.value, 500, 900, Size.TEXT.value)
+                display_col = Text(
+                    "Time Stop", Color.GREY.value, 500, 900, Size.TEXT.value)
                 display_col.show_text(self.screen)
                 level.cheat_time = True
+            else:
+                level.cheat_time = False
 
-            display_lives = Text("Lives: " + str(state.lives), Color.RED.value, 800, 40, Size.TEXT.value)
+            display_lives = Text(
+                "Lives: " + str(state.lives),
+                Color.RED.value, 800, 40, Size.TEXT.value
+                )
             display_lives.show_text(self.screen)
 
-            display_time = Text("Timer: " + str(accurate_time), Color.RED.value, 1800, 40, Size.TEXT.value)
+            display_time = Text(
+                "Timer: " + str(accurate_time),
+                Color.RED.value, 1800, 40, Size.TEXT.value
+                )
             display_time.show_text(self.screen)
 
             display_level = Text(
@@ -291,7 +309,9 @@ class Game:
             mouse = pg.mouse.get_pos()
             self.screen.fill(Color.BLACK.value)
 
-            menu_button = Box_Button(self.screen_width / 2, self.screen_height / 2 + 200, 100, 100, "Go to Menu", Size.TEXT.value)
+            menu_button = Box_Button(
+                self.screen_width / 2, self.screen_height / 2 + 200, 100, 100,
+                "Go to Menu", Size.TEXT.value)
             menu_button.create_button(self.screen, mouse)
 
             for event in pg.event.get():
@@ -328,16 +348,28 @@ class Game:
                 (self.screen_width / 2 + 400, self.screen_height / 2)
                 )
 
-            input_name = Box_Button(self.screen_width / 2, self.screen_height / 2, 100, 100, letter, Size.TEXT.value)
+            input_name = Box_Button(
+                self.screen_width / 2,
+                self.screen_height / 2, 100, 100, letter, Size.TEXT.value
+                )
             input_name.create_button(self.screen, mouse)
 
-            title_win = Text("LOSER !!!", Color.WHITE.value, self.screen_width / 2, self.screen_height / 2 - 400, Size.TITLE.value)
+            title_win = Text(
+                "LOSER !!!", Color.WHITE.value,
+                self.screen_width / 2,
+                self.screen_height / 2 - 400, Size.TITLE.value
+                )
             title_win.show_text(self.screen)
 
-            name_rules = Text("Enter your name: ", Color.RED.value, self.screen_width / 2, self.screen_height / 2 - 100, Size.TEXT.value)
+            name_rules = Text(
+                "Enter your name: ", Color.RED.value, self.screen_width / 2,
+                self.screen_height / 2 - 100, Size.TEXT.value)
             name_rules.show_text(self.screen)
 
-            confirm_text = Text("Press Space to confirm", Color.WHITE.value, self.screen_width / 2, self.screen_height / 2 + 300, Size.TEXT.value)
+            confirm_text = Text(
+                "Press Space to confirm", Color.WHITE.value,
+                self.screen_width / 2,
+                self.screen_height / 2 + 300, Size.TEXT.value)
             confirm_text.show_text(self.screen)
 
             if no_loop:
@@ -428,18 +460,30 @@ class Game:
                             self.screen, self.screen_height, self.screen_width)
                         pv.quit_all()
                         menu.init_menu(True)
-            video.draw_and_update(self.screen, (self.screen_width / 2 + 400, self.screen_height / 2))
+            video.draw_and_update(
+                self.screen,
+                (self.screen_width / 2 + 400, self.screen_height / 2)
+                )
 
-            input_name = Box_Button(self.screen_width / 2, self.screen_height / 2, 100, 100, letter, Size.TEXT.value)
+            input_name = Box_Button(
+                self.screen_width / 2, self.screen_height / 2,
+                100, 100, letter, Size.TEXT.value)
             input_name.create_button(self.screen, mouse)
 
-            title_win = Text("You Win !", Color.WHITE.value, self.screen_width / 2, self.screen_height / 2 - 400, Size.TITLE.value)
+            title_win = Text(
+                "You Win !", Color.WHITE.value, self.screen_width / 2,
+                self.screen_height / 2 - 400, Size.TITLE.value)
             title_win.show_text(self.screen)
 
-            name_rules = Text("Enter your name: ", Color.RED.value, self.screen_width / 2, self.screen_height / 2 - 100, Size.TEXT.value)
+            name_rules = Text(
+                "Enter your name: ", Color.RED.value, self.screen_width / 2,
+                self.screen_height / 2 - 100, Size.TEXT.value)
             name_rules.show_text(self.screen)
 
-            confirm_text = Text("Press Space to confirm", Color.WHITE.value, self.screen_width / 2, self.screen_height / 2 + 300, Size.TEXT.value)
+            confirm_text = Text(
+                "Press Space to confirm", Color.WHITE.value,
+                self.screen_width / 2,
+                self.screen_height / 2 + 300, Size.TEXT.value)
             confirm_text.show_text(self.screen)
 
             if no_loop:
@@ -495,25 +539,40 @@ class Game:
             self.screen.fill(Color.BLACK.value)
             mouse = pg.mouse.get_pos()
 
-            exit_button = Box_Button(self.screen_width / 2, self.screen_height / 2 + 400, width_button, height_button, "Quit", size_text)
+            exit_button = Box_Button(
+                self.screen_width / 2, self.screen_height / 2 + 400,
+                width_button, height_button, "Quit", size_text)
             exit_button.create_button(self.screen, mouse)
 
-            resume_button = Box_Button(self.screen_width / 2, self.screen_height / 2 + 100, width_button, height_button, "Resume", size_text)
+            resume_button = Box_Button(
+                self.screen_width / 2, self.screen_height / 2 + 100,
+                width_button, height_button, "Resume", size_text)
             resume_button.create_button(self.screen, mouse)
 
-            menu_button = Box_Button(self.screen_width / 2, self.screen_height / 2 - 50, width_button, height_button, "Menu", size_text)
+            menu_button = Box_Button(
+                self.screen_width / 2, self.screen_height / 2 - 50,
+                width_button, height_button, "Menu", size_text)
             menu_button.create_button(self.screen, mouse)
 
-            instructions_button = Box_Button(self.screen_width / 2, self.screen_height / 2 + 250, width_button, height_button, "Instructions", size_text)
+            instructions_button = Box_Button(
+                self.screen_width / 2, self.screen_height / 2 + 250,
+                width_button, height_button, "Instructions", size_text)
             instructions_button.create_button(self.screen, mouse)
 
-            display_enter = Text("Press Enter to resume", Color.WHITE.value, self.screen_width /2, self.screen_height / 2 - 200, Size.TEXT.value)
+            display_enter = Text(
+                "Press Enter to resume", Color.WHITE.value,
+                self.screen_width / 2,
+                self.screen_height / 2 - 200, Size.TEXT.value)
             display_enter.show_text(self.screen)
 
-            title_menu = Text("Pause Menu", Color.WHITE.value, self.screen_width / 2, self.screen_height / 2 - 500, Size.TITLE.value)
+            title_menu = Text(
+                "Pause Menu", Color.WHITE.value, self.screen_width / 2,
+                self.screen_height / 2 - 500, Size.TITLE.value)
             title_menu.show_text(self.screen)
 
-            video.draw_and_update(self.screen, (self.screen_width / 2 + 400, self.screen_height / 2))
+            video.draw_and_update(
+                self.screen,
+                (self.screen_width / 2 + 400, self.screen_height / 2))
 
             for event in pg.event.get():
 
@@ -572,35 +631,52 @@ class Game:
             self.screen.fill(Color.BLACK.value)
             mouse = pg.mouse.get_pos()
 
-            speed_button = Box_Button(self.screen_width / 2, self.screen_height / 2 + 300, width_button, height_button, "Speeeeeed", size_text)
+            speed_button = Box_Button(
+                self.screen_width / 2,
+                self.screen_height / 2 + 300, width_button,
+                height_button, "Speeeeeed", size_text
+                )
             speed_button.create_button(self.screen, mouse)
 
             if self.cheat_speed:
-                active_text = Text("Active", Color.WHITE.value, self.screen_width / 2 - 500, self.screen_height / 2 + 300, Size.TITLE.value)
+                active_text = Text(
+                    "Active", Color.WHITE.value, self.screen_width / 2 - 500,
+                    self.screen_height / 2 + 300, Size.TITLE.value)
                 active_text.show_text(self.screen)
 
-            invincible_button = Box_Button(self.screen_width / 2, self.screen_height / 2, width_button, height_button, "I am <Title Card>", size_text)
+            invincible_button = Box_Button(
+                self.screen_width / 2, self.screen_height / 2,
+                width_button, height_button, "I am <Title Card>", size_text)
             invincible_button.create_button(self.screen, mouse)
 
             if self.cheat_invincible:
-                inv_text = Text("Active", Color.WHITE.value, self.screen_width / 2 - 500, self.screen_height / 2, Size.TITLE.value)
+                inv_text = Text(
+                    "Active", Color.WHITE.value, self.screen_width / 2 - 500,
+                    self.screen_height / 2, Size.TITLE.value)
                 inv_text.show_text(self.screen)
 
-            no_time_button = Box_Button(self.screen_width / 2, self.screen_height / 2 - 300, width_button, height_button, "Stop Time", size_text)
+            no_time_button = Box_Button(
+                self.screen_width / 2, self.screen_height / 2 - 300,
+                width_button, height_button, "Stop Time", size_text)
             no_time_button.create_button(self.screen, mouse)
 
             if self.cheat_time:
-                time_text = Text("Active", Color.WHITE.value, self.screen_width / 2 - 500, self.screen_height / 2 - 300, Size.TITLE.value)
+                time_text = Text(
+                    "Active", Color.WHITE.value, self.screen_width / 2 - 500,
+                    self.screen_height / 2 - 300, Size.TITLE.value)
                 time_text.show_text(self.screen)
 
-            title_menu = Text("Cheat Menu", Color.WHITE.value, self.screen_width / 2, self.screen_height / 2 - 600, Size.TITLE.value)
+            title_menu = Text(
+                "Cheat Menu", Color.WHITE.value,
+                self.screen_width / 2,
+                self.screen_height / 2 - 600, Size.TITLE.value)
             title_menu.show_text(self.screen)
 
-            video.draw_and_update(self.screen, (self.screen_width / 2 + 400, self.screen_height / 2))
+            video.draw_and_update(
+                self.screen,
+                (self.screen_width / 2 + 400, self.screen_height / 2))
 
             for event in pg.event.get():
-
-                # video.handle_event(event)
 
                 keys = pg.key.get_pressed()
 
@@ -612,12 +688,21 @@ class Game:
                 if event.type == pg.MOUSEBUTTONDOWN:
 
                     if speed_button.rect.collidepoint(mouse):
-                        self.cheat_speed = True
+                        if self.cheat_speed is True:
+                            self.cheat_speed = False
+                        else:
+                            self.cheat_speed = True
 
                     if invincible_button.rect.collidepoint(mouse):
-                        self.cheat_invincible = True
+                        if self.cheat_invincible is True:
+                            self.cheat_invincible = False
+                        else:
+                            self.cheat_invincible = True
 
                     if no_time_button.rect.collidepoint(mouse):
-                        self.cheat_time = True
+                        if self.cheat_time is True:
+                            self.cheat_time = False
+                        else:
+                            self.cheat_time = True
 
             pg.display.flip()
