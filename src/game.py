@@ -304,7 +304,9 @@ class Game:
             mouse = pg.mouse.get_pos()
             self.screen.fill(Color.BLACK.value)
 
-            menu_button = Box_Button(self.screen_width / 2, self.screen_height / 2 + 200, 100, 100, "Go to Menu", Size.TEXT.value)
+            menu_button = Box_Button(
+                self.screen_width / 2, self.screen_height / 2 + 200, 100, 100,
+                "Go to Menu", Size.TEXT.value)
             menu_button.create_button(self.screen, mouse)
 
             for event in pg.event.get():
@@ -354,10 +356,15 @@ class Game:
                 )
             title_win.show_text(self.screen)
 
-            name_rules = Text("Enter your name: ", Color.RED.value, self.screen_width / 2, self.screen_height / 2 - 100, Size.TEXT.value)
+            name_rules = Text(
+                "Enter your name: ", Color.RED.value, self.screen_width / 2,
+                self.screen_height / 2 - 100, Size.TEXT.value)
             name_rules.show_text(self.screen)
 
-            confirm_text = Text("Press Space to confirm", Color.WHITE.value, self.screen_width / 2, self.screen_height / 2 + 300, Size.TEXT.value)
+            confirm_text = Text(
+                "Press Space to confirm", Color.WHITE.value,
+                self.screen_width / 2,
+                self.screen_height / 2 + 300, Size.TEXT.value)
             confirm_text.show_text(self.screen)
 
             if no_loop:
@@ -527,25 +534,40 @@ class Game:
             self.screen.fill(Color.BLACK.value)
             mouse = pg.mouse.get_pos()
 
-            exit_button = Box_Button(self.screen_width / 2, self.screen_height / 2 + 400, width_button, height_button, "Quit", size_text)
+            exit_button = Box_Button(
+                self.screen_width / 2, self.screen_height / 2 + 400,
+                width_button, height_button, "Quit", size_text)
             exit_button.create_button(self.screen, mouse)
 
-            resume_button = Box_Button(self.screen_width / 2, self.screen_height / 2 + 100, width_button, height_button, "Resume", size_text)
+            resume_button = Box_Button(
+                self.screen_width / 2, self.screen_height / 2 + 100,
+                width_button, height_button, "Resume", size_text)
             resume_button.create_button(self.screen, mouse)
 
-            menu_button = Box_Button(self.screen_width / 2, self.screen_height / 2 - 50, width_button, height_button, "Menu", size_text)
+            menu_button = Box_Button(
+                self.screen_width / 2, self.screen_height / 2 - 50,
+                width_button, height_button, "Menu", size_text)
             menu_button.create_button(self.screen, mouse)
 
-            instructions_button = Box_Button(self.screen_width / 2, self.screen_height / 2 + 250, width_button, height_button, "Instructions", size_text)
+            instructions_button = Box_Button(
+                self.screen_width / 2, self.screen_height / 2 + 250,
+                width_button, height_button, "Instructions", size_text)
             instructions_button.create_button(self.screen, mouse)
 
-            display_enter = Text("Press Enter to resume", Color.WHITE.value, self.screen_width /2, self.screen_height / 2 - 200, Size.TEXT.value)
+            display_enter = Text(
+                "Press Enter to resume", Color.WHITE.value,
+                self.screen_width / 2,
+                self.screen_height / 2 - 200, Size.TEXT.value)
             display_enter.show_text(self.screen)
 
-            title_menu = Text("Pause Menu", Color.WHITE.value, self.screen_width / 2, self.screen_height / 2 - 500, Size.TITLE.value)
+            title_menu = Text(
+                "Pause Menu", Color.WHITE.value, self.screen_width / 2,
+                self.screen_height / 2 - 500, Size.TITLE.value)
             title_menu.show_text(self.screen)
 
-            video.draw_and_update(self.screen, (self.screen_width / 2 + 400, self.screen_height / 2))
+            video.draw_and_update(
+                self.screen,
+                (self.screen_width / 2 + 400, self.screen_height / 2))
 
             for event in pg.event.get():
 
@@ -650,8 +672,6 @@ class Game:
                 (self.screen_width / 2 + 400, self.screen_height / 2))
 
             for event in pg.event.get():
-
-                # video.handle_event(event)
 
                 keys = pg.key.get_pressed()
 
