@@ -73,7 +73,7 @@ class Game:
 
         self.cheat_time: bool = False
 
-    def main_loop(self) -> GameState:
+    def main_loop(self) -> None:
         """Switch level and call the main loop for each of them"""
 
         rules = ScoringRules(
@@ -102,6 +102,7 @@ class Game:
             state.lives = self.lives
 
         self.win()
+        return
 
     def play_level(
             self, level_number: int, state: GameState, timer: pg.time.Clock
@@ -133,7 +134,7 @@ class Game:
         pac = level.pac_man
         start_text = Text("Press any key to start", Color.WHITE.value, self.screen_width // 2, self.screen_height // 3, Size.TEXT.value * 2)
 
-        dt = 0
+        dt = 0.0
 
         sprite_timer = pg.USEREVENT
 
@@ -287,10 +288,9 @@ class Game:
                 rect = surface.get_rect(
                     center=(self.screen_width // 2, self.screen_height // 2))
                 self.screen.blit(surface, rect)
-            
+
             if level.level_state is LevelState.READY:
                 start_text.show_text(self.screen)
-
             pg.display.flip()
 
         self.cheat_speed = False
