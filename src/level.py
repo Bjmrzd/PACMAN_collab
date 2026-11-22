@@ -9,6 +9,7 @@ from src.scoring import GameState
 
 
 class LevelState(Enum):
+    READY = "ready"
     PLAYING = "playing"
     WON = "won"
     GAME_OVER = "game_over"

@@ -129,7 +129,9 @@ class Game:
             maze_class, state, level_number,
             self.max_time, self.rng, PacMan(maze_class, maze_class.center)
             )
+        level.level_state = LevelState.READY
         pac = level.pac_man
+        start_text = Text("Press any key to start", Color.WHITE.value, self.screen_width // 2, self.screen_height // 2, Size.TEXT.value)
 
         dt = 0
 
@@ -145,8 +147,7 @@ class Game:
             ghost_grp.add(ghost)
 
         while (
-            level.level_state is LevelState.PLAYING
-            or level.level_state is LevelState.PAUSE
+            level.level_state in (LevelState.READY, LevelState.PLAYING, LevelState.PAUSE)
              ):
             countdown_font = pg.font.Font(Font.FONT1.value, 400)
             self.screen.fill(Color.BLACK.value)
@@ -158,6 +159,9 @@ class Game:
 
             if level.level_state is LevelState.PLAYING:
                 dt = timer.tick(self.fps) / 1000
+            elif level.level_state is LevelState.READY:
+                timer.tick(self.fps)
+                dt = 0.0
             elif not self.is_paused:
                 dt = timer.tick(self.fps) / 1000
                 restart_pause -= dt
@@ -180,6 +184,8 @@ class Game:
                     pg.quit()
                     sys.exit()
                 if event.type == pg.KEYDOWN:
+                    if (level.level_state is LevelState.READY and event.key not in (pg.K_ESCAPE, pg.K_c)):
+                        level.level_state = LevelState.PLAYING
                     if event.key == pg.K_ESCAPE:
                         level.level_state = LevelState.PAUSE
                         self.is_paused = self.pause_menu()
@@ -281,6 +287,9 @@ class Game:
                 rect = surface.get_rect(
                     center=(self.screen_width // 2, self.screen_height // 2))
                 self.screen.blit(surface, rect)
+            
+            if level.level_state is LevelState.READY:
+                start_text.show_text(self.screen)
 
             pg.display.flip()
 
