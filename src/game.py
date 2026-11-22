@@ -346,6 +346,9 @@ class Game:
             mouse = pg.mouse.get_pos()
             self.screen.fill(Color.BLACK.value)
 
+            menu_button = Box_Button(self.screen_width / 2, self.screen_height / 2 + 200, 100, 100, "Go to Menu", Size.TEXT.value)
+            menu_button.create_button(self.screen, mouse)
+
             for event in pg.event.get():
                 # video.handle_event(event)
                 keys = pg.key.get_pressed()
@@ -389,9 +392,6 @@ class Game:
             name_rules = Text("Enter your name: ", Color.RED.value, self.screen_width / 2, self.screen_height / 2 - 100, Size.TEXT.value)
             name_rules.show_text(self.screen)
 
-            menu_button = Box_Button(self.screen_width / 2, self.screen_height / 2 + 200, 100, 100, "Go to Menu", Size.TEXT.value)
-            menu_button.create_button(self.screen, mouse)
-
             confirm_text = Text("Press Space to confirm", Color.WHITE.value, self.screen_width / 2, self.screen_height / 2 + 300, Size.TEXT.value)
             confirm_text.show_text(self.screen)
 
@@ -408,14 +408,19 @@ class Game:
                     with open(self.config.highscore_filename, "w") as file:
                         json.dump(ranked, file, indent=4)
 
-                except (FileExistsError, FileNotFoundError, json.JSONDecodeError):
+                except (
+                    FileExistsError, FileNotFoundError, json.JSONDecodeError
+                       ):
                     with open(self.config.highscore_filename, "w") as file:
                         score_dict.update({"0": json_list})
                         json.dump(score_dict, file, indent=4)
                 finally:
                     no_loop = False
             if islocked:
-                self.screen.blit(lock, (self.screen_width / 2 - 50, self.screen_height / 2 + 320))
+                self.screen.blit(
+                    lock,
+                    (self.screen_width / 2 - 50, self.screen_height / 2 + 320)
+                    )
 
             pg.display.flip()
 
@@ -464,11 +469,6 @@ class Game:
             video.draw_and_update(self.screen, (self.screen_width / 2 + 400, self.screen_height / 2))
 
             for event in pg.event.get():
-
-                # video.handle_event(event)
-                # make the video crash for some reason and isnt needed to run it
-
-                keys = pg.key.get_pressed()
 
                 if event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE:
                     running = False

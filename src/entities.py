@@ -31,21 +31,21 @@ class GhostFeatures(Enum):
 
 
 class Personnality(Enum):
-	BLINKY = "blinky"   #Aims the player's cell
+	BLINKY = "blinky"  # Aims the player's cell
 
-	PINKY = "pinky"	    #Aims a few cells ahead of the player
+	PINKY = "pinky"	    # Aims a few cells ahead of the player
 
-	INKY = "inky"	  	#Chaotic movements
+	INKY = "inky"	  	# Chaotic movements
 
-	CLYDE = "clyde"	 	#Chases when far, goes home when close
+	CLYDE = "clyde"	 	# Chases when far, goes home when close
 
 
 class Mover(ABC):
 	def __init__(self, maze: Maze, cell: Cell, speed: float) -> None:
-		self.maze = maze
-		self.speed = speed
-		self.spawn = cell
-		self.current_cell = cell
+		self.maze: Maze = maze
+		self.speed: float = speed
+		self.spawn: Cell = cell
+		self.current_cell: Cell = cell
 		self.direction: Direction | None = None
 		self.target: Cell | None = None
 		self.progress: float = 0.0  # 0.0 a 1.0
@@ -56,16 +56,17 @@ class Mover(ABC):
 		if self.target is None:
 			return float(row), float(col)
 		t_row, t_col = self.target
-		return (row + (t_row - row) * self.progress,
-				col + (t_col - col) * self.progress)
+		return (
+			row + (t_row - row) * self.progress, col + (t_col - col) * self.progress)
 
 	@position.setter
-	def position(self, new_cell) -> None:
+	def position(self, new_cell: Any) -> None:
 		row, col = new_cell
 		if self.target is None:
 			return float(row), float(col)
 		t_row, t_col = self.target
-		return (row + (t_row - row) * self.progress,  col + (t_col - col) * self.progress)
+		return (
+			row + (t_row - row) * self.progress,  col + (t_col - col) * self.progress)
 
 	def reset(self) -> None:
 		self.current_cell = self.spawn
@@ -88,7 +89,7 @@ class Mover(ABC):
 		return None
 
 	def start_move(self) -> bool:
-		direction = self.choose_direction()
+		direction: Direction | None = self.choose_direction()
 		if direction is None:
 			return False
 		self.direction = direction
@@ -159,7 +160,8 @@ class PacMan(Mover, pg.sprite.Sprite):
 		self.key_direction: Direction | None = None
 		self.on_cell_center: Callable[[Cell], None] = None
 
-	def check_gum(self, gum: pg.sprite.Group, state: GameState, supergum: pg.sprite.Group):
+	def check_gum(
+			self, gum: pg.sprite.Group, state: GameState, supergum: pg.sprite.Group):
 		eaten: list[Any] = pg.sprite.spritecollide(self, supergum, True)
 		eaten_gum: list[Any] = pg.sprite.spritecollide(self, gum, True)
 
@@ -210,7 +212,6 @@ class PacMan(Mover, pg.sprite.Sprite):
 			else:
 				self.image = Pac_anim.C_LEFT.value
 
-
 	def choose_direction(self) -> Direction | None:
 		return None
 
@@ -224,7 +225,10 @@ class PacMan(Mover, pg.sprite.Sprite):
 
 
 class Ghost(Mover, pg.sprite.Sprite):
-	def __init__(self, maze: Maze, corner: Cell, personnality: Personnality, rng: random.Random, speed: float = GhostFeatures.NORMAL_SPEED.value) -> None:
+	def __init__(
+			self, maze: Maze, corner: Cell, personnality: Personnality,
+			rng: random.Random, speed: float = GhostFeatures.NORMAL_SPEED.value
+			) -> None:
 		super().__init__(maze, corner, speed)
 		pg.sprite.Sprite.__init__(self)
 		self.personnality = personnality
@@ -251,7 +255,8 @@ class Ghost(Mover, pg.sprite.Sprite):
 			sprite = Pac_anim.CLYDE_RIGHT.value
 		return sprite
 
-	def tick(self, dt: float, player_cell: Cell, player_dir: Direction | None) -> None:
+	def tick(
+			self, dt: float, player_cell: Cell, player_dir: Direction | None) -> None:
 		self.player_cell = player_cell
 		self.player_dir = player_dir
 		if self.state is not State.NORMAL:
@@ -270,7 +275,8 @@ class Ghost(Mover, pg.sprite.Sprite):
 		if self.personnality is Personnality.PINKY:
 			if self.player_dir is None:
 				return self.player_cell
-			return self.maze.steps_forward(self.player_cell, self.player_dir, GhostFeatures.PINKY_LOOKAHEAD.value)
+			return self.maze.steps_forward(
+				self.player_cell, self.player_dir, GhostFeatures.PINKY_LOOKAHEAD.value)
 		if self.personnality is Personnality.INKY:
 			if distance <= GhostFeatures.INKY_SIGHT.value:
 				return self.player_cell
@@ -298,7 +304,8 @@ class Ghost(Mover, pg.sprite.Sprite):
 			return self.rng.choice(choices)
 		return self.best_choice(choices, target, retreat=False)
 
-	def best_choice(self, choices: list[Direction], goal: Cell, retreat: bool) -> Direction:
+	def best_choice(
+			self, choices: list[Direction], goal: Cell, retreat: bool) -> Direction:
 		distance = self.maze.distance_map(goal)
 
 		best_score: int | None = None

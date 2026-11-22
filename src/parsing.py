@@ -27,6 +27,8 @@ class Config(BaseModel):
 
     @model_validator(mode="after")
     def validate_infos(self):
+        """Model validator for the Config class"""
+        """Handle the value of the json to validate them"""
         level = [
             self.level_1,
             self.level_2,
@@ -41,20 +43,31 @@ class Config(BaseModel):
         ]
         for args in level:
             if not args.get("width") or not args.get("height"):
-                raise ValueError("Error: Levels must have both a height and width")
+                raise ValueError(
+                    "Error: Levels must have both a height and width")
             elif args.get("width") != args.get("height"):
                 raise ValueError("Error: The Pacman Maze must be a square")
-            elif (args.get("width") or args.get("height")) > 25 or (args.get("width") or args.get("height")) < 9:
-                raise ValueError("Error: The maze width and height can't be higher than 25 or lower than 10")
+            elif (
+                (args.get("width") or args.get("height")) > 25
+                or (args.get("width") or args.get("height")) < 9
+                 ):
+                raise ValueError(
+                    "Error: The maze width and height"
+                    " can't be higher than 25 or lower than 10"
+                    )
         return self
 
 
 def parsing() -> Config:
+    """Parse and create a config based on the given json file"""
     file = "config.json"
     logging.basicConfig(filename="error.logs", filemode="a",
                         format="%(asctime)s - %(message)s",
                         datefmt='%m/%d/%Y %I:%M:%S %p')
-    necessary_keys: list[Any] = ["highscore_filename", "lives", "pacgum_pts", "seed", "super_pacgum_pts", "ghost_pts", "lvl_max_time"]
+    necessary_keys: list[Any] = [
+        "highscore_filename",
+        "lives",
+        "pacgum_pts", "seed", "super_pacgum_pts", "ghost_pts", "lvl_max_time"]
 
     try:
         if len(sys.argv) != 2:
@@ -66,16 +79,22 @@ def parsing() -> Config:
             raise IndexError
     except IndexError:
         print("Error: The file couldn't be found or the name is invalid !")
-        logging.error("Error: The file couldn't be found or the name is invalid !")
+        logging.error(
+            "Error: The file couldn't be found or the name is invalid !")
         exit()
         pg.quit()
-    
+
     try:
         with open(file, "r") as config:
             data = json.load(config)
     except (FileNotFoundError, json.JSONDecodeError):
-        logging.error(f"The file {file} was not found or failed to decode data from JSON file")
-        print(f"The file {file} was not found or failed to decode data from JSON file")
+        logging.error(
+            f"The file {file} was not "
+            f"found or failed to decode data from JSON file")
+        print(
+            f"The file {file}"
+            f"was not found or failed to decode data from JSON file"
+            )
         exit()
 
     try:

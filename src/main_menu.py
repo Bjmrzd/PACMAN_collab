@@ -10,29 +10,34 @@ from typing import Any
 
 
 class MainMenu():
-    def __init__(self, screen, screen_height: int, screen_width: int):
-        self.screen = screen
-        self.screen_height = screen_height
-        self.screen_width = screen_width
+    def __init__(self, screen: Any, screen_height: int, screen_width: int):
+        self.screen: Any = screen
+        self.screen_height: int = screen_height
+        self.screen_width: int = screen_width
         self.font = pm.font.FONT_8BIT
-        self.theme = pm.Theme(widget_font=self.font, background_color=Color.BLACK.value)
-        self.menu = pm.menu.Menu("Main Menu", self.screen_width, self.screen_height, theme=self.theme)
+        self.theme = pm.Theme(
+            widget_font=self.font, background_color=Color.BLACK.value)
+        self.menu: Any = pm.menu.Menu(
+            "Main Menu", self.screen_width,
+            self.screen_height, theme=self.theme
+            )
         self.running: bool = True
 
     def init_menu(self, no_resume: bool):
         """Init and display the main menu"""
-        running: bool = True
 
         title_image = self.menu.add.image("assets/title.jpg")
         start_button = self.menu.add.button("Start game", self.init_game)
-        instructions_button = self.menu.add.button("Instructions", self.init_tuto)
-        highscore_button = self.menu.add.button("Highscores", self.init_highscore)
+        instructions_button = self.menu.add.button(
+            "Instructions", self.init_tuto)
+        highscore_button = self.menu.add.button(
+            "Highscores", self.init_highscore)
 
         if not no_resume:
-            resume_button = self.menu.add.button("Resume game", self.resume_game)
+            resume_button = self.menu.add.button(
+                "Resume game", self.resume_game)
 
         while self.running:
-            mouse = pg.mouse.get_pos()
             self.screen.fill(Color.BLACK.value)
             events = pg.event.get()
             for event in events:
@@ -88,11 +93,9 @@ class MainMenu():
         while running:
 
             self.screen.fill(Color.BLACK.value)
-            mouse = pg.mouse.get_pos()
 
             video.draw_and_update(self.screen, (1900, 500))
             for event in pg.event.get():
-                # video.handle_event(event)
                 if event.type == pg.QUIT:
                     pg.quit()
                     sys.exit()
@@ -102,20 +105,23 @@ class MainMenu():
                     running = False
             self.screen.blit(arrows, (200, 200))
 
-            
-
-            command_text = Text("Movements: WASD or keypad arrows", Color.RED.value, 500, 150, Size.TEXT.value)
+            command_text = Text(
+                "Movements: WASD or keypad arrows",
+                Color.RED.value, 500, 150, Size.TEXT.value)
             command_text.show_text(self.screen)
 
-            cheat_screen = Text("Press C for the cheat screen", Color.RED.value, 2100, 150, Size.TEXT.value)
+            cheat_screen = Text(
+                "Press C for the cheat screen",
+                Color.RED.value, 2100, 150, Size.TEXT.value)
             cheat_screen.show_text(self.screen)
 
-            win_lose = Text("Press 1 to win or 2 to lose", Color.RED.value, 2100, 350, Size.TEXT.value)
+            win_lose = Text(
+                "Press 1 to win or 2 to lose",
+                Color.RED.value, 2100, 350, Size.TEXT.value
+                )
             win_lose.show_text(self.screen)
 
             pg.display.flip()
-            # can do a little maze here to test the command
-            # need to put a screen of the cheat menu after the command
 
     def init_highscore(self):
         """Init the menu that display the highscore"""
@@ -144,26 +150,30 @@ class MainMenu():
         except (FileNotFoundError, json.JSONDecodeError):
             print("Invalid Highscore data. It Could not be retrieved")
         while running:
-            mouse = pg.mouse.get_pos()
             self.screen.fill(Color.BLACK.value)
 
-            command_text = Text("Highscores: ", Color.RED.value, 500, 150, Size.TITLE.value)
+            command_text = Text(
+                "Highscores: ", Color.RED.value, 500, 150, Size.TITLE.value)
             command_text.show_text(self.screen)
             if not isdone:
                 for index in range(len(list_highscore)):
-                    show_score = Text(list_highscore[index], Color.RED.value, 500, start_y, Size.TEXT.value)
+                    show_score = Text(
+                        list_highscore[index],
+                        Color.RED.value, 500, start_y, Size.TEXT.value
+                        )
                     start_y += 100
                     list_text_highscore.append(show_score)
-                    # print(list_highscore[index])
                 isdone = True
 
-            video.draw_and_update(self.screen, (self.screen_width / 2 + 400, self.screen_height / 2))
+            video.draw_and_update(
+                self.screen,
+                (self.screen_width / 2 + 400, self.screen_height / 2)
+                )
 
             for args in list_text_highscore:
                 args.show_text(self.screen)
 
             for event in pg.event.get():
-                # video.handle_event(event)
                 if event.type == pg.QUIT:
                     pg.quit()
                     sys.exit()
@@ -173,10 +183,8 @@ class MainMenu():
                     running = False
 
             pg.display.flip()
-        # see after working on the win and game over screen if the try except still work
-        # maybe need to change the format of the json after making the highscore works
-        # also see if the score is a different format when the game loop is working
 
     def resume_game(self):
+        """Go back to the current game when the resume button is clicked"""
         pv.quit_all()
         self.running = False

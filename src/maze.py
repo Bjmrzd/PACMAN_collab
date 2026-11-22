@@ -35,28 +35,29 @@ WALL_BITS: dict[Direction, int] = {
     }
 
 
-class Maze: #faire des méthodes intermédiaires pour assurer qu'il n'y ait pas de conflits et d'erreurs
+class Maze:
     def __init__(self, walls: list[list[int]]) -> None:
         self.walls = walls
         self.height = len(walls)
         self.width = len(walls[0])
-        self.ghost_corners: list[Cell] = [(0,0),
-                                          (0, self.width -1),
-                                          (self.height -1, 0),
-                                          (self.height -1, self.width -1)]
+        self.ghost_corners: list[Cell] = [(0, 0),
+                                          (0, self.width - 1),
+                                          (self.height - 1, 0),
+                                          (self.height - 1, self.width - 1)]
         self.distances: dict[Cell, dict[Cell, int]] = {}
         self.is_init: bool = False
-        self.center: Cell = self.valid_center()
+        self.center: Cell | None = self.valid_center()
 
-
-    def valid_center(self) -> Cell:
-        """Search for the open cell closest to the center of the maze (in case of the center being the 42)"""
+    def valid_center(self) -> Cell | None:
+        """Search for the open cell closest to the center of the maze"""
+        """(in case of the center being the 42)"""
         reachable = self.distance_map(self.ghost_corners[0])
         best_cell: Cell | None = None
         best_dist: int = 0
 
         for cell in sorted(reachable):
-            dist = abs(cell[0] - self.height // 2) + abs(cell[1] - self.width // 2)
+            dist = abs(
+                cell[0] - self.height // 2) + abs(cell[1] - self.width // 2)
             if best_cell is None or dist < best_dist:
                 best_cell = cell
                 best_dist = dist
@@ -94,11 +95,11 @@ class Maze: #faire des méthodes intermédiaires pour assurer qu'il n'y ait pas 
                 list_dir.append(d)
         return list_dir
 
-    def distance_map(self, goal: Cell) -> dict[Cell, int]: #BFS
+    def distance_map(self, goal: Cell | None) -> dict[Cell | None, int]:
         cache = self.distances.get(goal)
         if cache is not None:
             return cache
-        dist: dict[Cell, int] = {goal: 0}
+        dist: dict[Cell | None, int] = {goal: 0}
         queue: deque[Cell] = deque([goal])
         while queue:
             cell = queue.popleft()
@@ -110,14 +111,15 @@ class Maze: #faire des méthodes intermédiaires pour assurer qu'il n'y ait pas 
         self.distances[goal] = dist
         return dist
 
-    def steps_forward(self, cell: Cell, direction: Direction, steps: int) -> Cell:
+    def steps_forward(
+            self, cell: Cell, direction: Direction, steps: int) -> Cell:
         for i in range(steps):
             if not self.can_move(cell, direction):
                 break
             cell = self.step(cell, direction)
         return cell
 
-    def pacgum_positions(self) -> set[Cell]:
+    def pacgum_positions(self) -> set[Cell | None]:
         # toutes les cells sauf corners et center
         valid_cells = set(self.distance_map(self.center))
         return valid_cells - {self.center, *self.ghost_corners}
