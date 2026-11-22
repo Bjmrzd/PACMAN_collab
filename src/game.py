@@ -131,7 +131,7 @@ class Game:
             )
         level.level_state = LevelState.READY
         pac = level.pac_man
-        start_text = Text("Press any key to start", Color.WHITE.value, self.screen_width // 2, self.screen_height // 2, Size.TEXT.value)
+        start_text = Text("Press any key to start", Color.WHITE.value, self.screen_width // 2, self.screen_height // 3, Size.TEXT.value * 2)
 
         dt = 0
 
