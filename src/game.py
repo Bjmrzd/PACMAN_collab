@@ -188,7 +188,12 @@ class Game:
                         pg.event.clear()
                         break
                     if event.key == pg.K_c:
+                        level.level_state = LevelState.PAUSE
                         self.cheat_screen()
+                        restart_pause = resume_freeze
+                        timer.tick()
+                        pg.event.clear()
+                        break
                     if event.key == pg.K_1:
                         self.score = state.score
                         self.win()
@@ -600,8 +605,9 @@ class Game:
                 keys = pg.key.get_pressed()
 
                 if keys[pg.K_ESCAPE]:
-                    pv.quit_all()
                     running = False
+                    self.is_paused = False
+                    pv.quit_all()
 
                 if event.type == pg.MOUSEBUTTONDOWN:
 
