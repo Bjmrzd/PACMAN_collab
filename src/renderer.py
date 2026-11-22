@@ -75,16 +75,18 @@ def render_maze(
                         and (rows, cols) != (len(walls) - 1, len(walls[0]) - 1)
                         and (rows, cols) != (len(walls) - 1, 0)
                         and (rows, cols) != (0, len(walls[0]) - 1)
+                        and (rows, cols) != level.maze.center
                        ):
                         gum = Pacgum(cell, base_state)
                         gum.rect.center = (start_x + 25, start_y + 25)
                         gum_grp.add(gum)
                         list_gum.append(gum)
                     else:
-                        supergum = Super_gum(cell, base_state)
-                        supergum.rect.center = (start_x + 25, start_y + 25)
-                        supergum_grp.add(supergum)
-                        super_list.append(supergum)
+                        if (rows, cols) != level.maze.center:
+                            supergum = Super_gum(cell, base_state)
+                            supergum.rect.center = (start_x + 25, start_y + 25)
+                            supergum_grp.add(supergum)
+                            super_list.append(supergum)
 
             if rows == len(walls) and cols == len(walls[0]):
                 maze.is_init = True
