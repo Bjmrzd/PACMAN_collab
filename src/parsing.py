@@ -49,7 +49,7 @@ class Config(BaseModel):
                 raise ValueError("Error: The Pacman Maze must be a square")
             elif (
                 (args.get("width") or args.get("height")) > 25
-                or (args.get("width") or args.get("height")) < 9
+                or (args.get("width") or args.get("height")) < 7
                  ):
                 raise ValueError(
                     "Error: The maze width and height"
