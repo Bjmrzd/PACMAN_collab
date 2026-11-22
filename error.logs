@@ -12,3 +12,4 @@
 11/21/2026 04:31:11 PM - The file config.json was not found or failed to decode data from JSON file
 11/21/2026 04:35:06 PM - The file config.json was not found or failed to decode data from JSON file
 11/21/2026 04:38:41 PM - Error: The file couldn't be found or the name is invalid !
+11/22/2026 05:53:15 AM - Value error, Error: The maze width and height can't be higher than 25 or lower than 10
