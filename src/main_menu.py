@@ -23,7 +23,7 @@ class MainMenu():
             )
         self.running: bool = True
 
-    def init_menu(self, no_resume: bool):
+    def init_menu(self, no_resume: bool) -> None:
         """Init and display the main menu"""
 
         title_image = self.menu.add.image("assets/title.jpg")
@@ -76,12 +76,12 @@ class MainMenu():
             pg.display.flip()
         self.running = True
 
-    def init_game(self):
+    def init_game(self) -> None:
         """Display and init the game loop but do not handle the loop logic"""
         game = Game(self.screen, self.screen_width, self.screen_height)
         game.main_loop()
 
-    def init_tuto(self):
+    def init_tuto(self) -> None:
         """Init the tuto menu with the buttons instructions and how to play"""
         running = True
         arrows = pg.image.load("assets/arrows.png")
@@ -123,15 +123,15 @@ class MainMenu():
 
             pg.display.flip()
 
-    def init_highscore(self):
+    def init_highscore(self) -> None:
         """Init the menu that display the highscore"""
         running: bool = True
         config: Any = parsing()
         count: int = 0
         start_y: int = 250
         display_score: str = ""
-        list_highscore: str = []
-        list_text_highscore: str = []
+        list_highscore: list[str] = []
+        list_text_highscore: list[Any] = []
         isdone: bool = False
 
         video = pv.Video("assets/applaud.mp4")
@@ -184,7 +184,7 @@ class MainMenu():
 
             pg.display.flip()
 
-    def resume_game(self):
+    def resume_game(self) -> None:
         """Go back to the current game when the resume button is clicked"""
         pv.quit_all()
         self.running = False

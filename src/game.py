@@ -290,7 +290,7 @@ class Game:
 
         return level.level_state
 
-    def game_over(self):
+    def game_over(self) -> None:
         """Game over screen"""
         from src.main_menu import MainMenu
         running: bool = True
@@ -402,7 +402,7 @@ class Game:
 
             pg.display.flip()
 
-    def win(self):
+    def win(self) -> None:
         """Win screen"""
         from src.main_menu import MainMenu
         running: bool = True
@@ -613,7 +613,7 @@ class Game:
 
         return running
 
-    def cheat_screen(self):
+    def cheat_screen(self) -> None:
         """Menu to activate/deactivate the cheat"""
         running: bool = True
 
@@ -684,7 +684,6 @@ class Game:
                     running = False
                     self.is_paused = False
                     pv.quit_all()
-
                 if event.type == pg.MOUSEBUTTONDOWN:
 
                     if speed_button.rect.collidepoint(mouse):
