@@ -29,7 +29,10 @@ class Images(Enum):
 
 class Box_Button():
     """Class to create button that resize based on the text inside"""
-    def __init__(self, x: int, y: int, width: int, height: int, text: str, size_text: int):
+    def __init__(
+            self, x: int, y: int, width: int,
+            height: int, text: str, size_text: int
+            ):
         super().__init__()
         self.x: int = x
         self.y: int = y
@@ -38,23 +41,29 @@ class Box_Button():
         self.text: str = text
         self.size_text: int = size_text
         self.font = pg.font.Font(Font.FONT1.value, size_text)
-        self.rect = pg.Rect(x, y, width + (size_text / 2 * len(self.text)), height)
+        self.rect = pg.Rect(
+            x, y, width + (size_text / 2 * len(self.text)), height)
 
-    def create_button(self, screen, mouse):
+    def create_button(self, screen: Any, mouse: Any):
         """Create and display the button"""
         self.rect.center = (self.x, self.y)
-        pg.draw.rect(screen, Color.WHITE.value if self.rect.collidepoint(mouse) else Color.RED.value, self.rect)
+        pg.draw.rect(
+            screen, Color.WHITE.value 
+            if self.rect.collidepoint(mouse) else Color.RED.value, self.rect
+            )
         display_text = self.font.render(self.text, False, Color.BLACK.value)
-        text_rect = display_text.get_rect(center=(self.rect.centerx, self.rect.centery))
+        text_rect = display_text.get_rect(
+            center=(self.rect.centerx, self.rect.centery))
         screen.blit(display_text, text_rect)
         return self.rect
 
-    def create_input(self, screen, mouse):
+    def create_input(self, screen: Any):
         """Create and display a input box"""
         self.rect.center = (self.x, self.y)
         pg.draw.rect(screen, Color.GREY.value, self.rect)
         display_text = self.font.render(self.text, False, Color.BLACK.value)
-        text_rect = display_text.get_rect(center=(self.rect.centerx, self.rect.centery))
+        text_rect = display_text.get_rect(
+            center=(self.rect.centerx, self.rect.centery))
         screen.blit(display_text, text_rect)
         return self.rect
 
@@ -75,5 +84,6 @@ class Text():
         self.rect.center = (self.x, self.y)
         pg.draw.rect(screen, Color.BLACK.value, self.rect)
         text_render = self.font.render(self.text, False, self.color)
-        rect = text_render.get_rect(center=(self.rect.centerx, self.rect.centery))
+        rect = text_render.get_rect(
+            center=(self.rect.centerx, self.rect.centery))
         screen.blit(text_render, rect)

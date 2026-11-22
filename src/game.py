@@ -1,20 +1,19 @@
 import pygame as pg
 import pygvideo as pv
-from src.parsing import parsing
+from src.parsing import parsing, Config
 from src.helper import Color, Box_Button, Font, Size, Text
 from src.highscore import ranking_score, valid_highscore
 from src.renderer import render_maze
 from src.maze import Maze, Direction
 from src.level import Level, LevelState
 from src.scoring import GameState, ScoringRules
-from src.maze_convert import level_maze, generate_hex_maze
+from src.maze_convert import generate_hex_maze
 from src.entities import PacMan
 import json
 from typing import Any
 import sys
 import random
 import logging
-from enum import Enum
 
 
 class Game:
@@ -30,7 +29,7 @@ class Game:
 
         self.score: int = 0
 
-        self.config = parsing()
+        self.config: Config = parsing()
 
         self.lives: int = self.config.lives
 
@@ -55,14 +54,16 @@ class Game:
             self.config.level_10,
         ]
 
-        self.keys = {pg.K_UP: Direction.North,
-                     pg.K_w: Direction.North,
-                     pg.K_RIGHT: Direction.East,
-                     pg.K_d: Direction.East,
-                     pg.K_DOWN: Direction.South,
-                     pg.K_s: Direction.South,
-                     pg.K_LEFT: Direction.West,
-                     pg.K_a: Direction.West}
+        self.keys: dict[int, Direction] = {
+                    pg.K_UP: Direction.North,
+                    pg.K_w: Direction.North,
+                    pg.K_RIGHT: Direction.East,
+                    pg.K_d: Direction.East,
+                    pg.K_DOWN: Direction.South,
+                    pg.K_s: Direction.South,
+                    pg.K_LEFT: Direction.West,
+                    pg.K_a: Direction.West
+                     }
 
         self.is_paused: bool = True
 
@@ -73,8 +74,12 @@ class Game:
         self.cheat_time: bool = False
 
     def main_loop(self):
+        """Switch level and call the main loop for each of them"""
 
-        rules = ScoringRules(self.config.pacgum_pts, self.config.super_pacgum_pts, self.config.ghost_pts)
+        rules = ScoringRules(
+            self.config.pacgum_pts,
+            self.config.super_pacgum_pts, self.config.ghost_pts
+            )
 
         state = GameState(self.lives, rules)
 
@@ -98,22 +103,33 @@ class Game:
 
         self.win()
 
-    def play_level(self, level_number: int, state: GameState, timer: pg.time.Clock) -> LevelState | None:
+    def play_level(
+            self, level_number: int, state: GameState, timer: pg.time.Clock
+            ) -> LevelState | None:
+        """Handle the main logic of the game loop"""
         index: int = 0
 
         resume_freeze: float = 2.0
         restart_pause: float = resume_freeze
 
-        maze = generate_hex_maze(self.level_list[level_number - 1].get("height"), self.level_list[level_number - 1].get("width"), self.config.seed)
-        maze_class = Maze(maze)
+        maze: list[str] = generate_hex_maze(
+            self.level_list[level_number - 1].get("height"),
+            self.level_list[level_number - 1].get("width"), self.config.seed
+            )
+        maze_class: Maze = Maze(maze)
 
         sprites_grp = pg.sprite.Group()
 
         updated: bool = False
-        self.max_time = abs((maze_class.width*maze_class.height / 5) * 2.5) # 5 being the speed of the PacMan, if we change the speed we have to change the value
+        self.max_time = abs((maze_class.width*maze_class.height / 5) * 2.5)
+        # 5 being the speed of the PacMan,
+        #  if we change the speed we have to change the value
 
-        level = Level(maze_class, state, level_number, self.max_time, self.rng, PacMan(maze_class, maze_class.center))
-        pac = level.pac_man 
+        level: Level = Level(
+            maze_class, state, level_number,
+            self.max_time, self.rng, PacMan(maze_class, maze_class.center)
+            )
+        pac = level.pac_man
 
         dt = 0
 
@@ -128,11 +144,17 @@ class Game:
         for ghost in level.ghosts:
             ghost_grp.add(ghost)
 
-        while level.level_state is LevelState.PLAYING or level.level_state is LevelState.PAUSE:
+        while (
+            level.level_state is LevelState.PLAYING
+            or level.level_state is LevelState.PAUSE
+             ):
             countdown_font = pg.font.Font(Font.FONT1.value, 400)
             self.screen.fill(Color.BLACK.value)
 
-            dict_gum = render_maze(maze_class.walls, maze_class, self.screen, self.screen_width, self.screen_height, pac, index, level)
+            dict_gum: dict[str, Any] = render_maze(
+                maze_class.walls, maze_class, self.screen,
+                self.screen_width, self.screen_height, pac, index, level
+                )
 
             if level.level_state is LevelState.PLAYING:
                 dt = timer.tick(self.fps) / 1000
@@ -218,7 +240,10 @@ class Game:
             display_time = Text("Timer: " + str(accurate_time), Color.RED.value, 1800, 40, Size.TEXT.value)
             display_time.show_text(self.screen)
 
-            display_level = Text("Level " + str(level_number), Color.RED.value, 1150, 40, Size.TITLE.value)
+            display_level = Text(
+                "Level " + str(level_number),
+                Color.RED.value, 1150, 40, Size.TITLE.value
+                )
             display_level.show_text(self.screen)
 
             sprites_grp.draw(self.screen)
@@ -228,8 +253,10 @@ class Game:
 
             if level.level_state is LevelState.PAUSE and not self.is_paused:
                 digit = str(int(restart_pause) + 1)
-                surface = countdown_font.render(digit, False, Color.WHITE.value)
-                rect = surface.get_rect(center=(self.screen_width // 2, self.screen_height // 2))
+                surface = countdown_font.render(
+                    digit, False, Color.WHITE.value)
+                rect = surface.get_rect(
+                    center=(self.screen_width // 2, self.screen_height // 2))
                 self.screen.blit(surface, rect)
 
             pg.display.flip()
@@ -272,7 +299,8 @@ class Game:
                     no_loop = True
                     islocked = True
                 if not no_loop and count >= 1:
-                    menu = MainMenu(self.screen, self.screen_height, self.screen_width)
+                    menu = MainMenu(
+                        self.screen, self.screen_height, self.screen_width)
                     pv.quit_all()
                     menu.init_menu(True)
                 if event.type == pg.KEYDOWN:
@@ -285,11 +313,15 @@ class Game:
                         letter = letter[:-1]
                 if event.type == pg.MOUSEBUTTONDOWN:
                     if menu_button.rect.collidepoint(mouse):
-                        menu = MainMenu(self.screen, self.screen_height, self.screen_width)
+                        menu = MainMenu(
+                            self.screen, self.screen_height, self.screen_width)
                         pv.quit_all()
                         menu.init_menu(True)
 
-            video.draw_and_update(self.screen, (self.screen_width / 2 + 400, self.screen_height / 2))
+            video.draw_and_update(
+                self.screen,
+                (self.screen_width / 2 + 400, self.screen_height / 2)
+                )
 
             input_name = Box_Button(self.screen_width / 2, self.screen_height / 2, 100, 100, letter, Size.TEXT.value)
             input_name.create_button(self.screen, mouse)
@@ -316,7 +348,9 @@ class Game:
                     with open(self.config.highscore_filename, "w") as file:
                         json.dump(ranked, file, indent=4)
 
-                except (FileExistsError, FileNotFoundError, json.JSONDecodeError):
+                except (
+                    FileExistsError, FileNotFoundError, json.JSONDecodeError
+                      ):
                     with open(self.config.highscore_filename, "w") as file:
                         score_dict.update({"0": json_list})
                         json.dump(score_dict, file, indent=4)
@@ -324,7 +358,10 @@ class Game:
                     no_loop = False
 
             if islocked:
-                self.screen.blit(lock, (self.screen_width / 2 - 50, self.screen_height / 2 + 320))
+                self.screen.blit(
+                    lock,
+                    (self.screen_width / 2 - 50, self.screen_height / 2 + 320)
+                    )
 
             pg.display.flip()
 
@@ -346,7 +383,10 @@ class Game:
             mouse = pg.mouse.get_pos()
             self.screen.fill(Color.BLACK.value)
 
-            menu_button = Box_Button(self.screen_width / 2, self.screen_height / 2 + 200, 100, 100, "Go to Menu", Size.TEXT.value)
+            menu_button = Box_Button(
+                self.screen_width / 2, self.screen_height / 2 + 200, 100, 100,
+                "Go to Menu", Size.TEXT.value
+                )
             menu_button.create_button(self.screen, mouse)
 
             for event in pg.event.get():
@@ -360,25 +400,27 @@ class Game:
                     no_loop = True
                     islocked = True
                 if not no_loop and count >= 1:
-                    menu = MainMenu(self.screen, self.screen_height, self.screen_width)
+                    menu = MainMenu(
+                        self.screen, self.screen_height, self.screen_width)
                     pv.quit_all()
                     menu.init_menu(True)
 
                 if event.type == pg.KEYDOWN:
                     if len(letter) < 10 and not keys[pg.K_BACKSPACE]:
-                        if (event.unicode.isalpha() or event.unicode.isspace()) and not event.unicode == "\r":
+                        if (
+                            (
+                                event.unicode.isalpha()
+                                or event.unicode.isspace()
+                                ) and not event.unicode == "\r"
+                           ):
                             letter += event.unicode
                     if keys[pg.K_BACKSPACE]:
                         letter = letter[:-1]
-                    # if keys[pg.K_RETURN] and count > 0:
 
-                    # if keys[pg.K_SPACE] and count == 0:
-                    #     count += 1
-                    #     no_loop = True
-                    #     islocked = True
                 if event.type == pg.MOUSEBUTTONDOWN:
                     if menu_button.rect.collidepoint(mouse):
-                        menu = MainMenu(self.screen, self.screen_height, self.screen_width)
+                        menu = MainMenu(
+                            self.screen, self.screen_height, self.screen_width)
                         pv.quit_all()
                         menu.init_menu(True)
             video.draw_and_update(self.screen, (self.screen_width / 2 + 400, self.screen_height / 2))

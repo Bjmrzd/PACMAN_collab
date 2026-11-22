@@ -1,18 +1,20 @@
-from pydantic import BaseModel, model_validator, Field, ValidationError
-import pygame as pg
-
+from pydantic import BaseModel, Field, ValidationError
 
 
 def ranking_score(score: int, data, new_score_dict):
-    """Function to insert the new score with the player name in the highscore ranking"""
-    classed_score: dict[str, dict] = {}
+    """Function to insert the new score with the player name"""
+    """in the highscore ranking"""
+    classed_score: dict[str, list] = {}
     lower_score: list[int] = []
     count: int = 0
     try:
         for keys, values in data.items():
             if values == [] or len(values) < 2:
                 raise ValueError
-            elif not isinstance(values[1], str) or not isinstance(values[0], int):
+            elif (
+                not isinstance(values[1], str)
+                or not isinstance(values[0], int)
+                 ):
                 raise ValueError
     except ValueError:
         print("Invalid highscore data. It could not be retrieved")
@@ -34,6 +36,7 @@ class Highscore(BaseModel):
 
 
 def valid_highscore(name, score):
+    """Validate the score and name to insert in the ranking"""
     highscore_dict = {
         "player_score": score,
         "player_name": name
