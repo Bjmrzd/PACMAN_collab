@@ -24,7 +24,7 @@ class LevelFeatures(Enum):
 class Level():
     def __init__(
             self, maze: Maze, state: GameState,
-            level_number: int, time: int, rng: random.Random, pac: PacMan
+            level_number: int, time: float, rng: random.Random, pac: PacMan
             ):
 
         self.maze: Maze = maze

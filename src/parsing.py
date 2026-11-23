@@ -42,14 +42,16 @@ class Config(BaseModel):
             self.level_10,
         ]
         for args in level:
+            width: int = args.get("width")
+            height: int = args.get("height")
             if not args.get("width") or not args.get("height"):
                 raise ValueError(
                     "Error: Levels must have both a height and width")
             elif args.get("width") != args.get("height"):
                 raise ValueError("Error: The Pacman Maze must be a square")
             elif (
-                (args.get("width") or args.get("height")) > 25
-                or (args.get("width") or args.get("height")) < 7
+                (width or height) > 25
+                or (width or height) < 7
                  ):
                 raise ValueError(
                     "Error: The maze width and height"

@@ -18,14 +18,15 @@ import logging
 
 class Game:
     """Class for the pacman game"""
-    def __init__(self, screen, screen_width, screen_height) -> None:
+    def __init__(
+            self, screen: Any, screen_width: Any, screen_height: Any) -> None:
         self.fps: int = 60
 
-        self.screen = screen
+        self.screen: Any = screen
 
-        self.screen_width = screen_width
+        self.screen_width: Any = screen_width
 
-        self.screen_height = screen_height
+        self.screen_height: Any = screen_height
 
         self.score: int = 0
 
@@ -33,7 +34,7 @@ class Game:
 
         self.lives: int = self.config.lives
 
-        self.max_time: int = 0
+        self.max_time: float = 0.0
 
         self.rng = random.Random(self.config.seed)
 
@@ -285,8 +286,10 @@ class Game:
             display_level.show_text(self.screen)
 
             sprites_grp.draw(self.screen)
-            dict_gum.get("sprite").draw(self.screen)
-            dict_gum.get("super").draw(self.screen)
+            sprite: Any = dict_gum.get("sprite")
+            sprite.draw(self.screen)
+            super_pacgum: Any = dict_gum.get("super")
+            super_pacgum.draw(self.screen)
             ghost_grp.draw(self.screen)
 
             if level.level_state is LevelState.PAUSE and not self.is_paused:

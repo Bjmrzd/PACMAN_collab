@@ -8,7 +8,7 @@ from src.entities import Pacgum, Super_gum
 
 def render_maze(
         walls: list[list[int]], maze: Maze, screen: Any, screen_width: int,
-        screen_height: int, pacman: PacMan, index: int, level
+        screen_height: int, pacman: PacMan, index: int, level: Any
         ) -> dict[str, Any]:
     """Render the maze and the sprite each call in the main loop"""
     list_cell: list[Any] = []
@@ -77,13 +77,14 @@ def render_maze(
                         and (rows, cols) != (0, len(walls[0]) - 1)
                         and (rows, cols) != level.maze.center
                        ):
-                        gum = Pacgum(cell, base_state)
+                        gum = Pacgum(cell, base_state)  # type: ignore
                         gum.rect.center = (start_x + 25, start_y + 25)
                         gum_grp.add(gum)
                         list_gum.append(gum)
                     else:
                         if (rows, cols) != level.maze.center:
-                            supergum = Super_gum(cell, base_state)
+                            supergum = Super_gum(
+                                cell, base_state)  # type: ignore
                             supergum.rect.center = (start_x + 25, start_y + 25)
                             supergum_grp.add(supergum)
                             super_list.append(supergum)
