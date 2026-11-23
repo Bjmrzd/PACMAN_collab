@@ -54,9 +54,9 @@ class Maze:
         reachable = self.distance_map(self.ghost_corners[0])
         best_cell: Cell | None = None
         best_dist: int = 0
-        for cell in sorted(reachable): # type: ignore
-            height: int = abs(cell[0] - self.height // 2) # type: ignore
-            width: int = abs(cell[1] - self.width // 2) # type: ignore
+        for cell in sorted(reachable):  # type: ignore
+            height: int = abs(cell[0] - self.height // 2)  # type: ignore
+            width: int = abs(cell[1] - self.width // 2)  # type: ignore
             dist: int = height + width
             if best_cell is None or dist < best_dist:
                 best_cell = cell
@@ -96,11 +96,11 @@ class Maze:
         return list_dir
 
     def distance_map(self, goal: Cell | None) -> dict[Cell | None, int]:
-        cache: dict[tuple[int, int], int] | None = self.distances.get(goal) # type: ignore
+        cache: dict[tuple[int, int], int] | None = self.distances.get(goal)  # type: ignore
         if cache is not None:
-            return cache # type: ignore
+            return cache  # type: ignore
         dist: dict[Cell | None, int] = {goal: 0}
-        queue: deque[Cell] = deque([goal]) # type: ignore
+        queue: deque[Cell] = deque([goal])  # type: ignore
         while queue:
             cell = queue.popleft()
             for direction in self.valid_directions(cell):
@@ -108,7 +108,7 @@ class Maze:
                 if nxt not in dist:
                     dist[nxt] = dist[cell] + 1
                     queue.append(nxt)
-        self.distances[goal] = dist # type: ignore
+        self.distances[goal] = dist  # type: ignore
         return dist
 
     def steps_forward(
