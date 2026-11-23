@@ -26,7 +26,7 @@ class Config(BaseModel):
     level_10: dict[str, int] = Field(default_factory=dict)
 
     @model_validator(mode="after")
-    def validate_infos(self):
+    def validate_infos(self) -> Config:
         """Model validator for the Config class"""
         """Handle the value of the json to validate them"""
         level = [

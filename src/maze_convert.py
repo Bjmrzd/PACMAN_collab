@@ -1,7 +1,7 @@
 from src.maze import Maze, MazeError
 
 
-def convert_from_hexa(rows: list[str]) -> list[list[int]]:
+def convert_from_hexa(rows: list[list[int]]) -> list[list[int]]:
     try:
         walls: list[list[int]] = []
         for row in rows:
@@ -14,7 +14,7 @@ def convert_from_hexa(rows: list[str]) -> list[list[int]]:
         raise MazeError(f"Invalid conversion: {err}") from err
 
 
-def generate_hex_maze(height: int, width: int, seed: int | None) -> list[str]:
+def generate_hex_maze(height: int, width: int, seed: int) -> list[list[int]]:
 
     try:
         from mazegenerator.mazegenerator import MazeGenerator
@@ -30,7 +30,7 @@ def generate_hex_maze(height: int, width: int, seed: int | None) -> list[str]:
     return maze._maze
 
 
-def level_maze(height: int, width: int, seed: int | None) -> Maze:
+def level_maze(height: int, width: int, seed: int) -> Maze:
     try:
         walls = convert_from_hexa(generate_hex_maze(height, width, seed))
         if len(walls) != height or any(len(row) != width for row in walls):

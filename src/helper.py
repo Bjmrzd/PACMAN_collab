@@ -44,7 +44,7 @@ class Box_Button():
         self.rect = pg.Rect(
             x, y, width + (size_text / 2 * len(self.text)), height)
 
-    def create_button(self, screen: Any, mouse: Any):
+    def create_button(self, screen: Any, mouse: Any) -> pg.Rect:
         """Create and display the button"""
         self.rect.center = (self.x, self.y)
         pg.draw.rect(
@@ -57,7 +57,7 @@ class Box_Button():
         screen.blit(display_text, text_rect)
         return self.rect
 
-    def create_input(self, screen: Any):
+    def create_input(self, screen: Any) -> pg.Rect:
         """Create and display a input box"""
         self.rect.center = (self.x, self.y)
         pg.draw.rect(screen, Color.GREY.value, self.rect)
@@ -70,7 +70,9 @@ class Box_Button():
 
 class Text():
     """A text class to modify the text, it's size and the background color"""
-    def __init__(self, text: str, color, x: int, y: int, size_text: int):
+    def __init__(
+            self, text: str, color: Any, x: int, y: int, size_text: int
+            ) -> None:
         super().__init__()
         self.text: str = text
         self.color = color
@@ -79,7 +81,7 @@ class Text():
         self.rect = pg.Rect(x, y, 100, 100)
         self.font = pg.font.Font(Font.FONT1.value, size_text)
 
-    def show_text(self, screen):
+    def show_text(self, screen: Any) -> None:
         """Display the text and center it based on the x and y"""
         self.rect.center = (self.x, self.y)
         pg.draw.rect(screen, Color.BLACK.value, self.rect)

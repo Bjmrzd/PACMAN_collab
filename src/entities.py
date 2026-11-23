@@ -41,7 +41,7 @@ class Personnality(Enum):
 
 
 class Mover(ABC):
-    def __init__(self, maze: Maze, cell: Cell | None, speed: float) -> None:
+    def __init__(self, maze: Maze, cell: Cell, speed: float) -> None:
         self.maze: Maze = maze
         self.speed: float = speed
         self.spawn: Cell = cell
@@ -87,7 +87,7 @@ class Mover(ABC):
 
     @abstractmethod
     def choose_direction(self) -> Direction | None:
-        return
+        return None
 
     def cell_reached(self) -> None:
         return None
@@ -112,7 +112,7 @@ class Mover(ABC):
                 self.progress += distance
                 return
             distance -= remaining
-            self.current_cell = self.target
+            self.current_cell = self.target  # type: ignore
             self.target = None
             self.progress = 0.0
             self.cell_reached()
@@ -152,7 +152,7 @@ class Pac_anim(Enum):
 
 class PacMan(Mover, pg.sprite.Sprite):
     def __init__(
-            self, maze: Maze, cell: Cell | None, speed: float = 5.0) -> None:
+            self, maze: Maze, cell: Cell, speed: float = 5.0) -> None:
         """Create the Pac-Man. Key_direction is the direction"""
         """saved each time we press a directional key"""
         super().__init__(maze, cell, speed)
@@ -161,7 +161,7 @@ class PacMan(Mover, pg.sprite.Sprite):
         self.sprite = Images.PACMAN.value
         self.image = Pac_anim.RIGHT.value
         self.rect = self.image.get_rect()
-        self.rect.center = (cell[0], cell[1])  # type: ignore
+        self.rect.center = (cell[0], cell[1])
 
         self.key_direction: Direction | None = None
         self.on_cell_center: Callable[[Cell], None] | None = None
