@@ -9,6 +9,8 @@ from src.scoring import GameState
 
 
 class State(Enum):
+    """Enum that registers the different
+    states the objects can have"""
     NORMAL = "normal"
 
     EDIBLE = "edible"
@@ -17,6 +19,7 @@ class State(Enum):
 
 
 class GhostFeatures(Enum):
+    """Ghosts variables"""
     NORMAL_SPEED = 3.0
 
     EDIBLE_SPEED = 2.5
@@ -31,6 +34,7 @@ class GhostFeatures(Enum):
 
 
 class Personnality(Enum):
+    """Enum which permits to distinguish ghosts"""
     BLINKY = "blinky"  # Aims the player's cell
 
     PINKY = "pinky"     # Aims a few cells ahead of the player
@@ -41,7 +45,11 @@ class Personnality(Enum):
 
 
 class Mover(ABC):
+    """Class used for every moving objects in the game: Pac-man and ghosts"""
     def __init__(self, maze: Maze, cell: Cell, speed: float) -> None:
+        """Initialize the mover with it's speed,
+        spawn cell and current cell as well as the direction facing,
+        the target it aims and the progress of the movement currently doing"""
         self.maze: Maze = maze
         self.speed: float = speed
         self.spawn: Cell = cell
@@ -52,6 +60,7 @@ class Mover(ABC):
 
     @property
     def position(self) -> tuple[float, float]:
+        """Give the position of the mover"""
         row, col = self.current_cell
         if self.target is None:
             return float(row), float(col)
@@ -61,24 +70,15 @@ class Mover(ABC):
             col + (t_col - col) * self.progress
             )
 
-    @position.setter
-    def position(self, new_cell: Any) -> tuple[float, float]:
-        row, col = new_cell
-        if self.target is None:
-            return float(row), float(col)
-        t_row, t_col = self.target
-        return (
-            row + (t_row - row) * self.progress,
-            col + (t_col - col) * self.progress
-            )
-
     def reset(self) -> None:
+        """resets the position of the mover to their spawn"""
         self.current_cell = self.spawn
         self.target = None
         self.direction = None
         self.progress = 0.0
 
     def reverse(self) -> None:
+        """reverse the current movement between two cells"""
         if self.target is None or self.direction is None:
             return
         self.current_cell, self.target = self.target, self.current_cell
@@ -87,12 +87,16 @@ class Mover(ABC):
 
     @abstractmethod
     def choose_direction(self) -> Direction | None:
+        """Method which determines the next
+        direction for the fastest path"""
         return None
 
     def cell_reached(self) -> None:
+        """Executes a callable when the mover reach a cell center"""
         return None
 
     def start_move(self) -> bool:
+        """Starts the movement"""
         direction: Direction | None = self.choose_direction()
         if direction is None:
             return False
@@ -102,6 +106,7 @@ class Mover(ABC):
         return True
 
     def advance(self, dt: float) -> None:
+        """Movement between two cells"""
         distance = self.speed * dt
         while distance > 0:
             if self.target is None:
@@ -119,6 +124,7 @@ class Mover(ABC):
 
 
 class Pac_anim(Enum):
+    """Enum of sprites for every objects"""
     UP = Images.PACMAN.value.subsurface((3, 74, 26, 25))
 
     RIGHT = Images.PACMAN.value.subsurface((2, 3, 25, 25))
@@ -151,10 +157,13 @@ class Pac_anim(Enum):
 
 
 class PacMan(Mover, pg.sprite.Sprite):
+    """Class to define the Pac-man (Mover)"""
     def __init__(
             self, maze: Maze, cell: Cell, speed: float = 5.0) -> None:
         """Create the Pac-Man. Key_direction is the direction"""
-        """saved each time we press a directional key"""
+        """saved each time we press a directional key.
+        On_cell_center is the function we apply when pac-man
+        reaches a cell"""
         super().__init__(maze, cell, speed)
         pg.sprite.Sprite.__init__(self)
 
@@ -170,6 +179,8 @@ class PacMan(Mover, pg.sprite.Sprite):
             self, gum: Any, state: GameState,
             supergum: Any
             ) -> list[Any]:
+        """Checks the collisions between
+        the sprites of Pacman and the gums"""
         eaten: list[Any] = pg.sprite.spritecollide(self, supergum, True)
         eaten_gum: list[Any] = pg.sprite.spritecollide(self, gum, True)
 
@@ -184,6 +195,7 @@ class PacMan(Mover, pg.sprite.Sprite):
         return eaten
 
     def move(self, direction: Direction, updated: bool) -> None:
+        """Determines the movement depending on the target"""
         if self.target is not None:
             if (
                 self.direction is not None
@@ -198,6 +210,8 @@ class PacMan(Mover, pg.sprite.Sprite):
             self.progress = 0.0
 
     def change_sprite(self, direction: Direction, updated: bool) -> None:
+        """Change the image of the pacman
+        depending of the direction he faces"""
 
         if direction is Direction.North:
             if updated:
@@ -227,19 +241,24 @@ class PacMan(Mover, pg.sprite.Sprite):
         return None
 
     def cell_reached(self) -> None:
+        """When the center of a cell is reached we apply
+        on_cell_center()"""
         if self.on_cell_center is not None:
             self.on_cell_center(self.current_cell)
 
     def reset(self) -> None:
+        """Relocate the pacman to the center of the maze"""
         super().reset()
         self.key_direction = None
 
 
 class Ghost(Mover, pg.sprite.Sprite):
+    """Class to define the ghosts (Mover)"""
     def __init__(
             self, maze: Maze, corner: Cell, personnality: Personnality,
             rng: random.Random, speed: float = GhostFeatures.NORMAL_SPEED.value
             ) -> None:
+        """Create the ghosts"""
         super().__init__(maze, corner, speed)
         pg.sprite.Sprite.__init__(self)
         self.personnality = personnality
@@ -255,6 +274,8 @@ class Ghost(Mover, pg.sprite.Sprite):
         self.rect.center = self.position
 
     def init_sprite(self) -> Any:
+        """Assign a sprite to each ghost according
+        to their personnality"""
         sprite: Any = None
         if self.personnality is Personnality.BLINKY:
             sprite = Pac_anim.BLINKY_RIGHT.value
@@ -269,6 +290,10 @@ class Ghost(Mover, pg.sprite.Sprite):
     def tick(
             self, dt: float, player_cell: Cell, player_dir: Direction | None
             ) -> None:
+        """Internal clock of the ghost.
+        Update the time for the ghost: determines the movement but also
+        update the remaining time everytime the state is not
+        the normal state"""
         self.player_cell = player_cell
         self.player_dir = player_dir
         if self.state is not State.NORMAL:
@@ -281,6 +306,12 @@ class Ghost(Mover, pg.sprite.Sprite):
             self.advance(dt)
 
     def goal(self) -> Cell | None:
+        """Algorithm of the ghost depending of the personnality:
+        BLINKY : Aims the player's cell
+        PINKY : Aims a few cells ahead of the player
+        INKY : Chaotic movements
+        CLYDE : Chases when far, goes home when close
+        """
         distance = self.maze.distance_map(
             self.player_cell).get(self.current_cell, 10**9)
         if self.personnality is Personnality.BLINKY:
@@ -302,6 +333,8 @@ class Ghost(Mover, pg.sprite.Sprite):
             return self.spawn
 
     def choose_direction(self) -> Direction | None:
+        """Choose the best direction to reach
+        the goal through the fastest path"""
         choices = self.maze.valid_directions(self.current_cell)
         if not choices:
             return None
@@ -322,6 +355,9 @@ class Ghost(Mover, pg.sprite.Sprite):
     def best_choice(
             self, choices: list[Direction], goal: Cell, retreat: bool
             ) -> Direction:
+        """Calculate the differents paths
+        to the goal, keep the best one and
+        returns the next direction to take"""
         distance = self.maze.distance_map(goal)
 
         best_score: int | None = None
@@ -350,6 +386,9 @@ class Ghost(Mover, pg.sprite.Sprite):
         return self.rng.choice(best_directions)
 
     def is_edible(self, duration: float) -> None:
+        """Changes the state of the ghost to EDIBLE
+        and sets the various features to edible (sprite,
+        state duration and speed)"""
         if self.state is State.EATEN:
             return
         self.image = Pac_anim.SCARED.value
@@ -359,12 +398,16 @@ class Ghost(Mover, pg.sprite.Sprite):
         self.reverse()
 
     def eaten(self) -> None:
+        """When the ghost is eaten it waits in it's corner
+        for the duration established in GhostFeatures"""
         super().reset()
         self.state = State.EATEN
         self.timer = GhostFeatures.RESPAWN_DELAY.value
         self.image = self.init_sprite()
 
     def reset(self) -> None:
+        """Relocate the ghost to his corner and changes
+        his state, speed and sprite back to normal"""
         super().reset()
         self.state = State.NORMAL
         self.image = self.init_sprite()
@@ -373,7 +416,9 @@ class Ghost(Mover, pg.sprite.Sprite):
 
 
 class Pacgum(pg.sprite.Sprite):
+    """Class to create the pacgums"""
     def __init__(self, cell: Cell, state: State):
+        """Initialize the pacgum"""
         super().__init__()
 
         self.position = cell
@@ -384,7 +429,9 @@ class Pacgum(pg.sprite.Sprite):
 
 
 class Super_gum(pg.sprite.Sprite):
+    """Class to create the super-pacgums"""
     def __init__(self, cell: Cell, state: State):
+        """Initialize the super-pacgum"""
         super().__init__()
 
         self.position = cell
