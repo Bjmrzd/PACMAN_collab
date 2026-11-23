@@ -100,7 +100,7 @@ class Maze:
         if cache is not None:
             return cache # type: ignore
         dist: dict[Cell | None, int] = {goal: 0}
-        queue: deque[Cell] = deque([goal])
+        queue: deque[Cell] = deque([goal]) # type: ignore
         while queue:
             cell = queue.popleft()
             for direction in self.valid_directions(cell):
@@ -108,7 +108,7 @@ class Maze:
                 if nxt not in dist:
                     dist[nxt] = dist[cell] + 1
                     queue.append(nxt)
-        self.distances[goal] = dist
+        self.distances[goal] = dist # type: ignore
         return dist
 
     def steps_forward(

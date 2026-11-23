@@ -1,7 +1,7 @@
 from src.maze import Maze, MazeError
 
 
-def convert_from_hexa(rows: list[list[int]]) -> list[list[int]]:
+def convert_from_hexa(rows: list[str]) -> list[list[int]]:
     try:
         walls: list[list[int]] = []
         for row in rows:
