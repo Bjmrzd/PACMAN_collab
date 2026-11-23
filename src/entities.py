@@ -167,8 +167,8 @@ class PacMan(Mover, pg.sprite.Sprite):
         self.on_cell_center: Callable[[Cell], None] | None = None
 
     def check_gum(
-            self, gum: pg.sprite.Group, state: GameState,
-            supergum: pg.sprite.Group
+            self, gum: Any, state: GameState,
+            supergum: Any
             ) -> list[Any]:
         eaten: list[Any] = pg.sprite.spritecollide(self, supergum, True)
         eaten_gum: list[Any] = pg.sprite.spritecollide(self, gum, True)

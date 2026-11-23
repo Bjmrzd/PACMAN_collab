@@ -1,5 +1,5 @@
 import pygame as pg
-import pygvideo as pv
+import pygvideo as pv  # type: ignore
 from src.parsing import parsing, Config
 from src.helper import Color, Box_Button, Font, Size, Text
 from src.highscore import ranking_score, valid_highscore
@@ -119,7 +119,7 @@ class Game:
             self.level_list[level_number - 1].get("width"), self.config.seed
             )
 
-        sprites_grp: pg.sprite.Group = pg.sprite.Group()
+        sprites_grp: Any = pg.sprite.Group()
 
         updated: bool = False
         self.max_time = abs((maze_class.width*maze_class.height / 5) * 2.5)
@@ -146,7 +146,7 @@ class Game:
 
         sprites_grp.add(pac)
 
-        ghost_grp: pg.sprite.Group = pg.sprite.Group()
+        ghost_grp: Any = pg.sprite.Group()
 
         for ghost in level.ghosts:
             ghost_grp.add(ghost)
@@ -316,7 +316,7 @@ class Game:
         letter: str = ""
         no_loop: bool = False
         count: int = 0
-        score_dict: dict[str, list] = {}
+        score_dict: dict[str, list[Any]] = {}
         lock = pg.image.load("assets/lock_test.jpg")
         islocked: bool = False
 
@@ -430,7 +430,7 @@ class Game:
         letter: str = ""
         no_loop: bool = False
         count: int = 0
-        score_dict: dict[str, list] = {}
+        score_dict: dict[str, list[Any]] = {}
         lock = pg.image.load("assets/lock_test.jpg")
         islocked: bool = False
         video = pv.Video("assets/penguin.mp4")

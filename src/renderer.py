@@ -16,8 +16,8 @@ def render_maze(
     space: int = 50
     middle_x: int = (screen_width - len(walls[0]) * space) // 2
     middle_y: int = (screen_height - len(walls) * space) // 2
-    gum_grp: pg.sprite.Group = pg.sprite.Group()
-    supergum_grp: pg.sprite.Group = pg.sprite.Group()
+    gum_grp: Any = pg.sprite.Group()
+    supergum_grp: Any = pg.sprite.Group()
     base_state = State.EDIBLE
     list_gum: list[Any] = []
     super_list: list[Any] = []

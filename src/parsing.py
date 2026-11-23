@@ -42,8 +42,8 @@ class Config(BaseModel):
             self.level_10,
         ]
         for args in level:
-            width: int = args.get("width")
-            height: int = args.get("height")
+            width: int = args["width"]
+            height: int = args["height"]
             if not args.get("width") or not args.get("height"):
                 raise ValueError(
                     "Error: Levels must have both a height and width")
