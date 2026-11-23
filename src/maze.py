@@ -1,15 +1,14 @@
 from enum import Enum
 from collections import deque
-from typing import Any
 
 Cell = tuple[int, int]
 
 
 class MazeError(Exception):
-    def __init__(self, message):
+    def __init__(self, message: str) -> None:
         self.message = message
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"{self.message}"
 
 
@@ -55,11 +54,10 @@ class Maze:
         reachable = self.distance_map(self.ghost_corners[0])
         best_cell: Cell | None = None
         best_dist: int = 0
-
-        for cell in sorted(reachable):  # type: ignore
-            dist = abs(
-                cell[0] - self.height // 2)  # type: ignore
-            + abs(cell[1] - self.width // 2)  # type: ignore
+        for cell in sorted(reachable): # type: ignore
+            height: int = abs(cell[0] - self.height // 2) # type: ignore
+            width: int = abs(cell[1] - self.width // 2) # type: ignore
+            dist: int = height + width
             if best_cell is None or dist < best_dist:
                 best_cell = cell
                 best_dist = dist

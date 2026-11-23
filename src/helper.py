@@ -48,7 +48,7 @@ class Box_Button():
         """Create and display the button"""
         self.rect.center = (self.x, self.y)
         pg.draw.rect(
-            screen, Color.WHITE.value 
+            screen, Color.WHITE.value
             if self.rect.collidepoint(mouse) else Color.RED.value, self.rect
             )
         display_text = self.font.render(self.text, False, Color.BLACK.value)

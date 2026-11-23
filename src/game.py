@@ -130,6 +130,7 @@ class Game:
             maze_class, state, level_number,
             self.max_time, self.rng, PacMan(maze_class, maze_class.center)
             )
+        print(maze_class.center)
         level.level_state = LevelState.READY
         pac = level.pac_man
         start_text = Text(
@@ -347,7 +348,9 @@ class Game:
                 if event.type == pg.KEYDOWN:
                     # video.handle_event(event)
                     if len(letter) < 10 and not keys[pg.K_BACKSPACE]:
-                        if (event.unicode.isalpha() or event.unicode.isspace()) and not event.unicode == "\r":
+                        if (event.unicode.isalpha()
+                            or event.unicode.isspace()) \
+                                and not event.unicode == "\r":
                             letter += event.unicode
 
                     if keys[pg.K_BACKSPACE]:
