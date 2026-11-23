@@ -14,8 +14,7 @@ def convert_from_hexa(rows: list[str]) -> list[list[int]]:
         raise MazeError(f"Invalid conversion: {err}") from err
 
 
-def generate_hex_maze(height: int, width: int, seed: int | None) -> list[str]:
-
+def level_maze(height: int, width: int, seed: int | None) -> Maze:
     try:
         from mazegenerator.mazegenerator import MazeGenerator
     except ImportError as err:
@@ -26,21 +25,19 @@ def generate_hex_maze(height: int, width: int, seed: int | None) -> list[str]:
         exit_cell=(width - 1, height - 1), seed=seed
         )
     maze.generate()
+    # rows: list[str] = maze.maze_hexa()
+    return Maze(maze._maze)
+    # try:
+    #     walls= convert_from_hexa(rows)
 
-    return maze._maze
-
-
-def level_maze(height: int, width: int, seed: int | None) -> Maze:
-    try:
-        walls = convert_from_hexa(generate_hex_maze(height, width, seed))
-        if len(walls) != height or any(len(row) != width for row in walls):
-            raise MazeError(
-                "The maze given by the generator hasn't the right size")
-        return Maze(walls)
-    except MazeError:
-        raise
-    except Exception as err:
-        raise MazeError(
-            f"An error occured during the maze generation"
-            f" ({type(err).__name__}): {err}"
-            )
+    #     if len(walls) != height or any(len(row) != width for row in walls):
+    #         raise MazeError(
+    #             "The maze given by the generator hasn't the right size")
+    #     return Maze(maze)
+    # except MazeError:
+    #     raise
+    # except Exception as err:
+    #     raise MazeError(
+    #         f"An error occured during the maze generation"
+    #         f" ({type(err).__name__}): {err}"
+    #         )
