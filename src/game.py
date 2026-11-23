@@ -644,7 +644,7 @@ class Game:
 
         size_text: int = Size.TEXT.value
 
-        video = pv.Video("assets/no_brain.mp4")
+        video = pv.Video("assets/sweating.mp4")
         video.set_size((400, 400))
         video.preplay(-1)
 
