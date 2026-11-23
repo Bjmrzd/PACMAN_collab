@@ -35,7 +35,7 @@ class Highscore(BaseModel):
     player_score: int = Field(default=0)
 
 
-def valid_highscore(name, score):
+def valid_highscore(name, score) -> Highscore:
     """Validate the score and name to insert in the ranking"""
     highscore_dict = {
         "player_score": score,

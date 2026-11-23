@@ -74,7 +74,7 @@ class Level():
         if self.level_state is LevelState.PLAYING and self.pacgum_done:
             self.level_state = LevelState.WON
 
-    def pacman_reach_cell(self, pac: PacMan, gum) -> None:
+    def pacman_reach_cell(self, pac: PacMan, gum: Any) -> None:
         if self.level_state is not LevelState.PLAYING:
             return
         if len(gum) < 1:
