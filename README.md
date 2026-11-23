@@ -287,7 +287,7 @@ Level->Maze:
 
 **All of the assets used in this project aside from the code itself does not belong to us but to their respective owner. This include the sprites, the videos as well as the font**
 
-**All of them should be free, of use but in the event of an owner wanting to remove one or more assets from the project it will be done**
+**All of them should be free of use but in the event of an owner wanting to remove one or more assets from the project it will be done**
 
 **This project is for educational purpose only and no money or advertisement will be made of it**
 
