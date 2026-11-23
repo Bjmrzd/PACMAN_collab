@@ -667,7 +667,7 @@ class Game:
 
             invincible_button = Box_Button(
                 self.screen_width / 2, self.screen_height / 2,
-                width_button, height_button, "I am <Title Card>", size_text)
+                width_button, height_button, "Unbreakable", size_text)
             invincible_button.create_button(self.screen, mouse)
 
             if self.cheat_invincible:
