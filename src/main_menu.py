@@ -1,6 +1,6 @@
 import pygame as pg
 import pygame_menu as pm
-import pygvideo as pv   # type: ignore
+import pygvideo as pv
 import sys
 from src.game import Game
 from src.parsing import parsing

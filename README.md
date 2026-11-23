@@ -180,19 +180,108 @@ After that we adapt the maze to render it by accessing the bits of each cell to 
 Using another A-Maze-ing package we adapt the hexadecimal output before doing the same things.
 
 ### Implementation:
+
+In the **helper.py** files we created enums, class and functions to make the code more clean, easier to read and understand as well as making it easier to modify if needed.
+
+We use **pydantic** for the parsing of the config file and did the same for the highscore.
+
+We have a class **MainMenu** to handle everything related to the main menu like the function of each button displaying screen like the highscores and the instructions. The **Game** class is called when the game start and handle everything related to it.
+
+It includes every screen like the game over, win, pause and cheat screen but also the main loop to play each level of the game before deciding if the game is won or lost based on the **GameState**.
+
+The GameState class only occupation is to handle the lives and score. It determines the game over. GameState use the class **ScoringRules** to determine the points to give. The GameState is used in the class **Level** that handle every level individually, as well as the class **Maze** that handle the logic of the maze. Maze possess the class **Pacman, Ghost, Pacgum and Super_gum** to reset them, move them, etc ... when necessary.
+
+The main loop is called once each level. It render the maze and call the level logic in it. When the main loop end it goes to the next level, win and game over based on the time, the score or the lives.
     
 ### General software Architecture:
+
+MainMenu->Game:  
+- MainMenu init Game and call the main loop
+
+Game->Level:
+
+- The main loop creates the level and iterate on it
+
+Level->GameState->ScoringRules:
+
+- Level possess a GameState that etablish it's scoring logic based on ScoringRules
+
+Level->Pacman->PacGum and Super_Gum:
+
+- Level use the class Pacman to determine it's position and logic, Pacman check the collision with pacgum and super_pacgum for level and scoring
+
+Level->Maze:
+
+- Level possess Maze to handle it's logic and access it's cell for the pacman and ghost logic.
+
+
 
 ### Project Management:
 
 
 #### Pcaudron:
 
-- 
+- Ghost algorithm
+
+- Maze adaptation
+
+- GameState logic
+
+- Scoring logic
+
+- Level logic
+
+- Next level logic
+
+- Refactoring function
+
+- Clean code
+
+- Docstrings
+
+- Type hints/flake8
+
+- Debug
+
+- Readme
+
+- Abstract class
+
+- Pacman movements
 
 #### Brouzaud
 
--
+- Display Menu/Instructions/Highscores
+
+- Display Win/Game Over screen
+
+- Display Pause/Cheat screen
+
+- Parsing
+
+- Config file
+
+- Highscore logic
+
+- Maze and sprite renderer
+
+- Pygame setup
+
+- Pygame video
+
+- Makefile
+
+- logs
+
+- Debug
+
+- Docstrings
+
+- Readme
+
+- Pacgum/Super Pacgum logic
+
+- Pacman movements/ Keys
 
 
 

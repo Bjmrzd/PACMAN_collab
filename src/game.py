@@ -1,5 +1,5 @@
 import pygame as pg
-import pygvideo as pv  # type: ignore
+import pygvideo as pv
 from src.parsing import parsing, Config
 from src.helper import Color, Box_Button, Font, Size, Text
 from src.highscore import ranking_score, valid_highscore

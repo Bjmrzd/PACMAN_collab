@@ -23,6 +23,7 @@ class Color(Enum):
 
 
 class Images(Enum):
+    """Image for the sprites"""
     PACMAN = pg.image.load("assets/pacsprites.png")
     SUPERGUM = pg.image.load("assets/pacs.jpg")
 
