@@ -1,0 +1,20 @@
+[project]
+name = "pacman"
+version = "1.0.0"
+description = "pacman game"
+authors = [
+    {name = "brouzaud"},
+    {name = "pcaudron"}
+]
+requires-python = ">=3.14,<4.0"
+licence = ["LICENCE"]
+dynamic = ["dependencies]
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[too.setuptools.package.find]
+where = [""]
