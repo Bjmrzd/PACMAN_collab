@@ -7,7 +7,7 @@ from src.renderer import render_maze
 from src.maze import Maze, Direction
 from src.level import Level, LevelState
 from src.scoring import GameState, ScoringRules
-from src.maze_convert import generate_hex_maze
+from src.maze_convert import level_maze
 from src.entities import PacMan
 import json
 from typing import Any
@@ -114,11 +114,10 @@ class Game:
         resume_freeze: float = 2.0
         restart_pause: float = resume_freeze
 
-        maze: list[str] = generate_hex_maze(
+        maze_class: Maze = level_maze(
             self.level_list[level_number - 1].get("height"),
             self.level_list[level_number - 1].get("width"), self.config.seed
             )
-        maze_class: Maze = Maze(maze)
 
         sprites_grp: pg.sprite.Group = pg.sprite.Group()
 

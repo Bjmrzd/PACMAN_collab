@@ -96,9 +96,9 @@ class Maze:
         return list_dir
 
     def distance_map(self, goal: Cell | None) -> dict[Cell | None, int]:
-        cache: dict[tuple[int, int], int] | None = self.distances.get(goal)
+        cache: dict[tuple[int, int], int] | None = self.distances.get(goal) # type: ignore
         if cache is not None:
-            return cache
+            return cache # type: ignore
         dist: dict[Cell | None, int] = {goal: 0}
         queue: deque[Cell] = deque([goal])
         while queue:
