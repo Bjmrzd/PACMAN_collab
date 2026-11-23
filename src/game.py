@@ -128,7 +128,8 @@ class Game:
 
         level: Level = Level(
             maze_class, state, level_number,
-            self.max_time, self.rng, PacMan(maze_class, maze_class.center)  #type: ignore
+            self.max_time, self.rng,
+            PacMan(maze_class, maze_class.center)  # type: ignore
             )
         print(maze_class.center)
         level.level_state = LevelState.READY

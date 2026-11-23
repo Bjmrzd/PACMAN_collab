@@ -3,7 +3,8 @@ from typing import Any
 
 
 def ranking_score(
-        score: int, data: Any, new_score_dict: Any) -> dict[str, list[Any]] | Any:
+        score: int, data: Any, new_score_dict: Any
+        ) -> dict[str, list[Any]] | Any:
     """Function to insert the new score with the player name"""
     """in the highscore ranking"""
     classed_score: dict[str, list[Any]] = {}
