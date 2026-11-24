@@ -94,7 +94,7 @@ class MainMenu():
 
             self.screen.fill(Color.BLACK.value)
 
-            video.draw_and_update(self.screen, (1900, 600))
+            video.draw_and_update(self.screen, (1900, 750))
             for event in pg.event.get():
                 if event.type == pg.QUIT:
                     pg.quit()
