@@ -100,7 +100,7 @@ class Game:
                 self.game_over()
                 return
 
-            state.lives = self.lives
+            # state.lives = self.lives
 
         self.win()
         return
@@ -383,6 +383,11 @@ class Game:
                 )
             title_win.show_text(self.screen)
 
+            score_lose = Text(
+                f"score: {self.score}pts", Color.WHITE.value, self.screen_width / 2,
+                self.screen_height / 2 - 250, Size.TEXT.value)
+            score_lose.show_text(self.screen)
+
             name_rules = Text(
                 "Enter your name: ", Color.RED.value, self.screen_width / 2,
                 self.screen_height / 2 - 100, Size.TEXT.value)
@@ -496,6 +501,11 @@ class Game:
                 "You Win !", Color.WHITE.value, self.screen_width / 2,
                 self.screen_height / 2 - 400, Size.TITLE.value)
             title_win.show_text(self.screen)
+
+            score_win = Text(
+                f"score: {self.score}pts", Color.WHITE.value, self.screen_width / 2,
+                self.screen_height / 2 - 250, Size.TEXT.value)
+            score_win.show_text(self.screen)
 
             name_rules = Text(
                 "Enter your name: ", Color.RED.value, self.screen_width / 2,
@@ -668,7 +678,7 @@ class Game:
 
             invincible_button = Box_Button(
                 self.screen_width / 2, self.screen_height / 2,
-                width_button, height_button, "Unbreakable", size_text)
+                width_button, height_button, "Invincible", size_text)
             invincible_button.create_button(self.screen, mouse)
 
             if self.cheat_invincible:
