@@ -1,21 +1,12 @@
 # -*- mode: python ; coding: utf-8 -*-
-from PyInstaller.utils.hooks import collect_all
-from PyInstaller.utils.hooks import copy_metadata
-
-datas = [('game_files/assets', 'game_files/assets')]
-binaries = []
-hiddenimports = ['pyexpat']
-datas += copy_metadata('imageio')
-tmp_ret = collect_all('pyexpat')
-datas += tmp_ret[0]; binaries += tmp_ret[1]; hiddenimports += tmp_ret[2]
 
 
 a = Analysis(
     ['pac-man.py'],
     pathex=[],
-    binaries=binaries,
-    datas=datas,
-    hiddenimports=hiddenimports,
+    binaries=[],
+    datas=[('game_files', 'game_files'), ('config.json', '.')],
+    hiddenimports=[],
     hookspath=[],
     hooksconfig={},
     runtime_hooks=[],
@@ -44,5 +35,4 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
-    contents_directory='game_files',
 )

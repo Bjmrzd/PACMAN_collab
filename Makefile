@@ -41,3 +41,6 @@ lint-strict:
 
 package:
 	pyinstaller --onefile --name Pacman pac-man.py --contents-directory game_files --add-data "game_files/assets:game_files/assets" --copy-metadata imageio --hidden-import=pyexpat --collect-all pyexpat
+
+test:
+	pyinstaller --onefile --name Pacman pac-man.py --add-data "game_files:game_files" --add-data "config.json:."
