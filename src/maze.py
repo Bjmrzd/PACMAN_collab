@@ -5,6 +5,8 @@ Cell = tuple[int, int]
 
 
 class MazeError(Exception):
+    """An exception to express
+    errors relative to the maze"""
     def __init__(self, message: str) -> None:
         self.message = message
 
@@ -13,6 +15,7 @@ class MazeError(Exception):
 
 
 class Direction(Enum):
+    """Algebraic value of each directions"""
     North = (-1, 0)
     East = (0, 1)
     South = (1, 0)
@@ -20,10 +23,13 @@ class Direction(Enum):
 
     @property
     def opposite(self) -> "Direction":
+        """Gives the direction value of
+        the opposite wall"""
         return Direction((-self.value[0], -self.value[1]))
 
     @property
     def wall_bit(self) -> int:
+        """Return the bit value of the cell"""
         return WALL_BITS[self]
 
 
@@ -36,6 +42,7 @@ WALL_BITS: dict[Direction, int] = {
 
 
 class Maze:
+    """The class maze used throughout the project"""
     def __init__(self, walls: list[list[int]]) -> None:
         self.walls = walls
         self.height = len(walls)
@@ -64,6 +71,8 @@ class Maze:
         return best_cell
 
     def in_maze(self, cell: Cell) -> bool:
+        """Checks if a cell is
+        inside the maze or not"""
         row, col = cell
         if row < 0 or row >= self.height:
             return False
@@ -73,10 +82,13 @@ class Maze:
             return True
 
     def step(self, cell: Cell, direction: Direction) -> Cell:
+        """Returns the neighbouring cell
+        in the chosen direction"""
         dir_row, dir_col = direction.value
         return cell[0] + dir_row, cell[1] + dir_col
 
     def can_move(self, cell: Cell, direction: Direction) -> bool:
+        """Checks if a direction is valid to move"""
         if not self.in_maze(cell):
             return False
         row, col = cell
@@ -89,6 +101,8 @@ class Maze:
         return not (self.walls[target[0]][target[1]] & opposite_bit)
 
     def valid_directions(self, cell: Cell) -> list[Direction]:
+        """Gives the list of valid
+        directions for the current cell"""
         list_dir = []
         for d in Direction:
             if self.can_move(cell, d):
@@ -96,6 +110,9 @@ class Maze:
         return list_dir
 
     def distance_map(self, goal: Cell | None) -> dict[Cell | None, int]:
+        """BFS (Breadth First Search) algorithm: gives a
+        dictionnary of every reachable cells and it's shortest
+        distance from a target cell"""
         cache: dict[tuple[int, int], int] \
             | None = self.distances.get(goal)  # type: ignore
         if cache is not None:
@@ -114,6 +131,7 @@ class Maze:
 
     def steps_forward(
             self, cell: Cell, direction: Direction, steps: int) -> Cell:
+        """Moves 'steps' cells forward and return the final cell"""
         for i in range(steps):
             if not self.can_move(cell, direction):
                 break
@@ -121,11 +139,12 @@ class Maze:
         return cell
 
     def pacgum_positions(self) -> set[Cell | None]:
-        # toutes les cells sauf corners et center
+        """Returns a set of the positions of all pacgums"""
         valid_cells = set(self.distance_map(self.center))
         return valid_cells - {self.center, *self.ghost_corners}
 
     def super_pacgum_positions(self) -> set[Cell]:
+        """Returns a set of the positions of all super-pacgums"""
         valid_cells: set[Cell] = set()
         for cell in self.ghost_corners:
             if cell in self.distance_map(self.center):

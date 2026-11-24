@@ -2,6 +2,8 @@ from src.maze import Maze, MazeError
 
 
 def convert_from_hexa(rows: list[str]) -> list[list[int]]:
+    """Converts the maze written in hexadecimal from A-maze-ing
+    into a matrix, each cell is the bit value of the walls it has"""
     try:
         walls: list[list[int]] = []
         for row in rows:
@@ -15,6 +17,8 @@ def convert_from_hexa(rows: list[str]) -> list[list[int]]:
 
 
 def level_maze(height: int, width: int, seed: int) -> Maze:
+    """Transform the maze obtained through the
+    mazegenerator into a usable maze for Pac-man"""
     try:
         from mazegenerator.mazegenerator import MazeGenerator
     except ImportError as err:
