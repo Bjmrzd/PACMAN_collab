@@ -3,7 +3,7 @@ import random
 import math
 from typing import Any
 
-from game_files.src.entities import Ghost, PacMan, State, Personnality
+from game_files.src.entities import Ghost, PacMan, State, Personality
 from game_files.src.entities import Super_gum
 from game_files.src.maze import Maze, Cell
 from game_files.src.scoring import GameState
@@ -48,10 +48,10 @@ class Level():
         self.cheat_time: bool = False
         self.ghosts_eaten_total: int = 0
         Personnalities = [
-            Personnality.BLINKY,
-            Personnality.PINKY, Personnality.INKY, Personnality.CLYDE]
+            Personality.BLINKY,
+            Personality.PINKY, Personality.INKY, Personality.CLYDE]
         self.ghosts = [
-            Ghost(maze, corner, personnality, rng) for corner, personnality
+            Ghost(maze, corner, Personality, rng) for corner, Personality
             in zip(maze.ghost_corners, Personnalities)
             ]
 

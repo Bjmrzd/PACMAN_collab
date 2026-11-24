@@ -33,7 +33,7 @@ class GhostFeatures(Enum):
     RESPAWN_DELAY = 5.0
 
 
-class Personnality(Enum):
+class Personality(Enum):
     """Enum which permits to distinguish ghosts"""
     BLINKY = "blinky"  # Aims the player's cell
 
@@ -255,13 +255,13 @@ class PacMan(Mover, pg.sprite.Sprite):
 class Ghost(Mover, pg.sprite.Sprite):
     """Class to define the ghosts (Mover)"""
     def __init__(
-            self, maze: Maze, corner: Cell, personnality: Personnality,
+            self, maze: Maze, corner: Cell, Personality: Personality,
             rng: random.Random, speed: float = GhostFeatures.NORMAL_SPEED.value
             ) -> None:
         """Create the ghosts"""
         super().__init__(maze, corner, speed)
         pg.sprite.Sprite.__init__(self)
-        self.personnality = personnality
+        self.Personality = Personality
         self.spawn = corner
         self.rng = rng
         self.state = State.NORMAL
@@ -275,15 +275,15 @@ class Ghost(Mover, pg.sprite.Sprite):
 
     def init_sprite(self) -> Any:
         """Assign a sprite to each ghost according
-        to their personnality"""
+        to their Personality"""
         sprite: Any = None
-        if self.personnality is Personnality.BLINKY:
+        if self.Personality is Personality.BLINKY:
             sprite = Pac_anim.BLINKY_RIGHT.value
-        elif self.personnality is Personnality.INKY:
+        elif self.Personality is Personality.INKY:
             sprite = Pac_anim.INKY_RIGHT.value
-        elif self.personnality is Personnality.PINKY:
+        elif self.Personality is Personality.PINKY:
             sprite = Pac_anim.PINKY_RIGHT.value
-        elif self.personnality is Personnality.CLYDE:
+        elif self.Personality is Personality.CLYDE:
             sprite = Pac_anim.CLYDE_RIGHT.value
         return sprite
 
@@ -306,7 +306,7 @@ class Ghost(Mover, pg.sprite.Sprite):
             self.advance(dt)
 
     def goal(self) -> Cell | None:
-        """Algorithm of the ghost depending of the personnality:
+        """Algorithm of the ghost depending of the Personality:
         BLINKY : Aims the player's cell
         PINKY : Aims a few cells ahead of the player
         INKY : Chaotic movements
@@ -314,20 +314,20 @@ class Ghost(Mover, pg.sprite.Sprite):
         """
         distance = self.maze.distance_map(
             self.player_cell).get(self.current_cell, 10**9)
-        if self.personnality is Personnality.BLINKY:
+        if self.Personality is Personality.BLINKY:
             return self.player_cell
-        if self.personnality is Personnality.PINKY:
+        if self.Personality is Personality.PINKY:
             if self.player_dir is None:
                 return self.player_cell
             return self.maze.steps_forward(
                 self.player_cell, self.player_dir,
                 GhostFeatures.PINKY_LOOKAHEAD.value
                 )
-        if self.personnality is Personnality.INKY:
+        if self.Personality is Personality.INKY:
             if distance <= GhostFeatures.INKY_SIGHT.value:
                 return self.player_cell
             return None
-        if self.personnality is Personnality.CLYDE:
+        if self.Personality is Personality.CLYDE:
             if distance > GhostFeatures.CLYDE_DISTANCE.value:
                 return self.player_cell
             return self.spawn

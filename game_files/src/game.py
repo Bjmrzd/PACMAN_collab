@@ -1,5 +1,4 @@
 import pygame as pg
-import pygvideo as pv
 from game_files.src.parsing import parsing, Config
 from game_files.src.helper import Color, Box_Button, Font, Size, Text
 from game_files.src.highscore import ranking_score, valid_highscore
@@ -321,10 +320,6 @@ class Game:
         lock = pg.image.load("game_files/assets/lock_test.jpg")
         islocked: bool = False
 
-        video = pv.Video("game_files/assets/cat_laugh.mp4")
-        video.set_size((400, 400))
-        video.preplay(-1)
-
         while running:
             mouse = pg.mouse.get_pos()
             self.screen.fill(Color.BLACK.value)
@@ -346,10 +341,8 @@ class Game:
                 if not no_loop and count >= 1:
                     menu = MainMenu(
                         self.screen, self.screen_height, self.screen_width)
-                    pv.quit_all()
                     menu.init_menu(True)
                 if event.type == pg.KEYDOWN:
-                    # video.handle_event(event)
                     if len(letter) < 10 and not keys[pg.K_BACKSPACE]:
                         if (event.unicode.isalpha()
                             or event.unicode.isspace()) \
@@ -362,13 +355,10 @@ class Game:
                     if menu_button.rect.collidepoint(mouse):
                         menu = MainMenu(
                             self.screen, self.screen_height, self.screen_width)
-                        pv.quit_all()
                         menu.init_menu(True)
 
-            video.draw_and_update(
                 self.screen,
                 (self.screen_width / 2 + 400, self.screen_height / 2)
-                )
 
             input_name = Box_Button(
                 self.screen_width / 2,
@@ -440,9 +430,6 @@ class Game:
         score_dict: dict[str, list[Any]] = {}
         lock = pg.image.load("game_files/assets/lock_test.jpg")
         islocked: bool = False
-        video = pv.Video("game_files/assets/penguin.mp4")
-        video.set_size((400, 400))
-        video.preplay(-1)
 
         while running:
             mouse = pg.mouse.get_pos()
@@ -455,7 +442,6 @@ class Game:
             menu_button.create_button(self.screen, mouse)
 
             for event in pg.event.get():
-                # video.handle_event(event)
                 keys = pg.key.get_pressed()
                 if keys[pg.K_ESCAPE]:
                     pg.quit()
@@ -467,7 +453,6 @@ class Game:
                 if not no_loop and count >= 1:
                     menu = MainMenu(
                         self.screen, self.screen_height, self.screen_width)
-                    pv.quit_all()
                     menu.init_menu(True)
 
                 if event.type == pg.KEYDOWN:
@@ -486,12 +471,9 @@ class Game:
                     if menu_button.rect.collidepoint(mouse):
                         menu = MainMenu(
                             self.screen, self.screen_height, self.screen_width)
-                        pv.quit_all()
                         menu.init_menu(True)
-            video.draw_and_update(
                 self.screen,
                 (self.screen_width / 2 + 400, self.screen_height / 2)
-                )
 
             input_name = Box_Button(
                 self.screen_width / 2, self.screen_height / 2,
@@ -565,10 +547,6 @@ class Game:
 
         menu = MainMenu(self.screen, self.screen_height, self.screen_width)
 
-        video = pv.Video("game_files/assets/wizard.mp4")
-        video.set_size((400, 400))
-        video.preplay(-1)
-
         while running:
             self.screen.fill(Color.BLACK.value)
             mouse = pg.mouse.get_pos()
@@ -604,44 +582,30 @@ class Game:
                 self.screen_height / 2 - 500, Size.TITLE.value)
             title_menu.show_text(self.screen)
 
-            video.draw_and_update(
-                self.screen,
-                (self.screen_width / 2 + 400, self.screen_height / 2))
+            self.screen,
+            (self.screen_width / 2 + 400, self.screen_height / 2)
 
             for event in pg.event.get():
 
                 if event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE:
                     running = False
                     self.is_paused = False
-                    pv.quit_all()
 
                 if event.type == pg.MOUSEBUTTONDOWN:
 
                     if exit_button.rect.collidepoint(mouse):
-                        pv.quit_all()
                         pg.quit()
                         sys.exit()
 
                     if resume_button.rect.collidepoint(mouse):
-                        pv.quit_all()
                         running = False
 
                     if menu_button.rect.collidepoint(mouse):
                         no_resume = False
-                        pv.quit_all()
                         menu.init_menu(no_resume)
 
-                        video = pv.Video("game_files/assets/wizard.mp4")
-                        video.set_size((400, 400))
-                        video.preplay(-1)
-
                     if instructions_button.rect.collidepoint(mouse):
-                        pv.quit_all()
                         menu.init_tuto()
-
-                        video = pv.Video("game_files/assets/wizard.mp4")
-                        video.set_size((400, 400))
-                        video.preplay(-1)
 
             pg.display.flip()
 
@@ -656,10 +620,6 @@ class Game:
         height_button: int = 100
 
         size_text: int = Size.TEXT.value
-
-        video = pv.Video("game_files/assets/sweating.mp4")
-        video.set_size((400, 400))
-        video.preplay(-1)
 
         while running:
             self.screen.fill(Color.BLACK.value)
@@ -706,10 +666,6 @@ class Game:
                 self.screen_height / 2 - 600, Size.TITLE.value)
             title_menu.show_text(self.screen)
 
-            video.draw_and_update(
-                self.screen,
-                (self.screen_width / 2 + 400, self.screen_height / 2))
-
             for event in pg.event.get():
 
                 keys = pg.key.get_pressed()
@@ -717,7 +673,6 @@ class Game:
                 if keys[pg.K_ESCAPE]:
                     running = False
                     self.is_paused = False
-                    pv.quit_all()
                 if event.type == pg.MOUSEBUTTONDOWN:
 
                     if speed_button.rect.collidepoint(mouse):

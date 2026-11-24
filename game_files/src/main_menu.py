@@ -1,6 +1,5 @@
 import pygame as pg
 import pygame_menu as pm
-import pygvideo as pv
 import sys
 from game_files.src.game import Game
 from game_files.src.parsing import parsing
@@ -46,7 +45,6 @@ class MainMenu():
                     sys.exit()
                 keys = pg.key.get_pressed()
                 if keys[pg.K_ESCAPE]:
-                    pv.quit_all()
                     pg.quit()
                     sys.exit()
 
@@ -86,23 +84,18 @@ class MainMenu():
         running = True
         arrows = pg.image.load("game_files/assets/arrows.png")
 
-        video = pv.Video("game_files/assets/sleep.mp4")
-        video.set_size((400, 400))
-        video.preplay(-1)
         rules_font = pg.font.Font(Font.FONT1.value, 45)
 
         while running:
 
             self.screen.fill(Color.BLACK.value)
 
-            video.draw_and_update(self.screen, (1900, 750))
             for event in pg.event.get():
                 if event.type == pg.QUIT:
                     pg.quit()
                     sys.exit()
                 keys = pg.key.get_pressed()
                 if keys[pg.K_ESCAPE]:
-                    pv.quit_all()
                     running = False
             self.screen.blit(arrows, (200, 200))
 
@@ -165,9 +158,6 @@ class MainMenu():
         list_text_highscore: list[Any] = []
         isdone: bool = False
 
-        video = pv.Video("game_files/assets/applaud.mp4")
-        video.set_size((400, 400))
-        video.preplay(-1)
         try:
             with open(config.highscore_filename, "r") as file:
                 data = json.load(file)
@@ -196,11 +186,6 @@ class MainMenu():
                     list_text_highscore.append(show_score)
                 isdone = True
 
-            video.draw_and_update(
-                self.screen,
-                (self.screen_width / 2 + 400, self.screen_height / 2)
-                )
-
             for args in list_text_highscore:
                 args.show_text(self.screen)
 
@@ -210,12 +195,10 @@ class MainMenu():
                     sys.exit()
                 keys = pg.key.get_pressed()
                 if keys[pg.K_ESCAPE]:
-                    pv.quit_all()
                     running = False
 
             pg.display.flip()
 
     def resume_game(self) -> None:
         """Go back to the current game when the resume button is clicked"""
-        pv.quit_all()
         self.running = False
