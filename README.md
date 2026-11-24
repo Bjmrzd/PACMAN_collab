@@ -86,6 +86,14 @@ This file should be moved to the root of the repositories and used with this com
 
 - ./Pacman config.json
 
+If you use the package from itchio.
+
+You should have a folder named Pacman with inside:
+
+- a Folder named game_files with a folder assets inside.
+- An executable called Pacman
+- a config.json
+
 
 ## Resources:
 

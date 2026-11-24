@@ -317,7 +317,7 @@ class Game:
         no_loop: bool = False
         count: int = 0
         score_dict: dict[str, list[Any]] = {}
-        lock = pg.image.load("..assets/lock_test.jpg")
+        lock = pg.image.load("game_files/assets/lock_test.jpg")
         islocked: bool = False
 
         while running:
@@ -428,7 +428,7 @@ class Game:
         no_loop: bool = False
         count: int = 0
         score_dict: dict[str, list[Any]] = {}
-        lock = pg.image.load("..assets/lock_test.jpg")
+        lock = pg.image.load("game_files/assets/lock_test.jpg")
         islocked: bool = False
 
         while running:

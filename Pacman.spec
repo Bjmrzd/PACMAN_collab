@@ -2,7 +2,7 @@
 from PyInstaller.utils.hooks import collect_all
 from PyInstaller.utils.hooks import copy_metadata
 
-datas = []
+datas = [('game_files/assets', 'game_files/assets')]
 binaries = []
 hiddenimports = ['pyexpat']
 datas += copy_metadata('imageio')

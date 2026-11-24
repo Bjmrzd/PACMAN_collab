@@ -40,4 +40,4 @@ lint-strict:
 	@flake8 . &&  mypy . --strict
 
 package:
-	pyinstaller --onefile --name Pacman pac-man.py --contents-directory game_files --copy-metadata imageio --hidden-import=pyexpat --collect-all pyexpat
+	pyinstaller --onefile --name Pacman pac-man.py --contents-directory game_files --add-data "game_files/assets:game_files/assets" --copy-metadata imageio --hidden-import=pyexpat --collect-all pyexpat
