@@ -384,7 +384,8 @@ class Game:
             title_win.show_text(self.screen)
 
             score_lose = Text(
-                f"score: {self.score}pts", Color.WHITE.value, self.screen_width / 2,
+                f"score: {self.score}pts",
+                Color.WHITE.value, self.screen_width / 2,
                 self.screen_height / 2 - 250, Size.TEXT.value)
             score_lose.show_text(self.screen)
 
@@ -503,7 +504,8 @@ class Game:
             title_win.show_text(self.screen)
 
             score_win = Text(
-                f"score: {self.score}pts", Color.WHITE.value, self.screen_width / 2,
+                f"score: {self.score}pts",
+                Color.WHITE.value, self.screen_width / 2,
                 self.screen_height / 2 - 250, Size.TEXT.value)
             score_win.show_text(self.screen)
 

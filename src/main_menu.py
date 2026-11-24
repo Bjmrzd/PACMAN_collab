@@ -111,22 +111,30 @@ class MainMenu():
                 Color.RED.value, 500, 150, Size.TEXT.value)
             command_text.show_text(self.screen)
 
-            surface1 = rules_font.render("To complete a level, all the gums must be eaten.", False, Color.RED.value)
+            surface1 = rules_font.render("To complete a level,"
+                                         " all the gums must be eaten.",
+                                         False, Color.RED.value)
             rect = surface1.get_rect(center=(550, 700))
             self.screen.blit(surface1, rect)
 
-            surface2 = rules_font.render("Beware of the ghost for they will try to eat you.", False, Color.RED.value)
+            surface2 = rules_font.render("Beware of the ghost"
+                                         " for they will try to eat you.",
+                                         False, Color.RED.value)
             rect = surface2.get_rect(center=(550, 750))
             self.screen.blit(surface2, rect)
 
-            surface3 = rules_font.render("If your time runs out or if you lose the lives you are given,", False, Color.RED.value)
+            surface3 = rules_font.render("If your time runs out or if "
+                                         "you lose the lives you are given,",
+                                         False, Color.RED.value)
             rect = surface3.get_rect(center=(550, 800))
             self.screen.blit(surface3, rect)
 
-            surface4 = rules_font.render("failure in your trial will awaits you.", False, Color.RED.value)
+            surface4 = rules_font.render("failure in your trial"
+                                         " will awaits you.",
+                                         False, Color.RED.value)
             rect = surface4.get_rect(center=(550, 850))
             self.screen.blit(surface4, rect)
-        
+
             cheat_screen = Text(
                 "Press C for the cheat screen",
                 Color.RED.value, 2100, 150, Size.TEXT.value)
