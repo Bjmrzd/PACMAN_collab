@@ -75,6 +75,17 @@ As required by the subject we need:
 
 To mypy and flake8
 
+To create the package:
+
+- make package
+
+It should have created a folder dist and a folder build.
+Inside the former should be the executable file to play the game.
+
+This file should be moved to the root of the repositories and used with this command:
+
+- ./Pacman config.json
+
 
 ## Resources:
 

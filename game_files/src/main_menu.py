@@ -25,7 +25,7 @@ class MainMenu():
     def init_menu(self, no_resume: bool) -> None:
         """Init and display the main menu"""
 
-        title_image = self.menu.add.image("game_files/assets/title.jpg")
+        title_image = self.menu.add.image("..assets/title.jpg")
         start_button = self.menu.add.button("Start game", self.init_game)
         instructions_button = self.menu.add.button(
             "Instructions", self.init_tuto)
@@ -82,7 +82,7 @@ class MainMenu():
     def init_tuto(self) -> None:
         """Init the tuto menu with the buttons instructions and how to play"""
         running = True
-        arrows = pg.image.load("game_files/assets/arrows.png")
+        arrows = pg.image.load("..assets/arrows.png")
 
         rules_font = pg.font.Font(Font.FONT1.value, 45)
 

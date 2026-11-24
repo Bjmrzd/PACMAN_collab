@@ -1,22 +1,5 @@
-11/04/2026 08:03:25 AM - Value error, Error: The maze width and height can't be higher than 18 or lower than 10
-11/17/2026 10:17:15 AM - Value error, Error: The Pacman Maze must be a square
-11/17/2026 10:17:43 AM - Value error, Error: The Pacman Maze must be a square
-11/19/2026 07:14:21 PM - Value error, Error: The maze width and height can't be higher than 25 or lower than 10
-11/21/2026 04:19:10 PM - Error: The file couldn't be found or the name is invalid !
-11/21/2026 04:20:15 PM - Error: The file couldn't be found or the name is invalid !
-11/21/2026 04:24:26 PM - Error: The file couldn't be found or the name is invalid !
-11/21/2026 04:25:35 PM - Error: The file couldn't be found or the name is invalid !
-11/21/2026 04:25:48 PM - Error: The file couldn't be found or the name is invalid !
-11/21/2026 04:26:09 PM - Error: The file couldn't be found or the name is invalid !
-11/21/2026 04:29:25 PM - The file config.json was not found or failed to decode data from JSON file
-11/21/2026 04:31:11 PM - The file config.json was not found or failed to decode data from JSON file
-11/21/2026 04:35:06 PM - The file config.json was not found or failed to decode data from JSON file
-11/21/2026 04:38:41 PM - Error: The file couldn't be found or the name is invalid !
-11/22/2026 05:53:15 AM - Value error, Error: The maze width and height can't be higher than 25 or lower than 10
-11/22/2026 03:44:26 PM - The file config.json was not found or failed to decode data from JSON file
-11/22/2026 03:44:47 PM - Value error, Error: The maze width and height can't be higher than 25 or lower than 10
-11/22/2026 03:54:20 PM - Value error, Error: The maze width and height can't be higher than 25 or lower than 10
-11/24/2026 04:32:56 PM - Error: The file couldn't be found or the name is invalid !
-11/24/2026 04:35:30 PM - Error: The file couldn't be found or the name is invalid !
-11/24/2026 04:39:17 PM - Error: The file couldn't be found or the name is invalid !
-11/24/2026 05:00:13 PM - Missing or invalid config values
+11/24/2026 06:27:33 PM - Missing or invalid config values
+11/24/2026 06:27:39 PM - Missing or invalid config values
+11/24/2026 06:44:28 PM - Error: The file couldn't be found or the name is invalid !
+11/24/2026 06:57:58 PM - Error: The file couldn't be found or the name is invalid !
+11/24/2026 06:58:00 PM - Error: The file couldn't be found or the name is invalid !

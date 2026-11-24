@@ -34,10 +34,10 @@ erase:
 
 
 lint: 
-	@flake8 . | mypy . --warn-return-any --warn-unused-ignores --ignore-missing-imports --disallow-untyped-defs --check-untyped-defs
+	@flake8 . &&  mypy . --warn-return-any --warn-unused-ignores --ignore-missing-imports --disallow-untyped-defs --check-untyped-defs
 
 lint-strict:
-	@flake8 . | mypy . --strict
+	@flake8 . &&  mypy . --strict
 
 package:
-	pyinstaller --onefile --name Pacman pac-man.py --contents-directory game_files --copy-metadata imageio --hidden-import=pkg_ressources.py2_warn
+	pyinstaller --onefile --name Pacman pac-man.py --contents-directory game_files --copy-metadata imageio --hidden-import=pyexpat --collect-all pyexpat

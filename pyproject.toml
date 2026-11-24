@@ -12,7 +12,6 @@ dependencies = [
     "pydantic (>=2.13.5)",
     "pygame (>=2.6.1)",
     "pygame-menu (>=4.5.2)",
-    "PyGVideo (>=1.4.1)"
 ]
 
 

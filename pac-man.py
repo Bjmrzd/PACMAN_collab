@@ -1,5 +1,7 @@
 import os
 import pygame as pg
+import gc
+import sys
 from game_files.src.main_menu import MainMenu
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
 
@@ -15,7 +17,13 @@ def main() -> None:
     no_resume: bool = True
     menu: MainMenu = MainMenu(screen, screen_height, screen_width)
     menu.init_menu(no_resume)
+    test = gc.collect()
+    del test
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except Exception as e:
+        print(e)
+        sys.exit(0)

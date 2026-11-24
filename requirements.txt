@@ -1,5 +1,4 @@
 pygame-ce
-numpy
 pydantic
 pygame-menu
 pygvideo
