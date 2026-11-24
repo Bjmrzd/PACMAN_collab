@@ -94,7 +94,7 @@ class MainMenu():
 
             self.screen.fill(Color.BLACK.value)
 
-            video.draw_and_update(self.screen, (1900, 500))
+            video.draw_and_update(self.screen, (1900, 600))
             for event in pg.event.get():
                 if event.type == pg.QUIT:
                     pg.quit()
@@ -118,6 +118,12 @@ class MainMenu():
             win_lose = Text(
                 "Press 1 to win or 2 to lose",
                 Color.RED.value, 2100, 350, Size.TEXT.value
+                )
+            win_lose.show_text(self.screen)
+
+            win_lose = Text(
+                "Press n to skip to the next level",
+                Color.RED.value, 2100, 550, Size.TEXT.value
                 )
             win_lose.show_text(self.screen)
 
