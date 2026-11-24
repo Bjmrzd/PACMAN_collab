@@ -10,7 +10,6 @@ class Config(BaseModel):
     highscore_filename: str = Field(default="highscore.json")
     lives: int = Field(gt=0, default=3)
     seed: int = Field(gt=0, default=42)
-    lvl_max_time: int = Field(ge=60, le=180, default=90)
     pacgum_pts: int = Field(gt=0, le=100, default=25)
     super_pacgum_pts: int = Field(gt=0, le=200, default=100)
     ghost_pts: int = Field(gt=0, le=1000, default=200)
@@ -69,7 +68,7 @@ def parsing() -> Config:
     necessary_keys: list[Any] = [
         "highscore_filename",
         "lives",
-        "pacgum_pts", "seed", "super_pacgum_pts", "ghost_pts", "lvl_max_time"]
+        "pacgum_pts", "seed", "super_pacgum_pts", "ghost_pts"]
 
     try:
         if len(sys.argv) != 2:

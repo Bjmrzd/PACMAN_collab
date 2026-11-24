@@ -4,7 +4,6 @@
     "pacgum_pts":25,
     "super_pacgum_pts":100,
     "seed":42,
-    "lvl_max_time":90,
     "ghost_pts": 200,
     "level_1": {"width": 14, "height": 14},
     "level_2": {"width": 12, "height": 12},
