@@ -1,9 +1,9 @@
 import pygame as pg
-from src.entities import State, PacMan
-from src.helper import Color
-from src.maze import Maze
+from game_files.src.entities import State, PacMan
+from game_files.src.helper import Color
+from game_files.src.maze import Maze
 from typing import Any
-from src.entities import Pacgum, Super_gum
+from game_files.src.entities import Pacgum, Super_gum
 
 
 def render_maze(

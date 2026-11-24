@@ -3,9 +3,10 @@ import random
 import math
 from typing import Any
 
-from src.entities import Ghost, PacMan, State, Personnality, Super_gum
-from src.maze import Maze, Cell
-from src.scoring import GameState
+from game_files.src.entities import Ghost, PacMan, State, Personnality
+from game_files.src.entities import Super_gum
+from game_files.src.maze import Maze, Cell
+from game_files.src.scoring import GameState
 
 
 class LevelState(Enum):

@@ -8,13 +8,14 @@ authors = [
 ]
 requires-python = ">=3.14,<4.0"
 licence = ["LICENCE"]
-dynamic = ["dependencies]
-[tool.setuptools.dynamic]
-dependencies = {file = ["requirements.txt"]}
+dependencies = [
+    "pydantic (>=2.13.5)",
+    "pygame (>=2.6.1)",
+    "pygame-menu (>=4.5.2)",
+    "PyGVideo (>=1.4.1)"
+]
+
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
 build-backend = "poetry.core.masonry.api"
-
-[too.setuptools.package.find]
-where = [""]

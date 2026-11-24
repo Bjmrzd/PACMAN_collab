@@ -1,14 +1,14 @@
 import pygame as pg
 import pygvideo as pv
-from src.parsing import parsing, Config
-from src.helper import Color, Box_Button, Font, Size, Text
-from src.highscore import ranking_score, valid_highscore
-from src.renderer import render_maze
-from src.maze import Maze, Direction
-from src.level import Level, LevelState
-from src.scoring import GameState, ScoringRules
-from src.maze_convert import level_maze
-from src.entities import PacMan
+from game_files.src.parsing import parsing, Config
+from game_files.src.helper import Color, Box_Button, Font, Size, Text
+from game_files.src.highscore import ranking_score, valid_highscore
+from game_files.src.renderer import render_maze
+from game_files.src.maze import Maze, Direction
+from game_files.src.level import Level, LevelState
+from game_files.src.scoring import GameState, ScoringRules
+from game_files.src.maze_convert import level_maze
+from game_files.src.entities import PacMan
 import json
 from typing import Any
 import sys
@@ -312,16 +312,16 @@ class Game:
 
     def game_over(self) -> None:
         """Game over screen"""
-        from src.main_menu import MainMenu
+        from game_files.src.main_menu import MainMenu
         running: bool = True
         letter: str = ""
         no_loop: bool = False
         count: int = 0
         score_dict: dict[str, list[Any]] = {}
-        lock = pg.image.load("assets/lock_test.jpg")
+        lock = pg.image.load("game_files/assets/lock_test.jpg")
         islocked: bool = False
 
-        video = pv.Video("assets/cat_laugh.mp4")
+        video = pv.Video("game_files/assets/cat_laugh.mp4")
         video.set_size((400, 400))
         video.preplay(-1)
 
@@ -432,15 +432,15 @@ class Game:
 
     def win(self) -> None:
         """Win screen"""
-        from src.main_menu import MainMenu
+        from game_files.src.main_menu import MainMenu
         running: bool = True
         letter: str = ""
         no_loop: bool = False
         count: int = 0
         score_dict: dict[str, list[Any]] = {}
-        lock = pg.image.load("assets/lock_test.jpg")
+        lock = pg.image.load("game_files/assets/lock_test.jpg")
         islocked: bool = False
-        video = pv.Video("assets/penguin.mp4")
+        video = pv.Video("game_files/assets/penguin.mp4")
         video.set_size((400, 400))
         video.preplay(-1)
 
@@ -551,7 +551,7 @@ class Game:
 
     def pause_menu(self) -> bool:
         """Pause Menu"""
-        from src.main_menu import MainMenu
+        from game_files.src.main_menu import MainMenu
 
         running: bool = True
 
@@ -565,7 +565,7 @@ class Game:
 
         menu = MainMenu(self.screen, self.screen_height, self.screen_width)
 
-        video = pv.Video("assets/wizard.mp4")
+        video = pv.Video("game_files/assets/wizard.mp4")
         video.set_size((400, 400))
         video.preplay(-1)
 
@@ -631,7 +631,7 @@ class Game:
                         pv.quit_all()
                         menu.init_menu(no_resume)
 
-                        video = pv.Video("assets/wizard.mp4")
+                        video = pv.Video("game_files/assets/wizard.mp4")
                         video.set_size((400, 400))
                         video.preplay(-1)
 
@@ -639,7 +639,7 @@ class Game:
                         pv.quit_all()
                         menu.init_tuto()
 
-                        video = pv.Video("assets/wizard.mp4")
+                        video = pv.Video("game_files/assets/wizard.mp4")
                         video.set_size((400, 400))
                         video.preplay(-1)
 
@@ -657,7 +657,7 @@ class Game:
 
         size_text: int = Size.TEXT.value
 
-        video = pv.Video("assets/sweating.mp4")
+        video = pv.Video("game_files/assets/sweating.mp4")
         video.set_size((400, 400))
         video.preplay(-1)
 

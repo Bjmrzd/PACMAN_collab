@@ -1,11 +1,11 @@
-from src.maze import Maze, Direction, Cell
+from game_files.src.maze import Maze, Direction, Cell
 from enum import Enum
 from typing import Callable, Any
 from abc import ABC, abstractmethod
 import random
 import pygame as pg
-from src.helper import Images
-from src.scoring import GameState
+from game_files.src.helper import Images
+from game_files.src.scoring import GameState
 
 
 class State(Enum):

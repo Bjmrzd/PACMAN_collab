@@ -1,5 +1,6 @@
 from pydantic import BaseModel, Field, ValidationError
 from typing import Any
+import sys
 
 
 def ranking_score(
@@ -50,5 +51,5 @@ def valid_highscore(name: str, score: int) -> Highscore:
         valid = Highscore.model_validate(highscore_dict)
     except ValidationError as error:
         print(error.errors()[0]["msg"])
-        exit()
+        sys.exit()
     return valid

@@ -1,4 +1,4 @@
-from src.maze import Maze, MazeError
+from game_files.src.maze import Maze, MazeError
 
 
 def convert_from_hexa(rows: list[str]) -> list[list[int]]:
@@ -20,7 +20,7 @@ def level_maze(height: int, width: int, seed: int) -> Maze:
     """Transform the maze obtained through the
     mazegenerator into a usable maze for Pac-man"""
     try:
-        from mazegenerator.mazegenerator import MazeGenerator
+        from game_files.mazegenerator.mazegenerator import MazeGenerator
     except ImportError as err:
         raise MazeError("The A-Maze-ing package is not installed "
                         " use: pip install mazegen-*.whl") from err

@@ -39,7 +39,5 @@ lint:
 lint-strict:
 	@flake8 . | mypy . --strict
 
-build:
-	@python -m pip install --upgrade build
-	@$(PYTHON) -m build --sdist
-	@pip install ./dist/mazegenerator-0.1.0.tar.gz
+package:
+	pyinstaller --onefile --name Pacman pac-man.py --contents-directory game_files --copy-metadata imageio --hidden-import=pkg_ressources.py2_warn

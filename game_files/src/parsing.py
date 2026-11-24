@@ -83,7 +83,7 @@ def parsing() -> Config:
         print("Error: The file couldn't be found or the name is invalid !")
         logging.error(
             "Error: The file couldn't be found or the name is invalid !")
-        exit()
+        sys.exit()
         pg.quit()
 
     try:
@@ -97,7 +97,7 @@ def parsing() -> Config:
             f"The file {file}"
             f"was not found or failed to decode data from JSON file"
             )
-        exit()
+        sys.exit()
 
     try:
         if not all(keys in data for keys in necessary_keys):
@@ -105,12 +105,12 @@ def parsing() -> Config:
     except KeyError:
         logging.error("Missing or invalid config values")
         print("Missing or invalid config values")
-        exit()
+        sys.exit()
 
     try:
         valid_config = Config.model_validate(data)
     except ValidationError as error:
         print(error.errors()[0]["msg"])
         logging.error(error.errors()[0]["msg"])
-        exit()
+        sys.exit()
     return valid_config

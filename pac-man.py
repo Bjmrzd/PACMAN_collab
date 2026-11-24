@@ -1,6 +1,6 @@
 import os
 import pygame as pg
-from src.main_menu import MainMenu
+from game_files.src.main_menu import MainMenu
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
 
 

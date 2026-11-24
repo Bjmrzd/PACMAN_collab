@@ -11,7 +11,7 @@ class Size(Enum):
 
 class Font(Enum):
     """Class to access the different font"""
-    FONT1 = "assets/ByteBounce.ttf"
+    FONT1 = "game_files/assets/ByteBounce.ttf"
 
 
 class Color(Enum):
@@ -24,8 +24,8 @@ class Color(Enum):
 
 class Images(Enum):
     """Image for the sprites"""
-    PACMAN = pg.image.load("assets/pacsprites.png")
-    SUPERGUM = pg.image.load("assets/pacs.jpg")
+    PACMAN = pg.image.load("game_files/assets/pacsprites.png")
+    SUPERGUM = pg.image.load("game_files/assets/pacs.jpg")
 
 
 class Box_Button():
