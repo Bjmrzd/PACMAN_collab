@@ -1,0 +1,55 @@
+Work organization:
+
+Pcaudron (mostly backend, bit of frontend, documentation and debugging):
+
+- Ghost algorithm and logic
+
+- Pacman logic
+
+- Maze adaptation
+
+- GameState logic
+
+- Scoring logic
+
+- Level logic
+
+- Game / Next level logic
+
+- Docstrings
+
+- Readme
+
+- Debug
+
+- Pacgum/Super Pacgum logic
+
+
+
+Brouzaud (mostly frontend, bit of backend, documentation and debugging)
+
+- Display Menu/Instructions/Highscores
+
+- Display Win/Game Over screen
+
+- Display Pause/Cheat screen
+
+- Parsing
+
+- Config file
+
+- Highscore logic
+
+- Maze and sprite renderer
+
+- Pygame setup and video
+
+- Makefile
+
+- Error logs
+
+- Debug
+
+- Docstrings
+
+- Readme

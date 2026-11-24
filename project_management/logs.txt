@@ -1,0 +1,85 @@
+01/10/26 : 	- first files initiated (together)
+			- main menu done (Brouzaud)
+			
+
+05/10/26 : 	- main menu fixes (Brouzaud)
+
+12/10/26 : 	- tuto menu started + assets (Brouzaud)
+
+21/10/26 : 	- pause menu done (Brouzaud)
+
+22/10/26 : 	- starting instruction menu and pause/cheat menu fixes (Brouzaud)
+
+23/10/26 :	- starting highscore (Brouzaud)
+			- starting maze.py (Pcaudron)
+
+24/10/26 :	- win screen and makefile (Brouzaud)
+			- working on maze.py and starting maze_convert.py (Pcaudron)
+
+26/10/26 :	- json handling for highscore in case of win (Brouzaud)
+			- working on the maze functions (pcaudron)
+
+27/10/26 :	- maze and maze_convert done (Pcaudron)
+			- lives, highscore and win screen done (Brouzaud)
+
+28/10/26 :	- class Mover done and ghost initialized in entities.py and few fixes of maze.py (Pcaudron)
+			- highscore done and clean codes layout(Brouzaud)
+
+29/10/26 :	- resume button, highscore tests and game over screen + error logs (Brouzaud)
+			- ghost class almost done (Pcaudron)
+
+30/10/26 :	- worked on the win and game over screens + added gifs to the screens (Brouzaud)
+			- ghost cless done (Pcaudron)
+
+03/11/26 : 	- level.py and scoring.py done (pcaudron)
+
+04/11/26 :	- renderer.py started and maze rendering almost done (Brouzaud)
+
+05/11/26 :	- started the main loop of the game (Brouzaud)
+
+06/11/26 :	- Pac-man class done and level.py fixed (Pcaudron)
+			- fixed some crashes in menu and finished instructions (Brouzaud)
+
+07/11/26 :	- main menu fixed and pacman sprite done (Brouzaud)
+
+09/11/26 :	- fixed a few things in the pacman class to recieve keys (Brouzaud)
+
+11/11/26 :	- worked on the main loop (Brouzaud)
+
+12/11/26 :	- fixed a few bugs and worked on the maze rendering (Brouzaud)
+			- re-write the main loop towards a better structure for clarity and easy debugging (Pcaudron)
+
+13/11/26 :	- worked on pacman spawn and movements (together)
+
+14/11/26 :	- tests and fixes on pacman movements and rendering (Brouzaud)
+
+15/11/26 :	- timer display done and work on the main loop (Brouzaud)
+
+17/11/26 :	- debugging (pcaudron)
+			- worked on the pacgums and display maze partially works (ghosts bugs) (Brouzaud)
+
+18/11/26 :	- fixed loooooots of bugs (game crash when gum eaten, pacman not shown moving,
+			pacman logic and pacman sprites not moving together, pacman's wall collisions,
+			fix maze and mover's clock crashes + ghosts fixes, level time fixed) (Pcaudron)
+			- worked on timer, 42 walls, pacgums, super-pacgums and fixed the sprites to be in the middle of the cells (Brouzaud)
+
+19/11/26 :	- made the code clearer, pacman spawn in 42 fixed and pacman moves better and fixed a few things,
+			can go back to the game from pause menu with escape key (Pcaudron)
+			- worked on the display of the ghosts, change of state and reset + fixed level dimension fix and index crash (Brouzaud)
+
+20/11/26 :	- pause menu fixes and time pause while in menu, cheats work, level passing correctly, 42 in color, game over screen fixed (Brouzaud)
+			- fixed some issues with the freeze from the pause menu and added a timer, corrected the definition of the center of the maze
+			(case when the center is a cell of the 42) and established the time of the level proportionally to the size of the maze (Pcaudron)
+
+21/11/26 :	- fixed the ghost's sprite bug when the ghost are eaten (Pcaudron)
+			- fix cheat display and ghost's sprites, fix config (Brouzaud)
+
+22/11/26 :	- mypy and flake8, delete init.py and docstrings and Readme (Brouzaud)
+			- timer stop during cheat menu, adjustments in parsing, fixed a few bugs, added a ready state
+			(with display text): the level freeze as long as we don't press a key (Pcaudron)
+
+23/11/26 :	- Readme, type hints, mypy, flake8, start of pyproject.toml for packaging (Brouzaud)
+			- mypy flake8 and bugs fixed, re-write maze_convert to be more coherent. docstrings done and Readme (Pcaudron)
+
+24/11/26 :	- added content in the intructions display, docstrings finished, Readme, slight fixes to be more accurate to the assignement, flake8 mypy (Pcaudron)
+			- packaging, executable and final touches (Brouzaud)

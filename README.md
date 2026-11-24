@@ -225,6 +225,8 @@ Level->Maze:
 
 - Ghost algorithm
 
+- Pacman logic
+
 - Maze adaptation
 
 - GameState logic
@@ -249,7 +251,7 @@ Level->Maze:
 
 - Abstract class
 
-- Pacman movements
+- Pacgum/Super Pacgum logic
 
 #### Brouzaud
 
@@ -283,7 +285,7 @@ Level->Maze:
 
 - Pacgum/Super Pacgum logic
 
-- Pacman movements/ Keys
+- Pacman movements keys
 
 ## Credits:
 
