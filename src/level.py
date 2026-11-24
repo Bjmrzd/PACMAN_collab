@@ -9,6 +9,7 @@ from src.scoring import GameState
 
 
 class LevelState(Enum):
+    """Enum of the states of the level"""
     READY = "ready"
     PLAYING = "playing"
     WON = "won"
@@ -17,15 +18,18 @@ class LevelState(Enum):
 
 
 class LevelFeatures(Enum):
+    """Some level's variables"""
     PACMAN_HUNT = 8.0
     COLLISION_RANGE = 0.5
 
 
 class Level():
+    """Class defining a level"""
     def __init__(
             self, maze: Maze, state: GameState,
             level_number: int, time: float, rng: random.Random, pac: PacMan
             ):
+        """Initialize a level"""
 
         self.maze: Maze = maze
         self.state: GameState = state
@@ -51,6 +55,7 @@ class Level():
             ]
 
     def update(self, dt: float) -> None:
+        """Update the level every 'dt' time"""
         count: int = 0
         if self.cheat_speed:
             self.pac_man.speed *= 2
@@ -75,6 +80,8 @@ class Level():
             self.level_state = LevelState.WON
 
     def pacman_reach_cell(self, pac: PacMan, gum: Any) -> None:
+        """When pacman reach a cell
+        he eats a gum if there's one"""
         if self.level_state is not LevelState.PLAYING:
             return
         if len(gum) < 1:
@@ -94,6 +101,7 @@ class Level():
         self.pacgum_done = self.is_pacgum(gum.get("entities"))
 
     def is_pacgum(self, gum: Any) -> bool:
+        """Checks if all gums are eaten or not"""
         index: int = 0
         for args in gum:
             if args.state is State.EATEN:
@@ -103,6 +111,9 @@ class Level():
         return False
 
     def collisions(self) -> None:
+        """Behaviour of the collisions
+        between Pac-Man and the ghosts
+        depending on their states"""
         p_row, p_col = self.pac_man.position
         for ghost in self.ghosts:
             if ghost.state is State.EATEN:
@@ -126,6 +137,8 @@ class Level():
                 continue
 
     def lose_life(self) -> None:
+        """Behaviour of pac-man
+        losing a life"""
         self.state.lose_life()
         if self.state.game_over():
             self.level_state = LevelState.GAME_OVER

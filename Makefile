@@ -37,4 +37,9 @@ lint:
 	@flake8 . | mypy . --warn-return-any --warn-unused-ignores --ignore-missing-imports --disallow-untyped-defs --check-untyped-defs
 
 lint-strict:
-	@flake8 . | mypy . --strict 
+	@flake8 . | mypy . --strict
+
+build:
+	@python -m pip install --upgrade build
+	@$(PYTHON) -m build --sdist
+	@pip install ./dist/mazegenerator-0.1.0.tar.gz

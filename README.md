@@ -21,7 +21,7 @@ To do that we need to use the Makefile and do:
 
 - make install
 
-If pygvideo does not work after the make install or if the make install fail because of it we need to downgrade or version of python to 3.13 and make a venv.
+If pygvideo does not work after the make install or if the make install fail because of it we need to downgrade our version of python to 3.13 and make a venv.
 
 (Note: You may need to download python 3.13 if you don't have it)
 
@@ -35,7 +35,9 @@ To exit the venv:
 
 - deactivate
 
-Inside the venv we need to make install again to have all the dependencies.
+Inside the venv we need to make install again to have all the dependencies:
+
+- make install_venv
 
 To launch the program we can use:
 - python3 pac-man.py config.json
