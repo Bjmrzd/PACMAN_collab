@@ -28,7 +28,7 @@ install_venv:
 
 venv:
 	@printf "Creating the venv !\n"
-	@python3.13 -m venv $(VENV)
+	@python -m venv $(VENV)
 
 erase:
 	@rm -rf $(VENV)

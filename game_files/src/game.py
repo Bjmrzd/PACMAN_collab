@@ -131,7 +131,6 @@ class Game:
             self.max_time, self.rng,
             PacMan(maze_class, maze_class.center)  # type: ignore
             )
-        print(maze_class.center)
         level.level_state = LevelState.READY
         pac = level.pac_man
         start_text = Text(

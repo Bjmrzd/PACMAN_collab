@@ -6,12 +6,12 @@ authors = [
     {name = "brouzaud"},
     {name = "pcaudron"}
 ]
-requires-python = ">=3.14,<4.0"
+requires-python = ">=3.15"
 licence = ["LICENCE"]
 dependencies = [
-    "pydantic (>=2.13.5)",
-    "pygame (>=2.6.1)",
-    "pygame-menu (>=4.5.2)",
+    "pydantic",
+    "pygame-ce",
+    "pygame-menu-ce",
 ]
 
 

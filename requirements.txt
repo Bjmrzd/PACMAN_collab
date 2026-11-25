@@ -1,5 +1,4 @@
 pygame-ce
-pygame
 pydantic
-pygame-menu
+pygame-menu-ce
 pyinstaller
