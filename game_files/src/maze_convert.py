@@ -28,7 +28,6 @@ def level_maze(height: int, width: int, seed: int) -> Maze:
         (height, width), perfect=False, entry_cell=(0, 0),
         exit_cell=(width - 1, height - 1), seed=seed
         )
-    maze.generate()
     # rows: list[str] = maze.maze_hexa()
     return Maze(maze._maze)
     # try:

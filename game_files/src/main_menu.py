@@ -33,6 +33,8 @@ class MainMenu():
         highscore_button = self.menu.add.button(
             "Highscores", self.init_highscore)
 
+        quit_button = self.menu.add.button("Quit", self.quit_menu)
+
         if not no_resume:
             resume_button = self.menu.add.button(
                 "Resume game", self.resume_game)
@@ -56,7 +58,7 @@ class MainMenu():
 
             start_button.set_margin(0, 50)
             start_button.set_padding(15)
-            start_button.translate(0, 0)
+            start_button.translate(0, -100)
 
             instructions_button.set_margin(0, 50)
             instructions_button.set_padding(15)
@@ -65,6 +67,10 @@ class MainMenu():
             highscore_button.set_margin(0, 50)
             highscore_button.set_padding(15)
             highscore_button.translate(0, 100)
+
+            quit_button.set_margin(0, 50)
+            quit_button.set_padding(15)
+            quit_button.translate(0, 150)
 
             title_image.translate(0, -300)
 
@@ -199,3 +205,7 @@ class MainMenu():
     def resume_game(self) -> None:
         """Go back to the current game when the resume button is clicked"""
         self.running = False
+
+    def quit_menu(self):
+        pg.quit()
+        sys.exit()

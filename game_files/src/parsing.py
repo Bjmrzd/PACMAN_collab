@@ -3,6 +3,7 @@ from pydantic import Field, BaseModel, ValidationError, model_validator
 from typing import Any
 import logging
 import sys
+from collections.abc import Callable
 import pygame as pg
 
 
@@ -59,6 +60,20 @@ class Config(BaseModel):
         return self
 
 
+class JSON_Comments(json.JSONDecoder):
+    """Allows comment in json file (unusual comment)"""
+    def __init__(self, **kw: Any) -> None:
+        """Init the class Json_comments"""
+        super().__init__(**kw)
+
+    def decode(
+            self, s: str, _: Callable[..., Any] = lambda: "") -> Any:
+        """Ignores comments in the json"""
+        s = '\n'.join(line if not line.lstrip().startswith("#")
+                      else '' for line in s.split("\n"))
+        return super().decode(s)
+
+
 def parsing() -> Config:
     """Parse and create a config based on the given json file"""
     file = "config.json"
@@ -88,14 +103,14 @@ def parsing() -> Config:
 
     try:
         with open(file, "r") as config:
-            data = json.load(config)
-    except (FileNotFoundError, json.JSONDecodeError):
+            data = json.load(config, cls=JSON_Comments)
+    except (FileNotFoundError, json.decoder.JSONDecodeError):
         logging.error(
             f"The file {file} was not "
             f"found or failed to decode data from JSON file")
         print(
             f"The file {file}"
-            f"was not found or failed to decode data from JSON file"
+            f" was not found or failed to decode data from JSON file"
             )
         sys.exit()
 

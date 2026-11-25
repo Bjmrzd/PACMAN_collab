@@ -385,7 +385,7 @@ class Game:
             name_rules.show_text(self.screen)
 
             confirm_text = Text(
-                "Press Space to confirm", Color.WHITE.value,
+                "Press ENTER to confirm", Color.WHITE.value,
                 self.screen_width / 2,
                 self.screen_height / 2 + 300, Size.TEXT.value)
             confirm_text.show_text(self.screen)
@@ -497,7 +497,7 @@ class Game:
             name_rules.show_text(self.screen)
 
             confirm_text = Text(
-                "Press Space to confirm", Color.WHITE.value,
+                "Press ENTER to confirm", Color.WHITE.value,
                 self.screen_width / 2,
                 self.screen_height / 2 + 300, Size.TEXT.value)
             confirm_text.show_text(self.screen)
@@ -572,7 +572,7 @@ class Game:
             instructions_button.create_button(self.screen, mouse)
 
             display_enter = Text(
-                "Press Enter to resume", Color.WHITE.value,
+                "Press ESCAPE to resume", Color.WHITE.value,
                 self.screen_width / 2,
                 self.screen_height / 2 - 200, Size.TEXT.value)
             display_enter.show_text(self.screen)

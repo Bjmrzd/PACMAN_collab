@@ -21,9 +21,7 @@ To do that we need to use the Makefile and do:
 
 - make install
 
-If pygvideo does not work after the make install or if the make install fail because of it we need to downgrade our version of python to 3.13 and make a venv.
-
-(Note: You may need to download python 3.13 if you don't have it)
+You can also make a venv:
 
 - make venv
 
