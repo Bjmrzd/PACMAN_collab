@@ -6,7 +6,8 @@ run:
 	@clear
 	@printf "Launching PacMan game ! \n\n"
 	@$(PYTHON) pac-man.py config.json
-	@ rm -rf src/__pycache__
+	@rm -rf src/__pycache__
+	@make clean
 
 clean:
 	@printf "Cleaning everything ! \n"
@@ -14,6 +15,7 @@ clean:
 	@rm -rf __pycache__
 	@rm -rf .mypy_cache
 	@rm -rf mazegenerator/__pycache__
+	@rm -rf game_files/__pycache__
 
 install:
 	@printf "\nInstalling required packages ! \n\n"
@@ -40,7 +42,5 @@ lint-strict:
 	@flake8 . &&  mypy . --strict
 
 package:
-	pyinstaller --onefile --name Pacman pac-man.py --contents-directory game_files --add-data "game_files/assets:game_files/assets" --copy-metadata imageio --hidden-import=pyexpat --collect-all pyexpat
-
-test:
-	pyinstaller --onefile --name Pacman pac-man.py --add-data "game_files:game_files" --add-data "config.json:."
+	pyinstaller --onefile --name Pacman pac-man.py --add-data "game_files:game_files" --add-data "config.json:config.json"
+	cp config.json ./dist/config.json

@@ -1,6 +1,8 @@
 from enum import Enum
 import pygame as pg
 from typing import Any
+import sys
+import os
 
 
 class Size(Enum):
@@ -9,9 +11,17 @@ class Size(Enum):
     TITLE = 150
 
 
+def find_path(path):
+    if (hasattr(sys, '_MEIPASS')):
+        base_path = sys._MEIPASS
+    else:
+        base_path = os.path.abspath(".")
+    return os.path.join(base_path, path)
+
+
 class Font(Enum):
     """Class to access the different font"""
-    FONT1 = "game_files/assets/ByteBounce.ttf"
+    FONT1 = find_path("game_files/assets/ByteBounce.ttf")
 
 
 class Color(Enum):
@@ -24,8 +34,8 @@ class Color(Enum):
 
 class Images(Enum):
     """Image for the sprites"""
-    PACMAN = pg.image.load("game_files/assets/pacsprites.png")
-    SUPERGUM = pg.image.load("game_files/assets/pacs.jpg")
+    PACMAN = pg.image.load(find_path("game_files/assets/pacsprites.png"))
+    SUPERGUM = pg.image.load(find_path("game_files/assets/pacs.jpg"))
 
 
 class Box_Button():

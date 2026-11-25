@@ -1,6 +1,7 @@
 import pygame as pg
 from game_files.src.parsing import parsing, Config
 from game_files.src.helper import Color, Box_Button, Font, Size, Text
+from game_files.src.helper import find_path
 from game_files.src.highscore import ranking_score, valid_highscore
 from game_files.src.renderer import render_maze
 from game_files.src.maze import Maze, Direction
@@ -317,7 +318,7 @@ class Game:
         no_loop: bool = False
         count: int = 0
         score_dict: dict[str, list[Any]] = {}
-        lock = pg.image.load("game_files/assets/lock_test.jpg")
+        lock = pg.image.load(find_path("game_files/assets/lock_test.jpg"))
         islocked: bool = False
 
         while running:
@@ -428,7 +429,7 @@ class Game:
         no_loop: bool = False
         count: int = 0
         score_dict: dict[str, list[Any]] = {}
-        lock = pg.image.load("game_files/assets/lock_test.jpg")
+        lock = pg.image.load(find_path("game_files/assets/lock_test.jpg"))
         islocked: bool = False
 
         while running:

@@ -3,7 +3,7 @@ import pygame_menu as pm
 import sys
 from game_files.src.game import Game
 from game_files.src.parsing import parsing
-from game_files.src.helper import Color, Text, Size, Font
+from game_files.src.helper import Color, Text, Size, Font, find_path
 import json
 from typing import Any
 
@@ -25,7 +25,8 @@ class MainMenu():
     def init_menu(self, no_resume: bool) -> None:
         """Init and display the main menu"""
 
-        title_image = self.menu.add.image("game_files/assets/title.jpg")
+        title_image = self.menu.add.image(
+            find_path("game_files/assets/title.jpg"))
         start_button = self.menu.add.button("Start game", self.init_game)
         instructions_button = self.menu.add.button(
             "Instructions", self.init_tuto)
@@ -82,7 +83,7 @@ class MainMenu():
     def init_tuto(self) -> None:
         """Init the tuto menu with the buttons instructions and how to play"""
         running = True
-        arrows = pg.image.load("game_files/assets/arrows.png")
+        arrows = pg.image.load(find_path("game_files/assets/arrows.png"))
 
         rules_font = pg.font.Font(Font.FONT1.value, 45)
 

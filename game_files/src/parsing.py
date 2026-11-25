@@ -25,7 +25,7 @@ class Config(BaseModel):
     level_10: dict[str, int] = Field(default_factory=dict)
 
     @model_validator(mode="after")
-    def validate_infos(self) -> Config:
+    def validate_infos(self) -> "Config":
         """Model validator for the Config class"""
         """Handle the value of the json to validate them"""
         level = [
@@ -62,6 +62,7 @@ class Config(BaseModel):
 def parsing() -> Config:
     """Parse and create a config based on the given json file"""
     file = "config.json"
+    print(file)
     logging.basicConfig(filename="error.logs", filemode="a",
                         format="%(asctime)s - %(message)s",
                         datefmt='%m/%d/%Y %I:%M:%S %p')
