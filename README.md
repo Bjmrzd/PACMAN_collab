@@ -33,10 +33,6 @@ To exit the venv:
 
 - deactivate
 
-Inside the venv we need to make install again to have all the dependencies:
-
-- make install_venv
-
 To launch the program we can use:
 - python3 pac-man.py config.json
 
@@ -68,8 +64,6 @@ To respectly clean the unecessary files and to erase the venv folder.
 As required by the subject we need:
 
 - make lint
-
-- make lint-strict
 
 To mypy and flake8
 

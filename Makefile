@@ -23,10 +23,6 @@ install:
 	@pip install --upgrade pip --quiet
 	@pip install -r requirements.txt --quiet
 
-install_venv:
-	@pip install --upgrade --require-virtualenv pip
-	@pip install --require-virtualenv -r requirements.txt
-
 venv:
 	@printf "Creating the venv !\n"
 	@python -m venv $(VENV)
@@ -35,12 +31,8 @@ erase:
 	@rm -rf $(VENV)
 	@printf "Virtual env is gone.\n"
 
-
 lint: 
 	@flake8 . &&  mypy . --warn-return-any --warn-unused-ignores --ignore-missing-imports --disallow-untyped-defs --check-untyped-defs
-
-lint-strict:
-	@flake8 . &&  mypy . --strict
 
 package:
 	pyinstaller --onefile --name Pacman pac-man.py --add-data "game_files:game_files" --add-data "config.json:config.json"
