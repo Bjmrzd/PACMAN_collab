@@ -1,8 +1,12 @@
-import os
-import pygame as pg
-import gc
-import sys
-from game_files.src.main_menu import MainMenu
+try:
+    import os
+    import sys
+    import pygame as pg
+    import gc
+    from game_files.src.main_menu import MainMenu
+except ImportError as e:
+    print(e)
+    sys.exit()
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
 
 
