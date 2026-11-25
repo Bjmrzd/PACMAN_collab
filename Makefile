@@ -19,6 +19,7 @@ clean:
 
 install:
 	@printf "\nInstalling required packages ! \n\n"
+	@python -m pip install --upgrade pip
 	@pip install --upgrade pip --quiet
 	@pip install -r requirements.txt --quiet
 

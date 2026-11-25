@@ -11,7 +11,7 @@ class Size(Enum):
     TITLE = 150
 
 
-def find_path(path):
+def find_path(path: Any) -> Any:
     if (hasattr(sys, '_MEIPASS')):
         base_path = sys._MEIPASS
     else:

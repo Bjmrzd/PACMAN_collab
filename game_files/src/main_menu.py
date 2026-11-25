@@ -44,10 +44,6 @@ class MainMenu():
                 if event.type == pg.QUIT:
                     pg.quit()
                     sys.exit()
-                keys = pg.key.get_pressed()
-                if keys[pg.K_ESCAPE]:
-                    pg.quit()
-                    sys.exit()
 
             self.menu.update(events)
             self.menu.draw(self.screen)

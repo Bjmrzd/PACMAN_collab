@@ -113,6 +113,12 @@ AI was not used in this project
 
 ## Additional description:
 
+### ITCH.IO:
+Here is the link to download the game frm itch.io :
+
+    https://pcaudron.itch.io/pac-man
+    
+
 ### Configuration:
 
 The configuration file is a .json as required by the subject.

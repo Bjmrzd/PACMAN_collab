@@ -78,21 +78,23 @@ def render_maze(
                         and (rows, cols) != level.maze.center
                        ):
                         gum = Pacgum(cell, base_state)  # type: ignore
-                        gum.rect.center = (start_x + 25, start_y + 25)
+                        gum.rect.center = (  # type: ignore
+                            start_x + 25, start_y + 25)
                         gum_grp.add(gum)
                         list_gum.append(gum)
                     else:
                         if (rows, cols) != level.maze.center:
                             supergum = Super_gum(
-                                cell, base_state)  # type: ignore
-                            supergum.rect.center = (start_x + 25, start_y + 25)
+                                cell, base_state)   # type: ignore
+                            supergum.rect.center = (  # type: ignore
+                                start_x + 25, start_y + 25)
                             supergum_grp.add(supergum)
                             super_list.append(supergum)
             if rows == len(walls) and cols == len(walls[0]):
                 maze.is_init = True
 
     row, col = pacman.position
-    pacman.rect.center = (
+    pacman.rect.center = (  # type: ignore
         int(middle_x + (col + 0.5) * space),
         int(middle_y + (row + 0.5) * space)
         )
