@@ -11,7 +11,7 @@ And a configuration file in json:
 
 Furthermore a Makefile was required to run, clean or mypy and flake8 the project if necessary.
 
-<img src="assets/readme_assets/maze.png" alt="Maze">
+<img src="game_files/assets/readme_assets/maze.png" alt="Maze">
 
 ## Instructions:
 
@@ -120,7 +120,6 @@ The configuration file is a .json as required by the subject.
 | Lives | Pacman lives | "lives":5 | No limits |
 | highscore_filename | The name of the file storing the highscore | "highscore_filename":"highscore.json" | "Must be a json file |
 | Seed | The seed of the maze | "seed":42 | No limits |
-|Max time | The max time given per level | "lvl_max_time"90 | No limits |
 | Level | Give the size of the maze for each of them | "level_1": {"width": 17, "height":17} | Must be a square and not higher than 25 and lower than 8 |
 | Pac Points | Points given for pacgum | "pacgum_pts":25 | No limits
 | Super pac points | Points for super pac gum | "super_pacgum_pts":100 | No limits

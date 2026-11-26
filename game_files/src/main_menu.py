@@ -206,6 +206,6 @@ class MainMenu():
         """Go back to the current game when the resume button is clicked"""
         self.running = False
 
-    def quit_menu(self):
+    def quit_menu(self) -> None:
         pg.quit()
         sys.exit()
