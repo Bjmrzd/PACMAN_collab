@@ -15,7 +15,11 @@
     "level_8": {"width": 11, "height": 11},
     "level_9": {"width": 16, "height": 16},
     "level_10": {"width": 25, "height": 25}
+<<<<<<< HEAD
     # Yojimbo
+=======
+    # YOJIMBO
+>>>>>>> 370e7f03efe5f77c10474ff29a9bd72837d1215c
 }
 
 

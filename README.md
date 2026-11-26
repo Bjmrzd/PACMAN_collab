@@ -33,10 +33,6 @@ To exit the venv:
 
 - deactivate
 
-Inside the venv we need to make install again to have all the dependencies:
-
-- make install_venv
-
 To launch the program we can use:
 - python3 pac-man.py config.json
 
@@ -68,8 +64,6 @@ To respectly clean the unecessary files and to erase the venv folder.
 As required by the subject we need:
 
 - make lint
-
-- make lint-strict
 
 To mypy and flake8
 
@@ -126,7 +120,6 @@ The configuration file is a .json as required by the subject.
 | Lives | Pacman lives | "lives":5 | No limits |
 | highscore_filename | The name of the file storing the highscore | "highscore_filename":"highscore.json" | "Must be a json file |
 | Seed | The seed of the maze | "seed":42 | No limits |
-|Max time | The max time given per level | "lvl_max_time"90 | No limits |
 | Level | Give the size of the maze for each of them | "level_1": {"width": 17, "height":17} | Must be a square and not higher than 25 and lower than 8 |
 | Pac Points | Points given for pacgum | "pacgum_pts":25 | No limits
 | Super pac points | Points for super pac gum | "super_pacgum_pts":100 | No limits

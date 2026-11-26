@@ -26,10 +26,6 @@ install:
 	@pip install --upgrade pip --quiet
 	@pip install -r requirements.txt --quiet
 
-install_venv:
-	@pip install --upgrade --require-virtualenv pip
-	@pip install --require-virtualenv -r requirements.txt
-
 venv:
 	@printf "Creating the venv !\n"
 	@python -m venv $(VENV)
@@ -38,13 +34,15 @@ erase:
 	@rm -rf $(VENV)
 	@printf "Virtual env is gone.\n"
 
-
 lint: 
 	@flake8 . --exclude ./game_files/mazegenerator &&  mypy . --warn-return-any --warn-unused-ignores --ignore-missing-imports --disallow-untyped-defs --check-untyped-defs
 
+<<<<<<< HEAD
 lint-strict:
 	@flake8 . --exclude ./game_files/mazegenerator &&  mypy . --strict
 
+=======
+>>>>>>> 370e7f03efe5f77c10474ff29a9bd72837d1215c
 package:
 	pyinstaller --onefile --name Pacman pac-man.py --add-data "game_files:game_files" --add-data "config.json:config.json"
 	cp config.json ./dist/config.json
