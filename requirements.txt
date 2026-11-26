@@ -1,4 +1,5 @@
 mypy
+python-pdb
 pygame-ce
 pydantic
 pygame-menu-ce

@@ -17,6 +17,9 @@ clean:
 	@rm -rf mazegenerator/__pycache__
 	@rm -rf game_files/__pycache__
 
+debug:
+	@python -m pdb pac-man.py config.json
+
 install:
 	@printf "\nInstalling required packages ! \n\n"
 	@python -m pip install --upgrade pip
@@ -37,10 +40,10 @@ erase:
 
 
 lint: 
-	@flake8 . &&  mypy . --warn-return-any --warn-unused-ignores --ignore-missing-imports --disallow-untyped-defs --check-untyped-defs
+	@flake8 . --exclude ./game_files/mazegenerator &&  mypy . --warn-return-any --warn-unused-ignores --ignore-missing-imports --disallow-untyped-defs --check-untyped-defs
 
 lint-strict:
-	@flake8 . &&  mypy . --strict
+	@flake8 . --exclude ./game_files/mazegenerator &&  mypy . --strict
 
 package:
 	pyinstaller --onefile --name Pacman pac-man.py --add-data "game_files:game_files" --add-data "config.json:config.json"

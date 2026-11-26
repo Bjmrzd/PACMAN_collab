@@ -11,7 +11,7 @@ And a configuration file in json:
 
 Furthermore a Makefile was required to run, clean or mypy and flake8 the project if necessary.
 
-<img src="assets/readme_assets/maze.png" alt="Maze">
+<img src="game_files/assets/readme_assets/maze.png" alt="Maze">
 
 ## Instructions:
 
